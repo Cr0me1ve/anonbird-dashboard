@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@components/Button";
+import { Callout } from "@components/Callout";
 import Code from "@components/Code";
 import { HelpTooltip } from "@components/HelpTooltip";
 import InlineLink from "@components/InlineLink";
@@ -18,10 +19,10 @@ import {
 } from "@components/Select";
 import SmallParagraph from "@components/SmallParagraph";
 import { Tabs, TabsList, TabsTrigger } from "@components/Tabs";
-import { IconInfoCircle } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
 import { cn } from "@utils/helpers";
 import {
+  ANONYMOUS_MANAGEMENT_URL_REQUIRED,
   AnonymousTransportCommandOptions,
   AnonymousTransportType,
   DEFAULT_I2P_DAEMON_MODE,
@@ -35,6 +36,7 @@ import {
 } from "@utils/netbird";
 import {
   CopyIcon,
+  AlertTriangleIcon,
   ExternalLinkIcon,
   KeyRoundIcon,
   Loader2,
@@ -198,9 +200,7 @@ export function SetupModalContent({
           }
         />
         <InlineLink
-          href={
-            "https://github.com/Cr0me1ve/netbird/tree/main/docs"
-          }
+          href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
           target={"_blank"}
         >
           Learn more
@@ -272,6 +272,24 @@ export function SetupModalContent({
         i2pDataDir={i2pDataDir}
         onI2PDataDirChange={setI2PDataDir}
       />
+
+      {ANONYMOUS_MANAGEMENT_URL_REQUIRED && (
+        <div className={"px-8 pb-5"}>
+          <Callout
+            variant={"error"}
+            icon={
+              <AlertTriangleIcon
+                size={15}
+                className={"shrink-0 relative top-[3px]"}
+              />
+            }
+          >
+            Peer setup is blocked from using the current clearnet management
+            URL. Set <code>NETBIRD_MGMT_GRPC_API_ENDPOINT</code> to an onion or
+            I2P endpoint before copying install commands.
+          </Callout>
+        </div>
+      )}
 
       <Tabs
         defaultValue={String(
@@ -389,9 +407,7 @@ export function SetupModalContent({
               network or manage your existing devices in the admin panel. If you
               have further questions check out our{" "}
               <InlineLink
-                href={
-                  "https://github.com/Cr0me1ve/netbird/tree/main/docs"
-                }
+                href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
                 target={"_blank"}
               >
                 Installation Guide

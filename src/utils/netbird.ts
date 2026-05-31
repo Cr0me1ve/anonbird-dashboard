@@ -25,17 +25,46 @@ export const DEFAULT_I2P_TUNNEL_LENGTH = 1;
 export const DEFAULT_I2P_TUNNEL_QUANTITY = 3;
 export const DEFAULT_I2P_DAEMON_MODE: I2PDaemonMode = "auto";
 export const DEFAULT_I2PD_PATH = "i2pd";
+export const ANONYMOUS_MANAGEMENT_URL_PLACEHOLDER =
+  "ANONYMOUS_MANAGEMENT_URL_REQUIRED";
+
+export const isAnonymousManagementURL = (rawURL?: string) => {
+  if (!rawURL) return false;
+  try {
+    const parsed = new URL(rawURL);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return false;
+    }
+    const hostname = parsed.hostname.toLowerCase();
+    return hostname.endsWith(".onion") || hostname.endsWith(".i2p");
+  } catch {
+    return false;
+  }
+};
+
+export const ANONYMOUS_MANAGEMENT_ORIGIN = isAnonymousManagementURL(
+  GRPC_API_ORIGIN,
+)
+  ? GRPC_API_ORIGIN
+  : "";
+export const ANONYMOUS_MANAGEMENT_URL_REQUIRED =
+  !!GRPC_API_ORIGIN && !ANONYMOUS_MANAGEMENT_ORIGIN;
+export const ANONYMOUS_MANAGEMENT_COMMAND_URL =
+  ANONYMOUS_MANAGEMENT_ORIGIN ||
+  (ANONYMOUS_MANAGEMENT_URL_REQUIRED
+    ? ANONYMOUS_MANAGEMENT_URL_PLACEHOLDER
+    : "");
 
 export const getAnonBirdJoinURL = (
   setupKey: string,
   options?: AnonymousTransportCommandOptions,
   hostname?: string,
 ) => {
-  if (!setupKey || !GRPC_API_ORIGIN) return undefined;
+  if (!setupKey || !ANONYMOUS_MANAGEMENT_ORIGIN) return undefined;
 
   const transport = options?.transport ?? "tor-relay-only";
   const params = new URLSearchParams({
-    server: GRPC_API_ORIGIN,
+    server: ANONYMOUS_MANAGEMENT_ORIGIN,
     setup_key: setupKey,
     transport,
   });
@@ -107,8 +136,8 @@ export const getAnonBirdUpCommand = (
     }
   }
 
-  if (GRPC_API_ORIGIN) {
-    cmd += " --management-url " + GRPC_API_ORIGIN;
+  if (ANONYMOUS_MANAGEMENT_COMMAND_URL) {
+    cmd += " --management-url " + ANONYMOUS_MANAGEMENT_COMMAND_URL;
   }
   return cmd;
 };

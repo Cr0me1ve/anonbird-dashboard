@@ -9,14 +9,11 @@ import Separator from "@components/Separator";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
 import {
+  ANONYMOUS_MANAGEMENT_ORIGIN,
   ANONBIRD_SOURCE_URL,
   AnonymousTransportCommandOptions,
-  GRPC_API_ORIGIN,
 } from "@utils/netbird";
-import {
-  PackageOpenIcon,
-  TerminalSquareIcon,
-} from "lucide-react";
+import { PackageOpenIcon, TerminalSquareIcon } from "lucide-react";
 import React from "react";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import {
@@ -45,7 +42,7 @@ export default function MacOSTab({
   // the operator generates a key.
   const useCliRun = !!setupKey || !!setupKeyContent;
   const baseMgmtStep = 2;
-  const keyStep = GRPC_API_ORIGIN ? 3 : 2;
+  const keyStep = ANONYMOUS_MANAGEMENT_ORIGIN ? 3 : 2;
   const runStep = keyStep + (setupKeyContent ? 1 : 0);
   const usingSetupKeyParam = !!setupKey || !!setupKeyPlaceholder;
   const installCommand = [
@@ -80,13 +77,13 @@ export default function MacOSTab({
             </Code>
           </Steps.Step>
 
-          {GRPC_API_ORIGIN && (
+          {ANONYMOUS_MANAGEMENT_ORIGIN && (
             <Steps.Step step={baseMgmtStep}>
               <p>
                 {`Click on "Settings" then "Advanced Settings" from the AnonBird icon in your system tray and enter the following "Management URL"`}
               </p>
               <Code>
-                <Code.Line>{GRPC_API_ORIGIN}</Code.Line>
+                <Code.Line>{ANONYMOUS_MANAGEMENT_ORIGIN}</Code.Line>
               </Code>
             </Steps.Step>
           )}
@@ -139,9 +136,13 @@ export default function MacOSTab({
                 <Steps.Step step={1}>
                   <Code codeToCopy={installCommand}>
                     <Code.Line>brew install go git</Code.Line>
-                    <Code.Line>git clone {ANONBIRD_SOURCE_URL} anonbird</Code.Line>
+                    <Code.Line>
+                      git clone {ANONBIRD_SOURCE_URL} anonbird
+                    </Code.Line>
                     <Code.Line>cd anonbird</Code.Line>
-                    <Code.Line>go build -trimpath -o anonbird ./client</Code.Line>
+                    <Code.Line>
+                      go build -trimpath -o anonbird ./client
+                    </Code.Line>
                     <Code.Line>
                       sudo install -m 0755 anonbird /usr/local/bin/anonbird
                     </Code.Line>
