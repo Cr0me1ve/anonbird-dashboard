@@ -1,0 +1,20 @@
+title = "AnonBird Dashboard secret scanning"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Local build/cache/dependency output is not part of the source release."
+paths = [
+  '''^\.next/''',
+  '''^out/''',
+  '''^node_modules/''',
+
+  # Historical upstream UI labels and local dev examples kept in git history.
+  '''^run-local-legacy\.sh$''',
+  '''^run-local\.sh$''',
+  '''^src/modules/integrations/idp-sync/azure-ad/AzureADConfiguration\.tsx$''',
+  '''^src/modules/integrations/idp-sync/azure-ad/AzureADSetup\.tsx$''',
+  '''^src/modules/integrations/idp-sync/google-workspace/GoogleWorkspaceConfiguration\.tsx$''',
+  '''^src/modules/integrations/idp-sync/google-workspace/GoogleWorkspaceSetup\.tsx$''',
+]
