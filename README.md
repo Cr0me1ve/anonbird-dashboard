@@ -48,7 +48,7 @@ The dashboard makes it easy to operate an anonymous private mesh:
      -e AUTH0_CLIENT_ID=<SET YOUR CLIENT ID> \
      -e AUTH0_AUDIENCE=<SET YOUR AUDIENCE> \
      -e NETBIRD_MGMT_API_ENDPOINT=<SET YOUR MANAGEMENT API URL> \
-     ghcr.io/cr0me1ve/anonbird-dashboard:main
+     ghcr.io/cr0me1ve/anonbird-dashboard:latest
    ```
 
 6. Run the dashboard with SSL:
@@ -63,7 +63,7 @@ The dashboard makes it easy to operate an anonymous private mesh:
      -e AUTH0_CLIENT_ID=<SET YOUR CLIENT ID> \
      -e AUTH0_AUDIENCE=<SET YOUR AUDIENCE> \
      -e NETBIRD_MGMT_API_ENDPOINT=<SET YOUR MANAGEMENT API URL> \
-     ghcr.io/cr0me1ve/anonbird-dashboard:main
+     ghcr.io/cr0me1ve/anonbird-dashboard:latest
    ```
 
 ## How to run local development
@@ -77,4 +77,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Migration Notes
 
-Replace old dashboard images in your compose files with `ghcr.io/cr0me1ve/anonbird-dashboard:main`, then recreate the dashboard container.
+Replace old dashboard images in your compose files with `ghcr.io/cr0me1ve/anonbird-dashboard:latest`, then recreate the dashboard container.
