@@ -23,7 +23,7 @@ export enum SSHStatus {
 }
 
 export const SSH_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 
 const SSH_DETECTION_TIMEOUT_MS = 20000;
 

@@ -227,34 +227,34 @@ export function isL4Mode(mode?: ServiceMode): boolean {
 }
 
 export const REVERSE_PROXY_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 
 export const REVERSE_PROXY_SERVICES_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 
 export const REVERSE_PROXY_TARGETS_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 
 export const REVERSE_PROXY_AUTHENTICATION_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 
 export const REVERSE_PROXY_SETTINGS_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 
 export const REVERSE_PROXY_CLUSTERS_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 
 export const REVERSE_PROXY_CUSTOM_DOMAINS_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 
 export const REVERSE_PROXY_DOMAIN_VERIFICATION_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 
 export const REVERSE_PROXY_EVENTS_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 
 export const REVERSE_PROXY_ACCESS_CONTROL_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 
 export const REVERSE_PROXY_TROUBLESHOOTING_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";

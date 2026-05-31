@@ -56,7 +56,7 @@ export const OnboardingTestP2P = ({
             If something isn’t right, please check our{" "}
             <InlineLink
               onClick={onTroubleshootingClick}
-              href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
+              href={"https://github.com/Cr0me1ve/anonbird/tree/main/docs"}
               target={"_blank"}
             >
               troubleshooting guide

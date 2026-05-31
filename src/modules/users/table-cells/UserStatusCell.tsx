@@ -46,7 +46,7 @@ export default function UserStatusCell({ user }: Readonly<Props>) {
       <div>
         <InlineLink
           href={
-            "https://github.com/Cr0me1ve/netbird/tree/main/docs"
+            "https://github.com/Cr0me1ve/anonbird/tree/main/docs"
           }
           target={"_blank"}
         >
@@ -75,7 +75,7 @@ export default function UserStatusCell({ user }: Readonly<Props>) {
       <div>
         Learn more about{" "}
         <InlineLink
-          href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
+          href={"https://github.com/Cr0me1ve/anonbird/tree/main/docs"}
           target={"_blank"}
         >
           User Approval <ExternalLinkIcon size={12} />

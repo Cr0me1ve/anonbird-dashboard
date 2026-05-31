@@ -30,7 +30,7 @@ export const PeerRemoteJobsSection = ({ peerID }: Props) => {
             <Paragraph>
               Learn more about{" "}
               <InlineLink
-                href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
+                href={"https://github.com/Cr0me1ve/anonbird/tree/main/docs"}
                 target={"_blank"}
               >
                 Remote Jobs <ExternalLinkIcon size={12} />

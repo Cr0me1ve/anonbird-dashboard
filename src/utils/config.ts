@@ -90,7 +90,7 @@ const loadConfig = (): Config => {
         : undefined,
     anonbirdSourceURL: fallbackWhenUnset(
       configJson?.anonbirdSourceURL,
-      "https://github.com/Cr0me1ve/netbird.git",
+      "https://github.com/Cr0me1ve/anonbird.git",
     ),
     anonbirdDockerImage: fallbackWhenUnset(
       configJson?.anonbirdDockerImage,

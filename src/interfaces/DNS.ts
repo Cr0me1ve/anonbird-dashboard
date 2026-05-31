@@ -20,6 +20,6 @@ export interface DNSRecord {
 export type DNSRecordType = "A" | "AAAA" | "CNAME";
 
 export const DNS_ZONE_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 export const DNS_RECORDS_DOCS_LINK =
-  "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+  "https://github.com/Cr0me1ve/anonbird/tree/main/docs";

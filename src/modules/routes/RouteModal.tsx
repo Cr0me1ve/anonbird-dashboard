@@ -799,8 +799,8 @@ export function RouteModalContent({
             <InlineLink
               href={
                 exitNode
-                  ? "https://github.com/Cr0me1ve/netbird/tree/main/docs"
-                  : "https://github.com/Cr0me1ve/netbird/tree/main/docs"
+                  ? "https://github.com/Cr0me1ve/anonbird/tree/main/docs"
+                  : "https://github.com/Cr0me1ve/anonbird/tree/main/docs"
               }
               target={"_blank"}
             >

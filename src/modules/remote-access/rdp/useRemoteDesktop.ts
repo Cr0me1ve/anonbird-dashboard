@@ -41,7 +41,7 @@ export enum RDPStatus {
   CONNECTING = 2,
 }
 
-export const RDP_DOCS_LINK = "https://github.com/Cr0me1ve/netbird/tree/main/docs";
+export const RDP_DOCS_LINK = "https://github.com/Cr0me1ve/anonbird/tree/main/docs";
 
 export const useRemoteDesktop = (client: any) => {
   const [status, setStatus] = useState(RDPStatus.DISCONNECTED);

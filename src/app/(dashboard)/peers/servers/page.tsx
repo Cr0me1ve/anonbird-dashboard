@@ -93,7 +93,7 @@ function ServersBlockedView() {
           To get started, install AnonBird on the server and enroll it using a
           setup key. If you have further questions check out our{" "}
           <InlineLink
-            href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
+            href={"https://github.com/Cr0me1ve/anonbird/tree/main/docs"}
             target={"_blank"}
           >
             Installation Guide

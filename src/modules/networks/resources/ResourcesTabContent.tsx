@@ -28,7 +28,7 @@ export const ResourcesTabContent = ({
           <Paragraph>
             Learn more about{" "}
             <InlineLink
-              href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
+              href={"https://github.com/Cr0me1ve/anonbird/tree/main/docs"}
               target={"_blank"}
             >
               Resources

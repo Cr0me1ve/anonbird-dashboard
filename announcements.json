@@ -2,7 +2,7 @@
   {
     "tag": "New",
     "text": "AnonBird Reverse Proxy - Expose internal services with automatic TLS and optional authentication.",
-    "link": "https://github.com/Cr0me1ve/netbird/tree/main/docs",
+    "link": "https://github.com/Cr0me1ve/anonbird/tree/main/docs",
     "linkText": "Learn more",
     "variant": "important",
     "isExternal": true,

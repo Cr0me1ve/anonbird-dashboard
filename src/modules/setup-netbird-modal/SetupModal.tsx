@@ -200,7 +200,7 @@ export function SetupModalContent({
           }
         />
         <InlineLink
-          href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
+          href={"https://github.com/Cr0me1ve/anonbird/tree/main/docs"}
           target={"_blank"}
         >
           Learn more
@@ -395,7 +395,7 @@ export function SetupModalContent({
               network or manage your existing devices in the admin panel. If you
               have further questions check out our{" "}
               <InlineLink
-                href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
+                href={"https://github.com/Cr0me1ve/anonbird/tree/main/docs"}
                 target={"_blank"}
               >
                 Installation Guide

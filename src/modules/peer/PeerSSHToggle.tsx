@@ -88,7 +88,7 @@ export const PeerSSHToggle = () => {
           explicit access control policy and update your AnonBird client to
           restore SSH functionality.{" "}
           <InlineLink
-            href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
+            href={"https://github.com/Cr0me1ve/anonbird/tree/main/docs"}
             target={"_blank"}
             onClick={(e) => e.stopPropagation()}
           >

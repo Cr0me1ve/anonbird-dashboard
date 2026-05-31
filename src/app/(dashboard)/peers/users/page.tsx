@@ -70,7 +70,7 @@ function UserDevicesView() {
           Laptops, phones and other personal devices with a user behind them,
           typically added when the user signs in with SSO.{" "}
           <InlineLink
-            href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
+            href={"https://github.com/Cr0me1ve/anonbird/tree/main/docs"}
             target={"_blank"}
           >
             Learn more
@@ -100,7 +100,7 @@ function UserDevicesBlockedView() {
           After that you should be connected. If you have further questions
           check out our{" "}
           <InlineLink
-            href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
+            href={"https://github.com/Cr0me1ve/anonbird/tree/main/docs"}
             target={"_blank"}
           >
             Installation Guide

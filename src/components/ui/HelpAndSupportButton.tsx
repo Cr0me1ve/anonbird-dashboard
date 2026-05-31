@@ -52,7 +52,7 @@ export default function HelpAndSupportButton() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          href="https://github.com/Cr0me1ve/netbird/tree/main/docs"
+          href="https://github.com/Cr0me1ve/anonbird/tree/main/docs"
           target="_blank"
           rel="noopener noreferrer"
           asChild
@@ -66,7 +66,7 @@ export default function HelpAndSupportButton() {
           </DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem
-          href="https://github.com/Cr0me1ve/netbird/tree/main/docs"
+          href="https://github.com/Cr0me1ve/anonbird/tree/main/docs"
           target="_blank"
           rel="noopener noreferrer"
           asChild
@@ -81,7 +81,7 @@ export default function HelpAndSupportButton() {
         </DropdownMenuItem>
 
         <DropdownMenuItem
-          href="https://github.com/Cr0me1ve/netbird/issues"
+          href="https://github.com/Cr0me1ve/anonbird/issues"
           target="_blank"
           rel="noopener noreferrer"
           asChild

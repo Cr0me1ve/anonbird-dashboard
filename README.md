@@ -2,7 +2,7 @@
 
 This project is the UI for AnonBird's management service.
 
-See the [AnonBird fork](https://github.com/Cr0me1ve/netbird).
+See the [AnonBird fork](https://github.com/Cr0me1ve/anonbird).
 
 ## Why?
 

@@ -521,7 +521,7 @@ function RouteUpdateModalContent({ onSuccess, route, cell }: ModalProps) {
             Learn more about
             <InlineLink
               href={
-                "https://github.com/Cr0me1ve/netbird/tree/main/docs"
+                "https://github.com/Cr0me1ve/anonbird/tree/main/docs"
               }
               target={"_blank"}
             >
