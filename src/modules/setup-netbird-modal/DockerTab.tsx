@@ -1,10 +1,11 @@
 import Button from "@components/Button";
 import Code from "@components/Code";
-import InlineLink from "@components/InlineLink";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
 import { IconBrandUbuntu } from "@tabler/icons-react";
 import {
+  ANONBIRD_DOCKER_IMAGE,
+  ANONBIRD_SOURCE_URL,
   AnonymousTransportCommandOptions,
   getAnonymousTransportDockerEnv,
   GRPC_API_ORIGIN,
@@ -34,6 +35,12 @@ export default function DockerTab({
 }: Readonly<Props>) {
   const offset = setupKeyContent ? 1 : 0;
   const anonymousEnv = getAnonymousTransportDockerEnv(anonymousTransport);
+  const buildCommand = [
+    `git clone ${ANONBIRD_SOURCE_URL} anonbird`,
+    "cd anonbird",
+    "CGO_ENABLED=0 go build -trimpath -o netbird ./client",
+    `docker build -t ${ANONBIRD_DOCKER_IMAGE} -f client/Dockerfile --build-arg NETBIRD_BINARY=netbird .`,
+  ].join("\n");
   return (
     <TabsContent value={String(OperatingSystem.DOCKER)}>
       <TabsContentPadding>
@@ -61,6 +68,20 @@ export default function DockerTab({
             <Steps.Step step={2}>{setupKeyContent}</Steps.Step>
           )}
           <Steps.Step step={2 + offset}>
+            <p>Build AnonBird client image</p>
+            <Code codeToCopy={buildCommand}>
+              <Code.Line>git clone {ANONBIRD_SOURCE_URL} anonbird</Code.Line>
+              <Code.Line>cd anonbird</Code.Line>
+              <Code.Line>
+                CGO_ENABLED=0 go build -trimpath -o netbird ./client
+              </Code.Line>
+              <Code.Line>
+                docker build -t {ANONBIRD_DOCKER_IMAGE} -f client/Dockerfile
+                --build-arg NETBIRD_BINARY=netbird .
+              </Code.Line>
+            </Code>
+          </Steps.Step>
+          <Steps.Step step={3 + offset} line={false}>
             <p>
               Run AnonBird container
               {showSetupKeyInfo && <RoutingPeerSetupKeyInfo />}
@@ -100,18 +121,8 @@ export default function DockerTab({
                   <span className={"text-netbird"}>{GRPC_API_ORIGIN}</span> \
                 </Code.Line>
               )}
-              <Code.Line> netbirdio/netbird:latest</Code.Line>
+              <Code.Line> {ANONBIRD_DOCKER_IMAGE}</Code.Line>
             </Code>
-          </Steps.Step>
-          <Steps.Step step={3 + offset} line={false}>
-            <p>Read our documentation</p>
-            <InlineLink
-              href={"https://docs.netbird.io/how-to/installation/docker"}
-              passHref={true}
-              target={"_blank"}
-            >
-              Running AnonBird in Docker
-            </InlineLink>
           </Steps.Step>
         </Steps>
       </TabsContentPadding>

@@ -16,5 +16,7 @@
   "googleTagManagerID": "$NETBIRD_GOOGLE_TAG_MANAGER_ID",
   "wasmPath": "$NETBIRD_WASM_PATH",
   "releaseCheckEnabled": "$ANONBIRD_RELEASE_CHECK_ENABLED",
-  "releaseCheckURL": "$ANONBIRD_RELEASE_CHECK_URL"
+  "releaseCheckURL": "$ANONBIRD_RELEASE_CHECK_URL",
+  "anonbirdSourceURL": "$ANONBIRD_SOURCE_URL",
+  "anonbirdDockerImage": "$ANONBIRD_DOCKER_IMAGE"
 }

@@ -2,6 +2,8 @@ import loadConfig from "@utils/config";
 
 const config = loadConfig();
 export const GRPC_API_ORIGIN = config.grpcApiOrigin;
+export const ANONBIRD_SOURCE_URL = config.anonbirdSourceURL;
+export const ANONBIRD_DOCKER_IMAGE = config.anonbirdDockerImage;
 
 export type AnonymousTransportType = "tor-relay-only" | "i2p-datagram";
 export type I2PDaemonMode = "external" | "auto" | "managed";

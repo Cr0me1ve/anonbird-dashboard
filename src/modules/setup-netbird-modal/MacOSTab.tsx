@@ -4,23 +4,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@components/Accordion";
-import Button from "@components/Button";
 import Code from "@components/Code";
 import Separator from "@components/Separator";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
 import {
+  ANONBIRD_SOURCE_URL,
   AnonymousTransportCommandOptions,
   GRPC_API_ORIGIN,
 } from "@utils/netbird";
 import {
-  BeerIcon,
-  DownloadIcon,
-  ExternalLinkIcon,
   PackageOpenIcon,
   TerminalSquareIcon,
 } from "lucide-react";
-import Link from "next/link";
 import React from "react";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import {
@@ -52,6 +48,15 @@ export default function MacOSTab({
   const keyStep = GRPC_API_ORIGIN ? 3 : 2;
   const runStep = keyStep + (setupKeyContent ? 1 : 0);
   const usingSetupKeyParam = !!setupKey || !!setupKeyPlaceholder;
+  const installCommand = [
+    "brew install go git",
+    `git clone ${ANONBIRD_SOURCE_URL} anonbird`,
+    "cd anonbird",
+    "go build -trimpath -o anonbird ./client",
+    "sudo install -m 0755 anonbird /usr/local/bin/anonbird",
+    "sudo anonbird service install",
+    "sudo anonbird service start",
+  ].join("\n");
   return (
     <TabsContent value={String(OperatingSystem.APPLE)}>
       <TabsContentPadding>
@@ -61,21 +66,18 @@ export default function MacOSTab({
         </p>
         <Steps>
           <Steps.Step step={1}>
-            <div className={"flex items-center gap-1 text-sm font-light"}>
-              Download and run macOS Installer
-            </div>
-            <div className={"flex gap-4 mt-1 flex-wrap"}>
-              <Link
-                href={"https://pkgs.netbird.io/macos/universal"}
-                passHref
-                target={"_blank"}
-              >
-                <Button variant={"primary"}>
-                  <DownloadIcon size={14} />
-                  Download AnonBird
-                </Button>
-              </Link>
-            </div>
+            <p>Build and install AnonBird from source</p>
+            <Code codeToCopy={installCommand}>
+              <Code.Line>brew install go git</Code.Line>
+              <Code.Line>git clone {ANONBIRD_SOURCE_URL} anonbird</Code.Line>
+              <Code.Line>cd anonbird</Code.Line>
+              <Code.Line>go build -trimpath -o anonbird ./client</Code.Line>
+              <Code.Line>
+                sudo install -m 0755 anonbird /usr/local/bin/anonbird
+              </Code.Line>
+              <Code.Line>sudo anonbird service install</Code.Line>
+              <Code.Line>sudo anonbird service start</Code.Line>
+            </Code>
           </Steps.Step>
 
           {GRPC_API_ORIGIN && (
@@ -135,74 +137,19 @@ export default function MacOSTab({
             <AccordionContent>
               <Steps>
                 <Steps.Step step={1}>
-                  <Code>
-                    curl -fsSL https://pkgs.netbird.io/install.sh | sh
-                  </Code>
-                </Steps.Step>
-                <Steps.Step step={2} line={false}>
-                  <p>
-                    Run AnonBird{" "}
-                    {!usingSetupKeyParam && "and log in the browser"}
-                    {showSetupKeyInfo && <RoutingPeerSetupKeyInfo />}
-                  </p>
-                  <Code>
-                    <AnonBirdUpCommand
-                      setupKey={setupKey}
-                      setupKeyPlaceholder={setupKeyPlaceholder}
-                      hostname={hostname}
-                      anonymousTransport={anonymousTransport}
-                    />
-                  </Code>
-                </Steps.Step>
-              </Steps>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </TabsContentPadding>
-      <Separator />
-      <TabsContentPadding>
-        <Accordion type="single" collapsible>
-          <AccordionItem value="item-1">
-            <AccordionTrigger>
-              <BeerIcon size={16} /> Install manually with HomeBrew
-            </AccordionTrigger>
-            <AccordionContent>
-              <Steps>
-                <Steps.Step step={1}>
-                  <p>Download and install HomeBrew</p>
-                  <div className={"flex gap-4"}>
-                    <Link href={"https://brew.sh/"} passHref target={"_blank"}>
-                      <Button variant={"primary"}>
-                        <ExternalLinkIcon size={14} />
-                        HomeBrew Installation Guide
-                      </Button>
-                    </Link>
-                  </div>
-                </Steps.Step>
-                <Steps.Step step={2}>
-                  <p>Install client packages</p>
-                  <Code
-                    codeToCopy={[
-                      `brew install netbirdio/tap/netbird`,
-                      `brew install --cask netbirdio/tap/netbird-ui`,
-                    ].join("\n")}
-                  >
-                    <Code.Comment># for CLI only</Code.Comment>
-                    <Code.Line>brew install netbirdio/tap/netbird</Code.Line>
-                    <Code.Comment># for GUI package</Code.Comment>
+                  <Code codeToCopy={installCommand}>
+                    <Code.Line>brew install go git</Code.Line>
+                    <Code.Line>git clone {ANONBIRD_SOURCE_URL} anonbird</Code.Line>
+                    <Code.Line>cd anonbird</Code.Line>
+                    <Code.Line>go build -trimpath -o anonbird ./client</Code.Line>
                     <Code.Line>
-                      brew install --cask netbirdio/tap/netbird-ui
+                      sudo install -m 0755 anonbird /usr/local/bin/anonbird
                     </Code.Line>
-                  </Code>
-                </Steps.Step>
-                <Steps.Step step={3}>
-                  <p>Start AnonBird daemon</p>
-                  <Code>
                     <Code.Line>sudo anonbird service install</Code.Line>
                     <Code.Line>sudo anonbird service start</Code.Line>
                   </Code>
                 </Steps.Step>
-                <Steps.Step step={4} line={false}>
+                <Steps.Step step={2} line={false}>
                   <p>
                     Run AnonBird{" "}
                     {!usingSetupKeyParam && "and log in the browser"}

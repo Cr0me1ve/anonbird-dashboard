@@ -1,15 +1,13 @@
-import Button from "@components/Button";
 import Code from "@components/Code";
-import { SelectDropdown } from "@components/select/SelectDropdown";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
 import {
+  ANONBIRD_SOURCE_URL,
   AnonymousTransportCommandOptions,
   GRPC_API_ORIGIN,
 } from "@utils/netbird";
-import { DownloadIcon, PackageOpenIcon } from "lucide-react";
-import Link from "next/link";
-import React, { useState } from "react";
+import { PackageOpenIcon } from "lucide-react";
+import React from "react";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import {
   AnonBirdUpCommand,
@@ -33,9 +31,6 @@ export default function WindowsTab({
   hostname,
   anonymousTransport,
 }: Readonly<Props>) {
-  const [windowsUrl, setWindowsUrl] = useState(
-    "https://pkgs.netbird.io/windows/x64",
-  );
   // The CLI-run branch is required for the server flow (setupKeyContent
   // present) even before a key is generated — the placeholder keeps the
   // command shape consistent. Otherwise we fall back to the existing
@@ -44,6 +39,13 @@ export default function WindowsTab({
   const baseMgmtStep = 2;
   const keyStep = GRPC_API_ORIGIN ? 3 : 2;
   const runStep = keyStep + (setupKeyContent ? 1 : 0);
+  const installCommand = [
+    `git clone ${ANONBIRD_SOURCE_URL} anonbird`,
+    "cd anonbird",
+    "go build -trimpath -o anonbird.exe ./client",
+    ".\\anonbird.exe service install",
+    ".\\anonbird.exe service start",
+  ].join("\n");
   return (
     <TabsContent value={String(OperatingSystem.WINDOWS)}>
       <TabsContentPadding>
@@ -53,44 +55,14 @@ export default function WindowsTab({
         </p>
         <Steps>
           <Steps.Step step={1}>
-            <p>Download and run Windows Installer</p>
-            <div className={"flex gap-4 mt-1"}>
-              <SelectDropdown
-                value={windowsUrl}
-                className={"w-[170px]"}
-                onChange={setWindowsUrl}
-                placeholder={"Select architecture"}
-                options={[
-                  {
-                    label: "64-Bit",
-                    value: "https://pkgs.netbird.io/windows/x64",
-                  },
-                  {
-                    label: "ARM64",
-                    value: "https://pkgs.netbird.io/windows/arm64",
-                  },
-                  {
-                    label: "64-Bit (MSI)",
-                    value: "https://pkgs.netbird.io/windows/msi/x64",
-                  },
-                  {
-                    label: "ARM64 (MSI)",
-                    value: "https://pkgs.netbird.io/windows/msi/arm64",
-                  },
-                ]}
-              />
-              <Link
-                href={windowsUrl}
-                passHref
-                target={"_blank"}
-                rel="noopener noreferrer"
-              >
-                <Button variant={"primary"}>
-                  <DownloadIcon size={14} />
-                  Download AnonBird
-                </Button>
-              </Link>
-            </div>
+            <p>Build and install AnonBird from PowerShell</p>
+            <Code codeToCopy={installCommand}>
+              <Code.Line>git clone {ANONBIRD_SOURCE_URL} anonbird</Code.Line>
+              <Code.Line>cd anonbird</Code.Line>
+              <Code.Line>go build -trimpath -o anonbird.exe ./client</Code.Line>
+              <Code.Line>{".\\anonbird.exe service install"}</Code.Line>
+              <Code.Line>{".\\anonbird.exe service start"}</Code.Line>
+            </Code>
           </Steps.Step>
 
           {GRPC_API_ORIGIN && (

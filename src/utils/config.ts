@@ -20,6 +20,8 @@ interface Config {
   wasmPath: string;
   releaseCheckEnabled: boolean;
   releaseCheckURL?: string;
+  anonbirdSourceURL: string;
+  anonbirdDockerImage: string;
 }
 
 const fallbackWhenUnset = (value: unknown, fallback: string) => {
@@ -85,6 +87,14 @@ const loadConfig = (): Config => {
       configJson?.releaseCheckURL && !configJson.releaseCheckURL.startsWith("$")
         ? configJson.releaseCheckURL
         : undefined,
+    anonbirdSourceURL: fallbackWhenUnset(
+      configJson?.anonbirdSourceURL,
+      "https://github.com/Cr0me1ve/netbird.git",
+    ),
+    anonbirdDockerImage: fallbackWhenUnset(
+      configJson?.anonbirdDockerImage,
+      "anonbird:local",
+    ),
   } as Config;
 };
 

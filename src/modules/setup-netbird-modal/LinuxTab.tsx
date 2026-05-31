@@ -8,7 +8,10 @@ import Code from "@components/Code";
 import Separator from "@components/Separator";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
-import { AnonymousTransportCommandOptions } from "@utils/netbird";
+import {
+  ANONBIRD_SOURCE_URL,
+  AnonymousTransportCommandOptions,
+} from "@utils/netbird";
 import { IconBrandUbuntu } from "@tabler/icons-react";
 import { TerminalSquareIcon } from "lucide-react";
 import React from "react";
@@ -37,6 +40,16 @@ export default function LinuxTab({
 }: Readonly<Props>) {
   const runStep = setupKeyContent ? 3 : 2;
   const usingSetupKey = !!setupKey || !!setupKeyPlaceholder;
+  const installCommand = [
+    "sudo apt-get update",
+    "sudo apt-get install -y git curl ca-certificates build-essential",
+    `git clone ${ANONBIRD_SOURCE_URL} anonbird`,
+    "cd anonbird",
+    "go build -trimpath -o anonbird ./client",
+    "sudo install -m 0755 anonbird /usr/local/bin/anonbird",
+    "sudo anonbird service install",
+    "sudo anonbird service start",
+  ].join("\n");
   return (
     <TabsContent value={String(OperatingSystem.LINUX)}>
       <TabsContentPadding>
@@ -46,7 +59,21 @@ export default function LinuxTab({
         </p>
         <Steps>
           <Steps.Step step={1}>
-            <Code>curl -fsSL https://pkgs.netbird.io/install.sh | sh</Code>
+            <Code codeToCopy={installCommand}>
+              <Code.Line>sudo apt-get update</Code.Line>
+              <Code.Line>
+                sudo apt-get install -y git curl ca-certificates
+                build-essential
+              </Code.Line>
+              <Code.Line>git clone {ANONBIRD_SOURCE_URL} anonbird</Code.Line>
+              <Code.Line>cd anonbird</Code.Line>
+              <Code.Line>go build -trimpath -o anonbird ./client</Code.Line>
+              <Code.Line>
+                sudo install -m 0755 anonbird /usr/local/bin/anonbird
+              </Code.Line>
+              <Code.Line>sudo anonbird service install</Code.Line>
+              <Code.Line>sudo anonbird service start</Code.Line>
+            </Code>
           </Steps.Step>
           {setupKeyContent && (
             <Steps.Step step={2}>{setupKeyContent}</Steps.Step>
@@ -78,36 +105,26 @@ export default function LinuxTab({
             <AccordionContent>
               <Steps>
                 <Steps.Step step={1}>
-                  <p>Add our repository</p>
-                  <Code>
+                  <p>Build and install AnonBird from source</p>
+                  <Code codeToCopy={installCommand}>
                     <Code.Line>sudo apt-get update</Code.Line>
                     <Code.Line>
-                      sudo apt install ca-certificates curl gnupg -y
+                      sudo apt-get install -y git curl ca-certificates
+                      build-essential
                     </Code.Line>
+                    <Code.Line>git clone {ANONBIRD_SOURCE_URL} anonbird</Code.Line>
+                    <Code.Line>cd anonbird</Code.Line>
+                    <Code.Line>go build -trimpath -o anonbird ./client</Code.Line>
                     <Code.Line>
-                      curl -sSL https://pkgs.netbird.io/debian/public.key | sudo
-                      gpg --dearmor --output
-                      /usr/share/keyrings/netbird-archive-keyring.gpg
-                    </Code.Line>
-                    <Code.Line>
-                      {`echo 'deb [signed-by=/usr/share/keyrings/netbird-archive-keyring.gpg] https://pkgs.netbird.io/debian stable main' | sudo tee /etc/apt/sources.list.d/netbird.list`}
+                      sudo install -m 0755 anonbird /usr/local/bin/anonbird
                     </Code.Line>
                   </Code>
                 </Steps.Step>
                 <Steps.Step step={2}>
-                  <p>Install client packages</p>
-                  <Code
-                    codeToCopy={[
-                      `sudo apt-get update`,
-                      `sudo apt-get install netbird`,
-                      `sudo apt-get install netbird-ui`,
-                    ].join("\n")}
-                  >
-                    <Code.Line>sudo apt-get update</Code.Line>
-                    <Code.Comment># for CLI only</Code.Comment>
-                    <Code.Line>sudo apt-get install netbird</Code.Line>
-                    <Code.Comment># for GUI package</Code.Comment>
-                    <Code.Line>sudo apt-get install netbird-ui</Code.Line>
+                  <p>Install and start the service</p>
+                  <Code>
+                    <Code.Line>sudo anonbird service install</Code.Line>
+                    <Code.Line>sudo anonbird service start</Code.Line>
                   </Code>
                 </Steps.Step>
                 <Steps.Step step={3} line={false}>
