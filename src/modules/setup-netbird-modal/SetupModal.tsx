@@ -275,19 +275,7 @@ export function SetupModalContent({
 
       {ANONYMOUS_MANAGEMENT_URL_REQUIRED && (
         <div className={"px-8 pb-5"}>
-          <Callout
-            variant={"error"}
-            icon={
-              <AlertTriangleIcon
-                size={15}
-                className={"shrink-0 relative top-[3px]"}
-              />
-            }
-          >
-            Peer setup is blocked from using the current clearnet management
-            URL. Set <code>NETBIRD_MGMT_GRPC_API_ENDPOINT</code> to an onion or
-            I2P endpoint before copying install commands.
-          </Callout>
+          <UnsafeClearnetSetupWarning />
         </div>
       )}
 
@@ -420,6 +408,34 @@ export function SetupModalContent({
     </>
   );
 }
+
+export const UnsafeClearnetSetupWarning = () => {
+  return (
+    <Callout
+      variant={"error"}
+      icon={
+        <AlertTriangleIcon
+          size={15}
+          className={"shrink-0 relative top-[3px]"}
+        />
+      }
+    >
+      <div className={"flex flex-col gap-1.5"}>
+        <span>
+          Peer setup is blocked from using the current clearnet management URL.
+        </span>
+        <span>
+          Unsafe setup would expose the peer real IP address, NAT endpoint and
+          local network metadata to the management server, relay or other peers.
+        </span>
+        <span>
+          Set <code>NETBIRD_MGMT_GRPC_API_ENDPOINT</code> to an onion or I2P
+          endpoint before copying install commands.
+        </span>
+      </div>
+    </Callout>
+  );
+};
 
 type SetupKeyParameterProps = {
   setupKey?: string;
