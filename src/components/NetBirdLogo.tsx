@@ -1,7 +1,7 @@
 import { cn } from "@utils/helpers";
 import Image from "next/image";
 import * as React from "react";
-import NetBirdLogoMark from "@/assets/netbird.svg";
+import NetBirdLogoMark from "@/assets/anonbird-logo.png";
 
 type Props = {
   size?: "default" | "large";

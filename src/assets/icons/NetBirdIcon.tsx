@@ -1,7 +1,7 @@
 import Image from "next/image";
 import * as React from "react";
 import { memo } from "react";
-import NetBirdLogo from "@/assets/netbird.svg";
+import NetBirdLogo from "@/assets/anonbird-logo.png";
 
 type Props = {
   size?: number;
