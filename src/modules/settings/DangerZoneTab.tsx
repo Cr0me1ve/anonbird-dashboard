@@ -89,7 +89,7 @@ export default function DangerZoneTab({ account }: Props) {
                 Delete AnonBird account
               </p>
               <p className={"!text-red-50/80"}>
-                Before proceeding to delete your Netbird account, please be
+                Before proceeding to delete your AnonBird account, please be
                 aware that this action is irreversible. Once your account is
                 deleted, you will permanently lose access to all associated
                 data, including your peers, users, groups, policies, and routes.

@@ -3,12 +3,14 @@ import dayjs from "dayjs";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import { NetbirdRelease } from "@/interfaces/Version";
 
-const GITHUB_API_ENDPOINT = "https://api.github.com";
 const LATEST_RELEASE_CHECK_INTERVAL_IN_MINUTES = 10;
 
 export const getLatestNetbirdRelease = async (
   release?: NetbirdRelease,
+  releaseCheckURL?: string,
 ): Promise<NetbirdRelease | undefined> => {
+  if (!releaseCheckURL) return release;
+
   const runFetch =
     release === undefined ||
     release.last_checked === undefined ||
@@ -17,9 +19,9 @@ export const getLatestNetbirdRelease = async (
     );
 
   if (runFetch) {
-    const data = (await fetch(
-      `${GITHUB_API_ENDPOINT}/repos/netbirdio/netbird/releases/latest`,
-    ).then((response) => response.json())) as any;
+    const data = (await fetch(releaseCheckURL).then((response) =>
+      response.json(),
+    )) as any;
 
     try {
       return {
@@ -64,7 +66,7 @@ export const compareVersions = (
 
 /**
  * Check if peer as routing peer is supported by the provided version and operating system.
- * Routing peers are supported on Windows, macOS, iOS & Android starting from NetBird v0.36.6+.
+ * Routing peers are supported on Windows, macOS, iOS & Android starting from AnonBird v0.36.6+.
  * @param version
  * @param os
  */
@@ -77,7 +79,7 @@ export const isRoutingPeerSupported = (version: string, os: string) => {
 
 /**
  * Check if native SSH is supported.
- * Supported starting from NetBird v0.60.0+.
+ * Supported starting from AnonBird v0.60.0+.
  * @param version
  */
 export const isNativeSSHSupported = (version: string) => {
@@ -86,12 +88,11 @@ export const isNativeSSHSupported = (version: string) => {
 };
 
 /**
- * Check if NetBird SSH protocol is supported.
- * Supported starting from NetBird v0.61.0+.
+ * Check if AnonBird SSH protocol is supported.
+ * Supported starting from AnonBird v0.61.0+.
  * @param version
  */
 export const isNetbirdSSHProtocolSupported = (version: string) => {
   if (version == "development") return true;
   return compareVersions(version, "0.61.0");
 };
-

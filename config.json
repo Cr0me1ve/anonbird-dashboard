@@ -14,5 +14,7 @@
   "hotjarTrackID": "$NETBIRD_HOTJAR_TRACK_ID",
   "googleAnalyticsID": "$NETBIRD_GOOGLE_ANALYTICS_ID",
   "googleTagManagerID": "$NETBIRD_GOOGLE_TAG_MANAGER_ID",
-  "wasmPath": "$NETBIRD_WASM_PATH"
+  "wasmPath": "$NETBIRD_WASM_PATH",
+  "releaseCheckEnabled": "$ANONBIRD_RELEASE_CHECK_ENABLED",
+  "releaseCheckURL": "$ANONBIRD_RELEASE_CHECK_URL"
 }

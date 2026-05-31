@@ -68,14 +68,8 @@ export default function ReverseProxyDomainInput({
         (isNetBirdHosted() ? (
           <Callout variant={"warning"} className={"mt-3"}>
             Cluster {clusterOffline.clusterName} is offline. Please try again in
-            a few minutes. If the issue persists, check{" "}
-            <InlineLink href={"https://status.netbird.io/"} target={"_blank"}>
-              Status page
-            </InlineLink>{" "}
-            or reach out to{"  "}
-            <InlineLink href={"mailto:support@netbird.io"}>
-              support@netbird.io
-            </InlineLink>
+            a few minutes. If the issue persists, contact your AnonBird
+            operator.
           </Callout>
         ) : (
           <Callout variant={"error"} className={"mt-3"}>

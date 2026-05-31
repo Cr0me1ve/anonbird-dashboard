@@ -83,17 +83,8 @@ export const CustomDomainVerificationModal = ({
               isNetBirdHosted() ? (
                 <Callout variant={"warning"}>
                   No proxy clusters are currently connected. Please try again in
-                  a few minutes. If the issue persists, check{" "}
-                  <InlineLink
-                    href={"https://status.netbird.io/"}
-                    target={"_blank"}
-                  >
-                    Status page
-                  </InlineLink>{" "}
-                  or reach out to{"  "}
-                  <InlineLink href={"mailto:support@netbird.io"}>
-                    support@netbird.io
-                  </InlineLink>
+                  a few minutes. If the issue persists, contact your AnonBird
+                  operator.
                 </Callout>
               ) : (
                 <Callout variant={"warning"}>

@@ -18,7 +18,16 @@ interface Config {
   googleAnalyticsID?: string;
   googleTagManagerID?: string;
   wasmPath: string;
+  releaseCheckEnabled: boolean;
+  releaseCheckURL?: string;
 }
+
+const fallbackWhenUnset = (value: unknown, fallback: string) => {
+  if (typeof value !== "string") return fallback;
+  if (value === "" || value.startsWith("$")) return fallback;
+  if (value.includes("pkgs.netbird.io")) return fallback;
+  return value;
+};
 
 /**
  * Load the config from the config.json file
@@ -67,8 +76,15 @@ const loadConfig = (): Config => {
     hotjarTrackID: configJson?.hotjarTrackID || undefined,
     googleAnalyticsID: configJson?.googleAnalyticsID || undefined,
     googleTagManagerID: configJson?.googleTagManagerID || undefined,
-    wasmPath:
-      configJson?.wasmPath || "https://pkgs.netbird.io/wasm/client/v0.63.0",
+    wasmPath: fallbackWhenUnset(
+      configJson?.wasmPath,
+      "/wasm/anonbird-client.wasm",
+    ),
+    releaseCheckEnabled: configJson?.releaseCheckEnabled === "true",
+    releaseCheckURL:
+      configJson?.releaseCheckURL && !configJson.releaseCheckURL.startsWith("$")
+        ? configJson.releaseCheckURL
+        : undefined,
   } as Config;
 };
 

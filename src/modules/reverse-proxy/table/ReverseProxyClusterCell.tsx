@@ -57,14 +57,8 @@ export default function ReverseProxyClusterCell({
         isNetBirdHosted() ? (
           <div className={"text-xs max-w-xs"}>
             Cluster {reverseProxy.proxy_cluster} is offline. Please try again in
-            a few minutes. If the issue persists, check{" "}
-            <InlineLink href={"https://status.netbird.io/"} target={"_blank"}>
-              Status page
-            </InlineLink>{" "}
-            or reach out to{"  "}
-            <InlineLink href={"mailto:support@netbird.io"}>
-              support@netbird.io
-            </InlineLink>
+            a few minutes. If the issue persists, contact your AnonBird
+            operator.
           </div>
         ) : (
           <div className={"flex flex-col gap-1 text-xs max-w-xs"}>
