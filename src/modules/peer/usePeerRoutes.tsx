@@ -6,10 +6,16 @@ import { Route } from "@/interfaces/Route";
 
 type Props = {
   peer: Peer;
+  allowFetch?: boolean;
 };
 
-export default function usePeerRoutes({ peer }: Props) {
-  const { data: routes, isLoading } = useFetchApi<Route[]>("/routes");
+export default function usePeerRoutes({ peer, allowFetch = true }: Props) {
+  const { data: routes, isLoading } = useFetchApi<Route[]>(
+    "/routes",
+    false,
+    true,
+    allowFetch,
+  );
   const { peerGroups } = usePeerGroups(peer);
 
   const peerRoutes = useMemo(() => {

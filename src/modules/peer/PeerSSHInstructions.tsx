@@ -74,21 +74,21 @@ export const PeerSSHInstructions = ({
             {client === "cli" ? (
               <Steps.Step step={1}>
                 <p className={"font-normal"}>
-                  If you are using NetBird via CLI, you can enable SSH by
+                  If you are using AnonBird via CLI, you can enable SSH by
                   running
                 </p>
-                <Code codeToCopy={"netbird down"}>
-                  <Code.Line>{`netbird down # if NetBird is already running`}</Code.Line>
+                <Code codeToCopy={"anonbird down"}>
+                  <Code.Line>{`anonbird down # if AnonBird is already running`}</Code.Line>
                 </Code>
                 <Code>
-                  <Code.Line>{`netbird up --allow-server-ssh --enable-ssh-root`}</Code.Line>
+                  <Code.Line>{`anonbird up --anonymous-mode --anonymous-transport tor-relay-only --allow-server-ssh --enable-ssh-root`}</Code.Line>
                 </Code>
               </Steps.Step>
             ) : (
               <Steps.Step step={1}>
                 <p className={"font-normal"}>
-                  If you are using NetBird via the Desktop Client, click on the
-                  NetBird tray icon, go to <Mark>Settings</Mark> and click{" "}
+                  If you are using AnonBird via the Desktop Client, click on the
+                  AnonBird tray icon, go to <Mark>Settings</Mark> and click{" "}
                   <Mark>Allow SSH</Mark>. If you want to enable Root Login go to{" "}
                   <Mark>Settings &gt; Advanced Settings</Mark> and enable SSH
                   Root Login under the SSH tab.
@@ -99,7 +99,7 @@ export const PeerSSHInstructions = ({
 
             <Steps.Step step={2}>
               <p className={"font-normal"}>
-                Starting from NetBird v0.61.0, SSH requires an explicit access
+                Starting from AnonBird v0.61.0, SSH requires an explicit access
                 control policy to allow SSH connections to this machine.
               </p>
               <div className={"mt-2"}>
@@ -114,7 +114,7 @@ export const PeerSSHInstructions = ({
             </Steps.Step>
             <Steps.Step step={3} line={false}>
               <p className={"font-normal"}>
-                Once the NetBird SSH server is allowed on the client, <br />
+                Once the AnonBird SSH server is allowed on the client, <br />
                 click <Mark>Confirm & Enable</Mark> below to finish the setup.
               </p>
             </Steps.Step>

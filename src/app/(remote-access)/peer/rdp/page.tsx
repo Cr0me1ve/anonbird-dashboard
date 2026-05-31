@@ -84,13 +84,11 @@ function RDPSession({ peer }: Props) {
       try {
         setCredentials(rdpCredentials);
         setIsNetBirdConnecting(true);
-        await client.connectTemporary(peer.id, [
-          `tcp/${rdpCredentials.port}`,
-        ]);
+        await client.connectTemporary(peer.id, [`tcp/${rdpCredentials.port}`]);
         setIsNetBirdConnecting(false);
       } catch (error) {
         sendErrorNotification(
-          "NetBird Connection Error",
+          "AnonBird Connection Error",
           (error as Error).message,
         );
         setIsNetBirdConnecting(false);
@@ -151,7 +149,7 @@ function RDPSession({ peer }: Props) {
       sendErrorNotification("RDP Error", rdp.error);
     }
     if (client.error) {
-      sendErrorNotification("NetBird Client Error", client.error);
+      sendErrorNotification("AnonBird Client Error", client.error);
     }
   }, [rdp, client]);
 

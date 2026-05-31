@@ -11,7 +11,7 @@ function NetBirdIcon({ size = 16, className }: Props) {
   return (
     <Image
       src={NetBirdLogo}
-      alt={"Netbird Icon"}
+      alt={"AnonBird Icon"}
       width={size}
       className={className}
     />

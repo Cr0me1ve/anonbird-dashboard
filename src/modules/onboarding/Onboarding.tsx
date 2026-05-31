@@ -584,7 +584,7 @@ export const Onboarding = ({
                     "text-sm text-nb-gray-400 font-light pb-10 text-center px-4"
                   }
                 >
-                  Already know how NetBird works?
+                  Already know how AnonBird works?
                   <InlineLink
                     href={"#"}
                     className={"!text-nb-gray-200 ml-1"}

@@ -9,7 +9,10 @@ import Code from "@components/Code";
 import Separator from "@components/Separator";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
-import { GRPC_API_ORIGIN } from "@utils/netbird";
+import {
+  AnonymousTransportCommandOptions,
+  GRPC_API_ORIGIN,
+} from "@utils/netbird";
 import {
   BeerIcon,
   DownloadIcon,
@@ -21,7 +24,7 @@ import Link from "next/link";
 import React from "react";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import {
-  NetBirdUpCommand,
+  AnonBirdUpCommand,
   RoutingPeerSetupKeyInfo,
 } from "@/modules/setup-netbird-modal/SetupModal";
 
@@ -31,6 +34,7 @@ type Props = {
   setupKeyPlaceholder?: string;
   showSetupKeyInfo?: boolean;
   hostname?: string;
+  anonymousTransport?: AnonymousTransportCommandOptions;
 };
 export default function MacOSTab({
   setupKey,
@@ -38,9 +42,10 @@ export default function MacOSTab({
   setupKeyPlaceholder,
   showSetupKeyInfo,
   hostname,
+  anonymousTransport,
 }: Readonly<Props>) {
   // Mirrors WindowsTab: server flow (setupKeyContent present) forces
-  // the CLI run branch so the netbird up command stays visible while
+  // the CLI run branch so the anonbird up command stays visible while
   // the operator generates a key.
   const useCliRun = !!setupKey || !!setupKeyContent;
   const baseMgmtStep = 2;
@@ -67,7 +72,7 @@ export default function MacOSTab({
               >
                 <Button variant={"primary"}>
                   <DownloadIcon size={14} />
-                  Download NetBird
+                  Download AnonBird
                 </Button>
               </Link>
             </div>
@@ -76,7 +81,7 @@ export default function MacOSTab({
           {GRPC_API_ORIGIN && (
             <Steps.Step step={baseMgmtStep}>
               <p>
-                {`Click on "Settings" then "Advanced Settings" from the NetBird icon in your system tray and enter the following "Management URL"`}
+                {`Click on "Settings" then "Advanced Settings" from the AnonBird icon in your system tray and enter the following "Management URL"`}
               </p>
               <Code>
                 <Code.Line>{GRPC_API_ORIGIN}</Code.Line>
@@ -91,15 +96,16 @@ export default function MacOSTab({
           {useCliRun ? (
             <Steps.Step step={runStep} line={false}>
               <p>
-                Open Terminal and run NetBird{" "}
+                Open Terminal and run AnonBird{" "}
                 {showSetupKeyInfo && <RoutingPeerSetupKeyInfo />}
               </p>
 
               <Code>
-                <NetBirdUpCommand
+                <AnonBirdUpCommand
                   setupKey={setupKey}
                   setupKeyPlaceholder={setupKeyPlaceholder}
                   hostname={hostname}
+                  anonymousTransport={anonymousTransport}
                 />
               </Code>
             </Steps.Step>
@@ -108,7 +114,7 @@ export default function MacOSTab({
               <Steps.Step step={runStep}>
                 <p>
                   {/* eslint-disable-next-line react/no-unescaped-entities */}
-                  Click on "Connect" from the NetBird icon in your system tray
+                  Click on "Connect" from the AnonBird icon in your system tray
                 </p>
               </Steps.Step>
               <Steps.Step step={runStep + 1} line={false}>
@@ -135,14 +141,16 @@ export default function MacOSTab({
                 </Steps.Step>
                 <Steps.Step step={2} line={false}>
                   <p>
-                    Run NetBird {!usingSetupKeyParam && "and log in the browser"}
+                    Run AnonBird{" "}
+                    {!usingSetupKeyParam && "and log in the browser"}
                     {showSetupKeyInfo && <RoutingPeerSetupKeyInfo />}
                   </p>
                   <Code>
-                    <NetBirdUpCommand
+                    <AnonBirdUpCommand
                       setupKey={setupKey}
                       setupKeyPlaceholder={setupKeyPlaceholder}
                       hostname={hostname}
+                      anonymousTransport={anonymousTransport}
                     />
                   </Code>
                 </Steps.Step>
@@ -172,7 +180,7 @@ export default function MacOSTab({
                   </div>
                 </Steps.Step>
                 <Steps.Step step={2}>
-                  <p>Install NetBird </p>
+                  <p>Install client packages</p>
                   <Code
                     codeToCopy={[
                       `brew install netbirdio/tap/netbird`,
@@ -188,22 +196,24 @@ export default function MacOSTab({
                   </Code>
                 </Steps.Step>
                 <Steps.Step step={3}>
-                  <p>Start NetBird daemon</p>
+                  <p>Start AnonBird daemon</p>
                   <Code>
-                    <Code.Line>sudo netbird service install</Code.Line>
-                    <Code.Line>sudo netbird service start</Code.Line>
+                    <Code.Line>sudo anonbird service install</Code.Line>
+                    <Code.Line>sudo anonbird service start</Code.Line>
                   </Code>
                 </Steps.Step>
                 <Steps.Step step={4} line={false}>
                   <p>
-                    Run NetBird {!usingSetupKeyParam && "and log in the browser"}
+                    Run AnonBird{" "}
+                    {!usingSetupKeyParam && "and log in the browser"}
                     {showSetupKeyInfo && <RoutingPeerSetupKeyInfo />}
                   </p>
                   <Code>
-                    <NetBirdUpCommand
+                    <AnonBirdUpCommand
                       setupKey={setupKey}
                       setupKeyPlaceholder={setupKeyPlaceholder}
                       hostname={hostname}
+                      anonymousTransport={anonymousTransport}
                     />
                   </Code>
                 </Steps.Step>

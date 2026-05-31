@@ -88,7 +88,7 @@ export const CustomDomainVerificationModal = ({
                     href={"https://status.netbird.io/"}
                     target={"_blank"}
                   >
-                    NetBird Status
+                    Status page
                   </InlineLink>{" "}
                   or reach out to{"  "}
                   <InlineLink href={"mailto:support@netbird.io"}>
@@ -140,7 +140,7 @@ export const CustomDomainVerificationModal = ({
                 )}
 
                 <Callout variant={"warning"}>
-                  DNS changes may take some time to propagate. If NetBird does
+                  DNS changes may take some time to propagate. If AnonBird does
                   not find the record immediately, please wait up to 24 hours
                   and try again.
                 </Callout>

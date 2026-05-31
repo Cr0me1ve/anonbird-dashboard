@@ -332,7 +332,7 @@ function NetworkSettingsTabContent({ account }: Readonly<Props>) {
             }
             helpText={
               <>
-                Allow routing using DNS wildcards. This requires NetBird client
+                Allow routing using DNS wildcards. This requires AnonBird client
                 v0.35 or higher. Changes will only take effect after restarting
                 the clients.{" "}
                 <InlineLink

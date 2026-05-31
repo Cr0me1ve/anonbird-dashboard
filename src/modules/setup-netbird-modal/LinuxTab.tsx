@@ -8,12 +8,13 @@ import Code from "@components/Code";
 import Separator from "@components/Separator";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
+import { AnonymousTransportCommandOptions } from "@utils/netbird";
 import { IconBrandUbuntu } from "@tabler/icons-react";
 import { TerminalSquareIcon } from "lucide-react";
 import React from "react";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import {
-  NetBirdUpCommand,
+  AnonBirdUpCommand,
   RoutingPeerSetupKeyInfo,
 } from "@/modules/setup-netbird-modal/SetupModal";
 
@@ -23,6 +24,7 @@ type Props = {
   setupKeyPlaceholder?: string;
   showSetupKeyInfo?: boolean;
   hostname?: string;
+  anonymousTransport?: AnonymousTransportCommandOptions;
 };
 
 export default function LinuxTab({
@@ -31,6 +33,7 @@ export default function LinuxTab({
   setupKeyPlaceholder,
   showSetupKeyInfo = false,
   hostname,
+  anonymousTransport,
 }: Readonly<Props>) {
   const runStep = setupKeyContent ? 3 : 2;
   const usingSetupKey = !!setupKey || !!setupKeyPlaceholder;
@@ -50,14 +53,15 @@ export default function LinuxTab({
           )}
           <Steps.Step step={runStep} line={false}>
             <p>
-              Run NetBird {!usingSetupKey && "and log in the browser"}
+              Run AnonBird {!usingSetupKey && "and log in the browser"}
               {showSetupKeyInfo && <RoutingPeerSetupKeyInfo />}
             </p>
             <Code>
-              <NetBirdUpCommand
+              <AnonBirdUpCommand
                 setupKey={setupKey}
                 setupKeyPlaceholder={setupKeyPlaceholder}
                 hostname={hostname}
+                anonymousTransport={anonymousTransport}
               />
             </Code>
           </Steps.Step>
@@ -91,7 +95,7 @@ export default function LinuxTab({
                   </Code>
                 </Steps.Step>
                 <Steps.Step step={2}>
-                  <p>Install NetBird</p>
+                  <p>Install client packages</p>
                   <Code
                     codeToCopy={[
                       `sudo apt-get update`,
@@ -108,14 +112,15 @@ export default function LinuxTab({
                 </Steps.Step>
                 <Steps.Step step={3} line={false}>
                   <p>
-                    Run NetBird {!usingSetupKey && "and log in the browser"}
+                    Run AnonBird {!usingSetupKey && "and log in the browser"}
                     {showSetupKeyInfo && <RoutingPeerSetupKeyInfo />}
                   </p>
                   <Code>
-                    <NetBirdUpCommand
+                    <AnonBirdUpCommand
                       setupKey={setupKey}
                       setupKeyPlaceholder={setupKeyPlaceholder}
                       hostname={hostname}
+                      anonymousTransport={anonymousTransport}
                     />
                   </Code>
                 </Steps.Step>

@@ -3,13 +3,16 @@ import Code from "@components/Code";
 import { SelectDropdown } from "@components/select/SelectDropdown";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
-import { GRPC_API_ORIGIN } from "@utils/netbird";
+import {
+  AnonymousTransportCommandOptions,
+  GRPC_API_ORIGIN,
+} from "@utils/netbird";
 import { DownloadIcon, PackageOpenIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import {
-  NetBirdUpCommand,
+  AnonBirdUpCommand,
   RoutingPeerSetupKeyInfo,
 } from "@/modules/setup-netbird-modal/SetupModal";
 
@@ -19,6 +22,7 @@ type Props = {
   setupKeyPlaceholder?: string;
   showSetupKeyInfo?: boolean;
   hostname?: string;
+  anonymousTransport?: AnonymousTransportCommandOptions;
 };
 
 export default function WindowsTab({
@@ -27,6 +31,7 @@ export default function WindowsTab({
   setupKeyPlaceholder,
   showSetupKeyInfo,
   hostname,
+  anonymousTransport,
 }: Readonly<Props>) {
   const [windowsUrl, setWindowsUrl] = useState(
     "https://pkgs.netbird.io/windows/x64",
@@ -82,7 +87,7 @@ export default function WindowsTab({
               >
                 <Button variant={"primary"}>
                   <DownloadIcon size={14} />
-                  Download NetBird
+                  Download AnonBird
                 </Button>
               </Link>
             </div>
@@ -91,7 +96,7 @@ export default function WindowsTab({
           {GRPC_API_ORIGIN && (
             <Steps.Step step={baseMgmtStep}>
               <p>
-                {`Click on "Settings" then "Advanced Settings" from the NetBird icon in your system tray and enter the following "Management URL"`}
+                {`Click on "Settings" then "Advanced Settings" from the AnonBird icon in your system tray and enter the following "Management URL"`}
               </p>
               <Code>
                 <Code.Line>{GRPC_API_ORIGIN}</Code.Line>
@@ -106,15 +111,16 @@ export default function WindowsTab({
           {useCliRun ? (
             <Steps.Step step={runStep} line={false}>
               <p>
-                Open Command-line and run NetBird{" "}
+                Open Command-line and run AnonBird{" "}
                 {showSetupKeyInfo && <RoutingPeerSetupKeyInfo />}
               </p>
 
               <Code>
-                <NetBirdUpCommand
+                <AnonBirdUpCommand
                   setupKey={setupKey}
                   setupKeyPlaceholder={setupKeyPlaceholder}
                   hostname={hostname}
+                  anonymousTransport={anonymousTransport}
                 />
               </Code>
             </Steps.Step>
@@ -123,7 +129,7 @@ export default function WindowsTab({
               <Steps.Step step={runStep}>
                 <p>
                   {/* eslint-disable-next-line react/no-unescaped-entities */}
-                  Click on "Connect" from the NetBird icon in your system tray
+                  Click on "Connect" from the AnonBird icon in your system tray
                 </p>
               </Steps.Step>
               <Steps.Step step={runStep + 1} line={false}>

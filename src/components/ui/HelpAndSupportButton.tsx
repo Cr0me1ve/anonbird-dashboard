@@ -102,7 +102,7 @@ export default function HelpAndSupportButton() {
         >
           <div className={"flex gap-3 items-center"}>
             <MessagesSquareIcon size={14} />
-            NetBird Forum
+            AnonBird Forum
           </div>
           <DropdownMenuShortcut>
             <ArrowUpRightIcon size={16} />
@@ -116,7 +116,7 @@ export default function HelpAndSupportButton() {
         >
           <div className={"flex gap-3 items-center"}>
             <SlackIcon size={14} />
-            NetBird Slack
+            AnonBird Slack
           </div>
           <DropdownMenuShortcut>
             <ArrowUpRightIcon size={16} />

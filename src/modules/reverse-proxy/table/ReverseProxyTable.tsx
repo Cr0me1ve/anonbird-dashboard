@@ -94,9 +94,7 @@ const ReverseProxyColumns: ColumnDef<ReverseProxy>[] = [
   {
     id: "access_rules",
     header: ({ column }) => {
-      return (
-        <DataTableHeader column={column}>Access Control</DataTableHeader>
-      );
+      return <DataTableHeader column={column}>Access Control</DataTableHeader>;
     },
     cell: ({ row }) => (
       <ReverseProxyAccessControlCell reverseProxy={row.original} />
@@ -179,7 +177,7 @@ export default function ReverseProxyTable({ headingTarget }: Readonly<Props>) {
           }
           title={"Create Services"}
           description={
-            "Expose your internal services securely through NetBird's reverse proxy with automatic TLS and optional authentication to protect your services."
+            "Expose your internal services securely through AnonBird's reverse proxy with automatic TLS and optional authentication to protect your services."
           }
           button={
             <Button

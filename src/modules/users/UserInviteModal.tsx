@@ -163,7 +163,9 @@ export default function UserInviteModal({ children, groups }: Readonly<Props>) {
               )}
             </Code>
             {isInviteSuccess && (
-              <Paragraph className={"mt-3 text-xs text-nb-gray-400 text-center"}>
+              <Paragraph
+                className={"mt-3 text-xs text-nb-gray-400 text-center"}
+              >
                 Expires on{" "}
                 {new Date(successData.invite.expires_at).toLocaleString()}
               </Paragraph>
@@ -282,9 +284,10 @@ export function UserInviteModalContent({
   };
 
   const getDescription = () => {
-    if (isCloud) return "Invite a user to your network and set their permissions.";
+    if (isCloud)
+      return "Invite a user to your network and set their permissions.";
     if (mode === "create") {
-      return "Create a NetBird user account with email and password.";
+      return "Create an AnonBird user account with email and password.";
     }
     return "Generate an invite link that the user can use to set their own password.";
   };
@@ -323,7 +326,9 @@ export function UserInviteModalContent({
           "mx-auto text-center flex flex-col items-center justify-center mt-6"
         }
       >
-        <h2 className={"text-lg my-0 leading-[1.5 text-center]"}>{getTitle()}</h2>
+        <h2 className={"text-lg my-0 leading-[1.5 text-center]"}>
+          {getTitle()}
+        </h2>
         <Paragraph className={cn("text-sm text-center max-w-xs")}>
           {getDescription()}
         </Paragraph>

@@ -90,7 +90,7 @@ function ServersBlockedView() {
       <div className={"p-default py-6 max-w-3xl text-center"}>
         <h1>Add new server to your network</h1>
         <Paragraph className={"inline"}>
-          To get started, install NetBird on the server and enroll it using a
+          To get started, install AnonBird on the server and enroll it using a
           setup key. If you have further questions check out our{" "}
           <InlineLink
             href={"https://docs.netbird.io/how-to/getting-started#installation"}

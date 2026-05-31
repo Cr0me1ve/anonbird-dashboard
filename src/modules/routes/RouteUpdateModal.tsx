@@ -194,7 +194,9 @@ function RouteUpdateModalContent({ onSuccess, route, cell }: ModalProps) {
   const [masquerade, setMasquerade] = useState<boolean>(
     route?.masquerade ?? true,
   );
-  const [isForced, setIsForced] = useState<boolean>(route?.skip_auto_apply === false);
+  const [isForced, setIsForced] = useState<boolean>(
+    route?.skip_auto_apply === false,
+  );
 
   // Refs to manage focus on tab change
   const networkRangeRef = useRef<HTMLInputElement>(null);
@@ -461,17 +463,19 @@ function RouteUpdateModalContent({ onSuccess, route, cell }: ModalProps) {
             />
 
             {isExitNode && (
-                              <FancyToggleSwitch
-                  value={isForced}
-                  onChange={setIsForced}
-                  label={
-                    <>
-                      <IconDirectionSign size={15} />
-                      Auto Apply Route
-                    </>
-                  }
-                  helpText={"Automatically apply this exit node to your distribution groups. This requires NetBird client v0.55.0 or higher."}
-                />
+              <FancyToggleSwitch
+                value={isForced}
+                onChange={setIsForced}
+                label={
+                  <>
+                    <IconDirectionSign size={15} />
+                    Auto Apply Route
+                  </>
+                }
+                helpText={
+                  "Automatically apply this exit node to your distribution groups. This requires AnonBird client v0.55.0 or higher."
+                }
+              />
             )}
 
             {!isExitNode && (

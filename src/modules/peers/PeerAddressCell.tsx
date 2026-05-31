@@ -2,10 +2,10 @@ import CopyToClipboardText from "@components/CopyToClipboardText";
 import FullTooltip from "@components/FullTooltip";
 import { cn } from "@utils/helpers";
 import { isEmpty } from "lodash";
-import { GlobeIcon } from "lucide-react";
+import { GlobeIcon, ShieldCheck } from "lucide-react";
 import React from "react";
 import RoundedFlag from "@/assets/countries/RoundedFlag";
-import { Peer } from "@/interfaces/Peer";
+import { isAnonymousPeer, Peer } from "@/interfaces/Peer";
 import { PeerAddressTooltipContent } from "@/modules/peers/PeerAddressTooltipContent";
 
 type Props = {
@@ -25,6 +25,7 @@ function shortDnsLabel(label: string | undefined | null): string {
 
 export default function PeerAddressCell({ peer }: Props) {
   const shortLabel = shortDnsLabel(peer.dns_label);
+  const anonymous = isAnonymousPeer(peer);
   return (
     <FullTooltip
       side={"top"}
@@ -48,7 +49,9 @@ export default function PeerAddressCell({ peer }: Props) {
             "flex items-center justify-center rounded-full h-3 w-3 shrink-0 relative -top-[0.5rem]",
           )}
         >
-          {isEmpty(peer.country_code) ? (
+          {anonymous ? (
+            <ShieldCheck size={16} className={"text-nb-gray-300"} />
+          ) : isEmpty(peer.country_code) ? (
             <GlobeIcon size={16} className={"text-nb-gray-300"} />
           ) : (
             <RoundedFlag country={peer.country_code} size={12} />

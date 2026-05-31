@@ -4,7 +4,11 @@ import InlineLink from "@components/InlineLink";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
 import { IconBrandUbuntu } from "@tabler/icons-react";
-import { GRPC_API_ORIGIN } from "@utils/netbird";
+import {
+  AnonymousTransportCommandOptions,
+  getAnonymousTransportDockerEnv,
+  GRPC_API_ORIGIN,
+} from "@utils/netbird";
 import { ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -17,6 +21,7 @@ type Props = {
   setupKeyPlaceholder?: string;
   showSetupKeyInfo?: boolean;
   hostname?: string;
+  anonymousTransport?: AnonymousTransportCommandOptions;
 };
 
 export default function DockerTab({
@@ -25,8 +30,10 @@ export default function DockerTab({
   setupKeyPlaceholder,
   showSetupKeyInfo = false,
   hostname,
+  anonymousTransport,
 }: Readonly<Props>) {
   const offset = setupKeyContent ? 1 : 0;
+  const anonymousEnv = getAnonymousTransportDockerEnv(anonymousTransport);
   return (
     <TabsContent value={String(OperatingSystem.DOCKER)}>
       <TabsContentPadding>
@@ -55,7 +62,7 @@ export default function DockerTab({
           )}
           <Steps.Step step={2 + offset}>
             <p>
-              Run NetBird container
+              Run AnonBird container
               {showSetupKeyInfo && <RoutingPeerSetupKeyInfo />}
             </p>
             <Code>
@@ -78,6 +85,13 @@ export default function DockerTab({
                 </Code.Line>
               )}
 
+              {anonymousEnv.map(({ key, value }) => (
+                <Code.Line key={key}>
+                  {" "}
+                  -e {key}=<span className={"text-netbird"}>{value}</span> \
+                </Code.Line>
+              ))}
+
               <Code.Line> -v netbird-client:/var/lib/netbird \</Code.Line>
               {GRPC_API_ORIGIN && (
                 <Code.Line>
@@ -96,7 +110,7 @@ export default function DockerTab({
               passHref={true}
               target={"_blank"}
             >
-              Running NetBird in Docker
+              Running AnonBird in Docker
             </InlineLink>
           </Steps.Step>
         </Steps>

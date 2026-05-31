@@ -43,7 +43,7 @@ export default function ReverseProxyServicesPage() {
         </Breadcrumbs>
         <h1 ref={headingRef}>Services</h1>
         <Paragraph>
-          Expose services securely through NetBird&apos;s reverse proxy.
+          Expose services securely through AnonBird&apos;s reverse proxy.
         </Paragraph>
         <Paragraph>
           Learn more about
@@ -56,13 +56,13 @@ export default function ReverseProxyServicesPage() {
 
         {isNetBirdHosted() ? (
           <Callout className={"max-w-xl mt-5"} variant={"info"}>
-            NetBird&apos;s Reverse Proxy is currently in beta and available at
+            AnonBird&apos;s Reverse Proxy is currently in beta and available at
             no cost during this period. Features, functionality, and pricing are
             subject to change upon release.
           </Callout>
         ) : (
           <Callout className={"max-w-xl mt-5"} variant={"info"}>
-            NetBird&apos;s Reverse Proxy is currently in beta. <br /> Features
+            AnonBird&apos;s Reverse Proxy is currently in beta. <br /> Features
             and functionality are subject to change upon release.
           </Callout>
         )}

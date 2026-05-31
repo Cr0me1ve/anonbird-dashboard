@@ -16,6 +16,7 @@ type Props = {
 
 export default function ActivityDescription({ event }: Props) {
   const m = event.meta;
+  const anonymousMeta = isAnonymousActivityMeta(event.meta);
   const meta = useMemo(() => {
     if (event.meta) {
       return Object.keys(event.meta)
@@ -24,6 +25,7 @@ export default function ActivityDescription({ event }: Props) {
           if (key == "peer_groups") return;
           if (key.includes("id")) return;
           if (key.includes("time")) return;
+          if (anonymousMeta && key.startsWith("location_")) return;
           return {
             key,
             value: event.meta[key],
@@ -31,7 +33,7 @@ export default function ActivityDescription({ event }: Props) {
         })
         .filter((item) => item !== undefined);
     }
-  }, [event.meta]);
+  }, [anonymousMeta, event.meta]);
 
   if (!m) return null;
 
@@ -67,7 +69,7 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         Peer <Value>{m.name}</Value> <PeerConnectionInfo meta={m} /> was added
-        with the NetBird IP <Value>{m.ip}</Value> using the setup key{" "}
+        with the AnonBird IP <Value>{m.ip}</Value> using the setup key{" "}
         <Value>{m.setup_key_name}</Value>
       </div>
     );
@@ -168,7 +170,7 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         Peer <Value>{m.name}</Value> <PeerConnectionInfo meta={m} /> with
-        NetBird IP <Value>{m.ip}</Value> was deleted
+        AnonBird IP <Value>{m.ip}</Value> was deleted
       </div>
     );
 
@@ -176,7 +178,7 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         Peer <Value>{m.name}</Value> <PeerConnectionInfo meta={m} /> was added
-        with the NetBird IP <Value>{m.ip}</Value>
+        with the AnonBird IP <Value>{m.ip}</Value>
       </div>
     );
 
@@ -184,14 +186,14 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         Peer <Value>{m.name}</Value> <PeerConnectionInfo meta={m} /> with
-        NetBird IP <Value>{m.ip}</Value> was updated
+        AnonBird IP <Value>{m.ip}</Value> was updated
       </div>
     );
 
   if (event.activity_code == "user.join")
     return (
       <div className={"inline"}>
-        User <Value>{m.username}</Value> joined NetBird
+        User <Value>{m.username}</Value> joined AnonBird
       </div>
     );
 
@@ -207,7 +209,7 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         <Value>{event.meta.username}</Value> <Value>{event.meta.email}</Value>{" "}
-        was created by <Value>{event?.initiator_name || "NetBird"}</Value>
+        was created by <Value>{event?.initiator_name || "AnonBird"}</Value>
       </div>
     );
 
@@ -347,15 +349,15 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         Group <Value>{m.group}</Value> was removed from the peer with the
-        NetBird IP <Value>{m.peer_ip}</Value>
+        AnonBird IP <Value>{m.peer_ip}</Value>
       </div>
     );
 
   if (event.activity_code == "peer.group.add")
     return (
       <div className={"inline"}>
-        Group <Value>{m.group}</Value> was added to the peer with the NetBird IP{" "}
-        <Value>{m.peer_ip}</Value>
+        Group <Value>{m.group}</Value> was added to the peer with the AnonBird
+        IP <Value>{m.peer_ip}</Value>
       </div>
     );
 
@@ -397,7 +399,7 @@ export default function ActivityDescription({ event }: Props) {
   if (event.activity_code == "peer.rename")
     return (
       <div className={"inline"}>
-        Peer with the NetBird IP <Value>{m.ip}</Value> was renamed to{" "}
+        Peer with the AnonBird IP <Value>{m.ip}</Value> was renamed to{" "}
         <Value>{m.name}</Value>
       </div>
     );
@@ -405,7 +407,7 @@ export default function ActivityDescription({ event }: Props) {
   if (event.activity_code == "peer.approve")
     return (
       <div className={"inline"}>
-        Peer with the NetBird IP <Value>{m.ip}</Value> was approved
+        Peer with the AnonBird IP <Value>{m.ip}</Value> was approved
       </div>
     );
 
@@ -421,7 +423,7 @@ export default function ActivityDescription({ event }: Props) {
     return (
       <div className={"inline"}>
         Peer <Value>{m.name}</Value> <PeerConnectionInfo meta={m} /> was added
-        with the NetBird IP <Value>{m.ip}</Value>
+        with the AnonBird IP <Value>{m.ip}</Value>
       </div>
     );
 
@@ -901,10 +903,20 @@ function Value({
   ) : null;
 }
 
+function isAnonymousActivityMeta(meta: any) {
+  return (
+    meta?.anonymous_mode === true ||
+    meta?.anonymous_mode === "true" ||
+    !isEmpty(meta?.anonymous_transport)
+  );
+}
+
 function PeerConnectionInfo({ meta }: { meta: any }) {
+  const anonymous = isAnonymousActivityMeta(meta);
   const hasMeta =
-    !isEmpty(meta?.location_country_code) ||
-    !isEmpty(meta?.location_connection_ip);
+    !anonymous &&
+    (!isEmpty(meta?.location_country_code) ||
+      !isEmpty(meta?.location_connection_ip));
   const { countries } = useCountries();
 
   const countryText = useMemo(() => {

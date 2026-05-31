@@ -33,7 +33,7 @@ const searchPredicate = (item: UserSelectOption, query: string) => {
   const lowerCaseQuery = query.toLowerCase();
   if (
     item.email === "NetBird" &&
-    "NetBird System".toLowerCase().includes(lowerCaseQuery)
+    "AnonBird System".toLowerCase().includes(lowerCaseQuery)
   )
     return true;
   if (item.name.toLowerCase().includes(lowerCaseQuery)) return true;
@@ -238,7 +238,11 @@ export function UsersDropdownSelector({
                         }
                       >
                         <TextWithTooltip
-                          text={user?.email || "NetBird"}
+                          text={
+                            isSystemUser
+                              ? "AnonBird"
+                              : user?.email || "AnonBird"
+                          }
                           maxChars={20}
                         />
                       </span>

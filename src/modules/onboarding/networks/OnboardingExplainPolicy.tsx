@@ -18,14 +18,14 @@ export const OnboardingExplainPolicy = ({
     <div className={"relative flex flex-col h-full gap-4"}>
       <div>
         <h1 className={"text-xl text-center max-w-sm mx-auto"}>
-            {`Set the rules. You're in control`}
+          {`Set the rules. You're in control`}
         </h1>
         <div
           className={
             "text-sm text-nb-gray-300 font-light mt-2 block text-center sm:px-4"
           }
         >
-            {`NetBird makes it easy for admins to enforce least-privilege access with access control policies.
+          {`AnonBird makes it easy for admins to enforce least-privilege access with access control policies.
             We've already created one for your resource during onboarding.`}
         </div>
 
@@ -35,7 +35,8 @@ export const OnboardingExplainPolicy = ({
               "text-sm text-nb-gray-300 font-light mt-2 block text-center sm:px-4"
             }
           >
-              Flip the switch, then try pinging your resource again to see how it affects the connection.
+            Flip the switch, then try pinging your resource again to see how it
+            affects the connection.
           </div>
         )}
       </div>

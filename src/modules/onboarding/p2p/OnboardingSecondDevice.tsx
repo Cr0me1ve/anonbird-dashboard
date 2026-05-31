@@ -36,8 +36,8 @@ export const OnboardingSecondDevice = ({ secondDevice, onFinish }: Props) => {
   const openNavigatorShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: "Install NetBird",
-        text: "Install NetBird on another device using this link.",
+        title: "Install AnonBird",
+        text: "Install AnonBird on another device using this link.",
         url: getInstallUrl(),
       });
     }
@@ -47,7 +47,7 @@ export const OnboardingSecondDevice = ({ secondDevice, onFinish }: Props) => {
     const choice = await confirm({
       title: `Create a Setup Key?`,
       description:
-        "If you continue, a one-off setup key will be automatically created and you will be able to install NetBird.",
+        "If you continue, a one-off setup key will be automatically created and you will be able to install AnonBird.",
       confirmText: "Continue",
       cancelText: "Cancel",
       type: "default",
@@ -78,11 +78,12 @@ export const OnboardingSecondDevice = ({ secondDevice, onFinish }: Props) => {
           {`Time to bring in your second device`}
         </h1>
         <div className="text-sm text-nb-gray-300 font-light mt-2 block text-center">
-            Each device (a.k.a. peer) in your NetBird network gets its own private IP and name to communicate securely in the network.
+          Each device (a.k.a. peer) in your AnonBird network gets its own
+          private IP and name to communicate securely in the network.
         </div>
         <div className="text-sm text-nb-gray-300 font-light mt-2 block text-center">
-            To complete the setup, just share this link or email it to yourself to set up your next device
-            with ease.
+          To complete the setup, just share this link or email it to yourself to
+          set up your next device with ease.
         </div>
       </div>
 
@@ -111,7 +112,8 @@ export const OnboardingSecondDevice = ({ secondDevice, onFinish }: Props) => {
         )}
       </div>
       <div className="text-sm text-nb-gray-300 font-light mt-2 block text-center sm:px-4">
-          Use the headless setup to register a peer without a browser or user interaction.{" "}
+        Use the headless setup to register a peer without a browser or user
+        interaction.{" "}
         <InlineLink onClick={installUsingSetupKey} href={"#"}>
           Install with a setup key
           <ArrowUpRightIcon size={12} />
@@ -122,7 +124,7 @@ export const OnboardingSecondDevice = ({ secondDevice, onFinish }: Props) => {
         <Modal open={open} onOpenChange={setOpen}>
           <ModalContent>
             <SetupModalContent
-              title={"Install NetBird"}
+              title={"Install AnonBird"}
               setupKey={setupKey.key}
             />
           </ModalContent>

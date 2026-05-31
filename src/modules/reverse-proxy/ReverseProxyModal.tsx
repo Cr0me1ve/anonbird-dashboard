@@ -278,13 +278,10 @@ export default function ReverseProxyModal({
   // Access groups for NetBird-only services. Distinct from bearerGroups
   // (which gates SSO callers); these groups gate inbound peers on
   // private services and feed the auto-generated private-access policy.
-  const [
-    accessGroups,
-    setAccessGroups,
-    { save: saveAccessGroups },
-  ] = useGroupHelper({
-    initial: reverseProxy?.access_groups ?? [],
-  });
+  const [accessGroups, setAccessGroups, { save: saveAccessGroups }] =
+    useGroupHelper({
+      initial: reverseProxy?.access_groups ?? [],
+    });
 
   // Direct upstream is service-level in the UI; on save it patches the
   // (single) cluster target's options.direct_upstream. Defaults off for
@@ -292,9 +289,8 @@ export default function ReverseProxyModal({
   // effectiveDirectUpstream below since they have no WireGuard endpoint
   // to fall back to.
   const [directUpstream, setDirectUpstream] = useState<boolean>(
-    reverseProxy?.targets?.some(
-      (t) => t.options?.direct_upstream === true,
-    ) ?? false,
+    reverseProxy?.targets?.some((t) => t.options?.direct_upstream === true) ??
+      false,
   );
 
   // Cluster targets are reached over the embedded proxy's host stack —
@@ -302,10 +298,7 @@ export default function ReverseProxyModal({
   // WireGuard tunnel they have no other endpoint for, so we force the
   // toggle on and lock it whenever any target is a cluster.
   const hasClusterTarget = useMemo(
-    () =>
-      targets.some(
-        (t) => t.target_type === ReverseProxyTargetType.CLUSTER,
-      ),
+    () => targets.some((t) => t.target_type === ReverseProxyTargetType.CLUSTER),
     [targets],
   );
   const effectiveDirectUpstream = hasClusterTarget || directUpstream;
@@ -346,8 +339,7 @@ export default function ReverseProxyModal({
   // (auth, access control, advanced) — including reaching the Auth tab
   // to enable bearer auth for a private service.
   const canContinueToSettings = useMemo(() => {
-    const subdomainRequired =
-      selectedDomain?.require_subdomain === true;
+    const subdomainRequired = selectedDomain?.require_subdomain === true;
     const isSubdomainValid =
       baseDomain.length > 0 &&
       !domainAlreadyExists &&
@@ -519,8 +511,7 @@ export default function ReverseProxyModal({
         name: fullDomain,
         domain: fullDomain,
         mode: isL4Mode ? (serviceMode as ServiceMode) : undefined,
-        listen_port:
-          isL4Mode && isListenPortSupported ? listenPort : undefined,
+        listen_port: isL4Mode && isListenPortSupported ? listenPort : undefined,
         targets: submittedTargets,
         enabled: reverseProxy?.enabled ?? true,
         pass_host_header: isL4Mode ? undefined : passHostHeader,
@@ -550,7 +541,7 @@ export default function ReverseProxyModal({
     () =>
       isL4Mode
         ? "Forward traffic directly to your backend service."
-        : "Expose services securely through NetBird's reverse proxy.",
+        : "Expose services securely through AnonBird's reverse proxy.",
     [isL4Mode],
   );
 
@@ -617,8 +608,8 @@ export default function ReverseProxyModal({
 
               {isPrivate && accessGroups.length === 0 && (
                 <Paragraph className={"!text-yellow-400 !text-xs !mt-0"}>
-                  NetBird-only is on but no access groups are set. Open it
-                  on the Authentication tab and pick at least one group.
+                  AnonBird-only is on but no access groups are set. Open it on
+                  the Authentication tab and pick at least one group.
                 </Paragraph>
               )}
 
@@ -663,10 +654,10 @@ export default function ReverseProxyModal({
                       label={
                         <>
                           <NetworkIcon size={15} />
-                          NetBird-Only Access
+                          AnonBird-Only Access
                         </>
                       }
-                      description="Reachable only from connected peers in the selected NetBird groups."
+                      description="Reachable only from connected peers in the selected AnonBird groups."
                       enabled={isPrivate}
                       onClick={() => {
                         setNetBirdOnlyModalOpen(true);
@@ -682,11 +673,11 @@ export default function ReverseProxyModal({
                       className={"w-full"}
                       content={
                         <div className={"text-xs max-w-xs"}>
-                          NetBird-Only Access requires a proxy cluster with
-                          at least one connected embedded proxy (
-                          <code>netbird proxy</code>). The selected cluster
-                          doesn't have one. Connect an embedded proxy to
-                          this cluster to enable this option.
+                          AnonBird-Only Access requires a proxy cluster with at
+                          least one connected embedded proxy (
+                          <code>anonbird proxy</code>). The selected cluster
+                          doesn't have one. Connect an embedded proxy to this
+                          cluster to enable this option.
                         </div>
                       }
                     >
@@ -694,10 +685,10 @@ export default function ReverseProxyModal({
                         label={
                           <>
                             <NetworkIcon size={15} />
-                            NetBird-Only Access
+                            AnonBird-Only Access
                           </>
                         }
-                        description="Reachable only from connected peers in the selected NetBird groups."
+                        description="Reachable only from connected peers in the selected AnonBird groups."
                         enabled={isPrivate}
                         disabled={true}
                         onClick={() => {
@@ -770,8 +761,8 @@ export default function ReverseProxyModal({
                     />
                   }
                 >
-                  This service is accessible via NetBird only. An allow rule
-                  for the NetBird network range is applied by default. Any
+                  This service is accessible via AnonBird only. An allow rule
+                  for the AnonBird network range is applied by default. Any
                   rules you add here are layered on top.
                 </Callout>
               )}
@@ -1050,7 +1041,8 @@ export default function ReverseProxyModal({
           id: reverseProxy?.id || "",
           name: fullDomain,
           domain: fullDomain,
-          proxy_cluster: selectedDomain?.target_cluster || baseDomain || undefined,
+          proxy_cluster:
+            selectedDomain?.target_cluster || baseDomain || undefined,
           targets: targets,
           enabled: reverseProxy?.enabled ?? true,
           mode: serviceMode,

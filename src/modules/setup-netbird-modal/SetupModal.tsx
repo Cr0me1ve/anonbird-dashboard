@@ -4,20 +4,42 @@ import Button from "@components/Button";
 import Code from "@components/Code";
 import { HelpTooltip } from "@components/HelpTooltip";
 import InlineLink from "@components/InlineLink";
+import { Input } from "@components/Input";
 import { ModalContent, ModalFooter } from "@components/modal/Modal";
 import { notify } from "@components/Notification";
 import Paragraph from "@components/Paragraph";
+import { SegmentedTabs } from "@components/SegmentedTabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@components/Select";
 import SmallParagraph from "@components/SmallParagraph";
 import { Tabs, TabsList, TabsTrigger } from "@components/Tabs";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { useApiCall } from "@utils/api";
 import { cn } from "@utils/helpers";
-import { getNetBirdUpCommand } from "@utils/netbird";
+import {
+  AnonymousTransportCommandOptions,
+  AnonymousTransportType,
+  DEFAULT_I2P_DAEMON_MODE,
+  DEFAULT_I2P_SAM,
+  DEFAULT_I2P_TUNNEL_LENGTH,
+  DEFAULT_I2P_TUNNEL_QUANTITY,
+  DEFAULT_I2PD_PATH,
+  getAnonBirdJoinCommand,
+  getAnonBirdUpCommand,
+  I2PDaemonMode,
+} from "@utils/netbird";
 import {
   CopyIcon,
   ExternalLinkIcon,
   KeyRoundIcon,
   Loader2,
+  RadioTowerIcon,
+  RouterIcon,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React, { useMemo, useState } from "react";
@@ -109,6 +131,40 @@ export function SetupModalContent({
   // the in-modal banner stay in sync.
   const [generatedKey, setGeneratedKey] = useState<SetupKey | undefined>();
   const effectiveSetupKey = setupKey ?? generatedKey?.key;
+  const [anonymousTransportType, setAnonymousTransportType] =
+    useState<AnonymousTransportType>("tor-relay-only");
+  const [i2pSAM, setI2PSAM] = useState(DEFAULT_I2P_SAM);
+  const [i2pTunnelLength, setI2PTunnelLength] = useState(
+    String(DEFAULT_I2P_TUNNEL_LENGTH),
+  );
+  const [i2pTunnelQuantity, setI2PTunnelQuantity] = useState(
+    String(DEFAULT_I2P_TUNNEL_QUANTITY),
+  );
+  const [i2pDaemonMode, setI2PDaemonMode] = useState<I2PDaemonMode>(
+    DEFAULT_I2P_DAEMON_MODE,
+  );
+  const [i2pdPath, setI2PDPath] = useState(DEFAULT_I2PD_PATH);
+  const [i2pDataDir, setI2PDataDir] = useState("");
+  const anonymousTransport = useMemo<AnonymousTransportCommandOptions>(
+    () => ({
+      transport: anonymousTransportType,
+      i2pSAM,
+      i2pTunnelLength,
+      i2pTunnelQuantity,
+      i2pDaemonMode,
+      i2pdPath,
+      i2pDataDir,
+    }),
+    [
+      anonymousTransportType,
+      i2pSAM,
+      i2pTunnelLength,
+      i2pTunnelQuantity,
+      i2pDaemonMode,
+      i2pdPath,
+      i2pDataDir,
+    ],
+  );
 
   // Visibility rules:
   //   hideDocker  – only when explicitly a user-device flow.
@@ -134,10 +190,10 @@ export function SetupModalContent({
         <HelpTooltip
           content={
             <>
-              A setup key is a one-time, pre-authentication token used to
-              enroll an unattended machine with NetBird. Pass it to{" "}
-              <code>netbird up</code> via <code>--setup-key</code> and the
-              peer registers without an interactive login.
+              A setup key is a one-time, pre-authentication token used to enroll
+              an unattended machine with AnonBird. Pass it to{" "}
+              <code>anonbird up</code> via <code>--setup-key</code> and the peer
+              registers without an interactive login.
             </>
           }
         />
@@ -171,15 +227,9 @@ export function SetupModalContent({
     }
 
     return effectiveSetupKey
-      ? "Install NetBird with Setup Key"
-      : "Install NetBird";
-  }, [
-    isFirstRun,
-    isInstallPage,
-    effectiveSetupKey,
-    title,
-    user?.given_name,
-  ]);
+      ? "Install AnonBird with Setup Key"
+      : "Install AnonBird";
+  }, [isFirstRun, isInstallPage, effectiveSetupKey, title, user?.given_name]);
 
   return (
     <>
@@ -200,11 +250,28 @@ export function SetupModalContent({
             )}
           >
             {isUserDevice === false || effectiveSetupKey
-              ? "To get started, install and run NetBird with the setup key as a parameter."
-              : "To get started, install NetBird and log in with your email account."}
+              ? "To get started, install and run AnonBird with the setup key as a parameter."
+              : "To get started, install AnonBird and log in with your email account."}
           </Paragraph>
         </div>
       )}
+
+      <AnonymousTransportSelector
+        transport={anonymousTransportType}
+        onTransportChange={setAnonymousTransportType}
+        i2pSAM={i2pSAM}
+        onI2PSAMChange={setI2PSAM}
+        i2pTunnelLength={i2pTunnelLength}
+        onI2PTunnelLengthChange={setI2PTunnelLength}
+        i2pTunnelQuantity={i2pTunnelQuantity}
+        onI2PTunnelQuantityChange={setI2PTunnelQuantity}
+        i2pDaemonMode={i2pDaemonMode}
+        onI2PDaemonModeChange={setI2PDaemonMode}
+        i2pdPath={i2pdPath}
+        onI2PDPathChange={setI2PDPath}
+        i2pDataDir={i2pDataDir}
+        onI2PDataDirChange={setI2PDataDir}
+      />
 
       <Tabs
         defaultValue={String(
@@ -277,6 +344,7 @@ export function SetupModalContent({
           setupKeyPlaceholder={setupKeyPlaceholder}
           showSetupKeyInfo={showOnlyRoutingPeerOS}
           hostname={hostname}
+          anonymousTransport={anonymousTransport}
         />
         <WindowsTab
           setupKey={effectiveSetupKey}
@@ -284,6 +352,7 @@ export function SetupModalContent({
           setupKeyPlaceholder={setupKeyPlaceholder}
           showSetupKeyInfo={showOnlyRoutingPeerOS}
           hostname={hostname}
+          anonymousTransport={anonymousTransport}
         />
         <MacOSTab
           setupKey={effectiveSetupKey}
@@ -291,6 +360,7 @@ export function SetupModalContent({
           setupKeyPlaceholder={setupKeyPlaceholder}
           showSetupKeyInfo={showOnlyRoutingPeerOS}
           hostname={hostname}
+          anonymousTransport={anonymousTransport}
         />
 
         {!hideMobile && (
@@ -307,6 +377,7 @@ export function SetupModalContent({
             setupKeyPlaceholder={setupKeyPlaceholder}
             showSetupKeyInfo={showOnlyRoutingPeerOS}
             hostname={hostname}
+            anonymousTransport={anonymousTransport}
           />
         )}
       </Tabs>
@@ -356,32 +427,40 @@ export const SetupKeyParameter = ({
   );
 };
 
-type NetBirdUpCommandProps = {
+type AnonBirdUpCommandProps = {
   setupKey?: string;
   setupKeyPlaceholder?: string;
   hostname?: string;
+  anonymousTransport?: AnonymousTransportCommandOptions;
 };
 
-// NetBirdUpCommand renders `netbird up` inside a <Code> block. When
-// extra flags are present it splits across multiple lines with shell
-// continuations so long commands stay readable and still copy/paste
-// cleanly into a terminal.
-export const NetBirdUpCommand = ({
+// AnonBirdUpCommand prefers the compact `anonbird join` URL when a real
+// setup key and management URL are available. It falls back to `anonbird up`
+// so generated-key placeholders and incomplete local configs still render.
+export const AnonBirdUpCommand = ({
   setupKey,
   setupKeyPlaceholder,
   hostname,
-}: NetBirdUpCommandProps) => {
+  anonymousTransport,
+}: AnonBirdUpCommandProps) => {
+  const joinCommand = setupKey
+    ? getAnonBirdJoinCommand(setupKey, anonymousTransport, hostname)
+    : undefined;
+  if (joinCommand) {
+    return <Code.Line>{joinCommand}</Code.Line>;
+  }
+
   const keyValue = setupKey ?? setupKeyPlaceholder;
   const hasKey = !!keyValue;
   const hasHostname = !!hostname;
 
   if (!hasKey && !hasHostname) {
-    return <Code.Line>{getNetBirdUpCommand()}</Code.Line>;
+    return <Code.Line>{getAnonBirdUpCommand(anonymousTransport)}</Code.Line>;
   }
 
   return (
     <>
-      <Code.Line>{getNetBirdUpCommand()} \</Code.Line>
+      <Code.Line>{getAnonBirdUpCommand(anonymousTransport)} \</Code.Line>
       {hasKey && (
         <Code.Line>
           {"  --setup-key "}
@@ -398,6 +477,144 @@ export const NetBirdUpCommand = ({
     </>
   );
 };
+
+type AnonymousTransportSelectorProps = {
+  transport: AnonymousTransportType;
+  onTransportChange: (transport: AnonymousTransportType) => void;
+  i2pSAM: string;
+  onI2PSAMChange: (value: string) => void;
+  i2pTunnelLength: string;
+  onI2PTunnelLengthChange: (value: string) => void;
+  i2pTunnelQuantity: string;
+  onI2PTunnelQuantityChange: (value: string) => void;
+  i2pDaemonMode: I2PDaemonMode;
+  onI2PDaemonModeChange: (value: I2PDaemonMode) => void;
+  i2pdPath: string;
+  onI2PDPathChange: (value: string) => void;
+  i2pDataDir: string;
+  onI2PDataDirChange: (value: string) => void;
+};
+
+function AnonymousTransportSelector({
+  transport,
+  onTransportChange,
+  i2pSAM,
+  onI2PSAMChange,
+  i2pTunnelLength,
+  onI2PTunnelLengthChange,
+  i2pTunnelQuantity,
+  onI2PTunnelQuantityChange,
+  i2pDaemonMode,
+  onI2PDaemonModeChange,
+  i2pdPath,
+  onI2PDPathChange,
+  i2pDataDir,
+  onI2PDataDirChange,
+}: AnonymousTransportSelectorProps) {
+  return (
+    <div className={"px-8 pb-5"}>
+      <div
+        className={
+          "rounded-md border border-nb-gray-900 bg-nb-gray-930/70 p-3 flex flex-col gap-3"
+        }
+      >
+        <SegmentedTabs
+          value={transport}
+          onChange={(value) =>
+            onTransportChange(value as AnonymousTransportType)
+          }
+        >
+          <SegmentedTabs.List className={"rounded-lg border"}>
+            <SegmentedTabs.Trigger value={"tor-relay-only"}>
+              <RadioTowerIcon size={16} />
+              Tor
+            </SegmentedTabs.Trigger>
+            <SegmentedTabs.Trigger value={"i2p-datagram"}>
+              <RouterIcon size={16} />
+              I2P
+            </SegmentedTabs.Trigger>
+          </SegmentedTabs.List>
+        </SegmentedTabs>
+
+        {transport == "i2p-datagram" && (
+          <div className={"grid gap-3 md:grid-cols-[1.6fr_1fr_1fr]"}>
+            <label className={"flex flex-col gap-1 text-xs text-nb-gray-300"}>
+              SAM bridge
+              <Input
+                value={i2pSAM}
+                onChange={(event) => onI2PSAMChange(event.target.value)}
+                placeholder={DEFAULT_I2P_SAM}
+                variant={"darker"}
+              />
+            </label>
+            <label className={"flex flex-col gap-1 text-xs text-nb-gray-300"}>
+              Tunnel length
+              <Input
+                type={"number"}
+                min={1}
+                max={7}
+                value={i2pTunnelLength}
+                onChange={(event) =>
+                  onI2PTunnelLengthChange(event.target.value)
+                }
+                variant={"darker"}
+              />
+            </label>
+            <label className={"flex flex-col gap-1 text-xs text-nb-gray-300"}>
+              Tunnel quantity
+              <Input
+                type={"number"}
+                min={1}
+                max={16}
+                value={i2pTunnelQuantity}
+                onChange={(event) =>
+                  onI2PTunnelQuantityChange(event.target.value)
+                }
+                variant={"darker"}
+              />
+            </label>
+            <label className={"flex flex-col gap-1 text-xs text-nb-gray-300"}>
+              Daemon mode
+              <Select
+                value={i2pDaemonMode}
+                onValueChange={(value) =>
+                  onI2PDaemonModeChange(value as I2PDaemonMode)
+                }
+              >
+                <SelectTrigger className={"h-[38px] bg-nb-gray-900/30"}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={"auto"}>Auto</SelectItem>
+                  <SelectItem value={"managed"}>Managed</SelectItem>
+                  <SelectItem value={"external"}>External</SelectItem>
+                </SelectContent>
+              </Select>
+            </label>
+            <label className={"flex flex-col gap-1 text-xs text-nb-gray-300"}>
+              i2pd path
+              <Input
+                value={i2pdPath}
+                onChange={(event) => onI2PDPathChange(event.target.value)}
+                placeholder={DEFAULT_I2PD_PATH}
+                variant={"darker"}
+              />
+            </label>
+            <label className={"flex flex-col gap-1 text-xs text-nb-gray-300"}>
+              i2pd data dir
+              <Input
+                value={i2pDataDir}
+                onChange={(event) => onI2PDataDirChange(event.target.value)}
+                placeholder={"/var/lib/anonbird/i2pd"}
+                variant={"darker"}
+              />
+            </label>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export const HostnameParameter = ({ hostname }: { hostname?: string }) => {
   return (
@@ -437,7 +654,7 @@ type SetupKeyGeneratorProps = {
 // SetupKeyGenerator renders the inline banner that lets the operator
 // create a one-off setup key without leaving the install modal. The
 // resulting key is lifted to the parent so the OS tabs can splice it
-// into the `netbird up --setup-key=...` command.
+// into the `anonbird up --setup-key=...` command.
 function SetupKeyGenerator({
   generatedKey,
   onGenerated,
@@ -489,11 +706,7 @@ function SetupKeyGenerator({
   if (!generatedKey) {
     return (
       <div className={"mt-2"}>
-        <Button
-          variant={"primary"}
-          onClick={generate}
-          disabled={isGenerating}
-        >
+        <Button variant={"primary"} onClick={generate} disabled={isGenerating}>
           {isGenerating ? (
             <Loader2 size={14} className={"animate-spin"} />
           ) : (
@@ -526,11 +739,8 @@ function SetupKeyGenerator({
           {generatedKey.key}
         </div>
         <div
-          className={
-            "text-nb-gray-400 text-[0.72rem] flex items-center gap-1"
-          }
+          className={"text-nb-gray-400 text-[0.72rem] flex items-center gap-1"}
         >
-
           This setup key can be used only once and expires in 24 hours.
         </div>
       </div>

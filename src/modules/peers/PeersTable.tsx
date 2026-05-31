@@ -519,7 +519,7 @@ export default function PeersTable({
               <FullTooltip
                 content={
                   <div className={"max-w-sm text-xs"}>
-                    Show temporary peers created by the NetBird browser client.
+                    Show temporary peers created by the AnonBird browser client.
                     These peers are ephemeral and will be deleted automatically
                     after a short period of time.
                   </div>

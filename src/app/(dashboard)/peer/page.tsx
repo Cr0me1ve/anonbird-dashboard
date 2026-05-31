@@ -2,6 +2,7 @@
 
 import Breadcrumbs from "@components/Breadcrumbs";
 import Button from "@components/Button";
+import { Callout } from "@components/Callout";
 import Card from "@components/Card";
 import HelpText from "@components/HelpText";
 import { Input } from "@components/Input";
@@ -29,6 +30,7 @@ import { singularize } from "@utils/helpers";
 import dayjs from "dayjs";
 import { isEmpty, trim } from "lodash";
 import {
+  AlertTriangle,
   ArrowRightIcon,
   Barcode,
   CalendarDays,
@@ -42,6 +44,7 @@ import {
   NetworkIcon,
   PencilIcon,
   RadioTowerIcon,
+  ShieldCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -61,11 +64,16 @@ import RoutesProvider from "@/contexts/RoutesProvider";
 import { useHasChanges } from "@/hooks/useHasChanges";
 import type { Group } from "@/interfaces/Group";
 import type { Peer } from "@/interfaces/Peer";
+import {
+  getAnonymousPeerTransportLabel,
+  isAnonymousPeer,
+} from "@/interfaces/Peer";
 import PageContainer from "@/layouts/PageContainer";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
 import { AccessiblePeersSection } from "@/modules/peer/AccessiblePeersSection";
 import { PeerNetworkRoutesSection } from "@/modules/peer/PeerNetworkRoutesSection";
 import { PeerRemoteJobsSection } from "@/modules/peer/PeerRemoteJobsSection";
+import usePeerRoutes from "@/modules/peer/usePeerRoutes";
 import ReverseProxiesProvider, {
   flattenReverseProxies,
   useReverseProxies,
@@ -120,6 +128,7 @@ export default function PeerPage() {
 
 function PeerOverview() {
   const { peer } = usePeer();
+  const anonymous = isAnonymousPeer(peer);
 
   return (
     <PageContainer>
@@ -132,7 +141,10 @@ function PeerOverview() {
                 label={"Peers"}
                 icon={<PeerIcon size={13} />}
               />
-              <Breadcrumbs.Item label={peer.ip} active />
+              <Breadcrumbs.Item
+                label={anonymous ? peer.dns_label : peer.ip}
+                active
+              />
             </Breadcrumbs>
             <PeerHeader />
           </div>
@@ -325,6 +337,7 @@ const PeerOverviewTabs = () => {
   const { permission } = usePermissions();
   const { reverseProxies, isLoading: isServicesLoading } = useReverseProxies();
   const { tab, setTab } = usePeerSettings();
+  const anonymous = isAnonymousPeer(peer);
 
   const flatTargets = useMemo(
     () => flattenReverseProxies({ reverseProxies, peer }),
@@ -344,7 +357,7 @@ const PeerOverviewTabs = () => {
           Overview
         </TabsTrigger>
 
-        {permission.routes.read && (
+        {permission.routes.read && !anonymous && (
           <TabsTrigger value={"network-routes"}>
             <NetworkIcon size={16} />
             Network Routes
@@ -380,7 +393,7 @@ const PeerOverviewTabs = () => {
         <PeerOverviewTabContent />
       </TabsContent>
 
-      {permission.routes.read && (
+      {permission.routes.read && !anonymous && (
         <TabsContent value={"network-routes"} className={"pb-8"}>
           <PeerNetworkRoutesSection peer={peer} />
         </TabsContent>
@@ -400,7 +413,7 @@ const PeerOverviewTabs = () => {
             hideResourceColumn
             emptyTableTitle={"This peer has no services"}
             emptyTableDescription={
-              "Add your services to this peer and securely expose them through NetBird's reverse proxy"
+              "Add your services to this peer and securely expose them through AnonBird's reverse proxy"
             }
           />
         </TabsContent>
@@ -430,6 +443,7 @@ const PeerOverviewTabContent = () => {
         <PeerInformationCard peer={peer} />
 
         <div className={"flex flex-col gap-8 lg:w-1/2 transition-all"}>
+          {isAnonymousPeer(peer) && <AnonymousPeerSafetyWarning peer={peer} />}
           <PeerExpirationSettings />
           {permission.groups.read && (
             <div>
@@ -464,6 +478,73 @@ const PeerOverviewTabContent = () => {
   );
 };
 
+function AnonymousPeerSafetyWarning({ peer }: Readonly<{ peer: Peer }>) {
+  const { permission } = usePermissions();
+  const { peerRoutes, isLoading } = usePeerRoutes({
+    peer,
+    allowFetch: permission.routes.read,
+  });
+
+  const warnings = useMemo(() => {
+    const result: string[] = [];
+    const assignedRoutes =
+      isLoading || !permission.routes.read ? [] : peerRoutes;
+    const flags = peer.local_flags;
+
+    if (assignedRoutes && assignedRoutes.length > 0) {
+      const hasExitRoute = assignedRoutes.some(
+        (route) => route.network === "0.0.0.0/0" || route.network === "::/0",
+      );
+      result.push(
+        hasExitRoute
+          ? "Exit routes are assigned to this anonymous peer. Remove or disable them to keep the peer in no-exit mode."
+          : "Network routes are assigned to this anonymous peer. Remove or disable them to avoid route-based traffic exposure.",
+      );
+    }
+
+    if (flags?.disable_client_routes === false) {
+      result.push("Client route handling is enabled.");
+    }
+    if (flags?.disable_server_routes === false) {
+      result.push("Server route advertisement is enabled.");
+    }
+    if (flags?.block_lan_access === false) {
+      result.push("LAN blocking is disabled.");
+    }
+    if (flags?.disable_firewall === true) {
+      result.push("Firewall management is disabled.");
+    }
+    if (flags?.lazy_connection_enabled === true) {
+      result.push("Lazy connection mode is enabled.");
+    }
+
+    return result;
+  }, [isLoading, peer.local_flags, peerRoutes, permission.routes.read]);
+
+  if (warnings.length === 0) return null;
+
+  return (
+    <Callout
+      variant={"warning"}
+      icon={
+        <AlertTriangle size={15} className={"shrink-0 relative top-[3px]"} />
+      }
+      className={"max-w-xl"}
+    >
+      <div className={"space-y-2"}>
+        <div className={"font-medium text-netbird-100"}>
+          Anonymous safety check
+        </div>
+        <ul className={"list-disc pl-4 space-y-1"}>
+          {warnings.map((warning) => (
+            <li key={warning}>{warning}</li>
+          ))}
+        </ul>
+      </div>
+    </Callout>
+  );
+}
+
 function PeerInformationCard({ peer }: Readonly<{ peer: Peer }>) {
   const { isLoading, getRegionByPeer } = useCountries();
   const { update } = usePeer();
@@ -471,6 +552,7 @@ function PeerInformationCard({ peer }: Readonly<{ peer: Peer }>) {
   const [showEditIPModal, setShowEditIPModal] = useState(false);
   const [showEditIPv6Modal, setShowEditIPv6Modal] = useState(false);
   const { permission } = usePermissions();
+  const anonymous = isAnonymousPeer(peer);
 
   const countryText = useMemo(() => {
     return getRegionByPeer(peer);
@@ -479,7 +561,7 @@ function PeerInformationCard({ peer }: Readonly<{ peer: Peer }>) {
   const handleSaveIP = (newIP: string) => {
     notify({
       title: peer.name,
-      description: "NetBird Peer IP was successfully updated",
+      description: "AnonBird Peer IP was successfully updated",
       promise: update({ ip: newIP }).then(() => {
         mutate("/peers/" + peer.id);
         setShowEditIPModal(false);
@@ -491,7 +573,7 @@ function PeerInformationCard({ peer }: Readonly<{ peer: Peer }>) {
   const handleSaveIPv6 = (newIPv6: string) => {
     notify({
       title: peer.name,
-      description: "NetBird Peer IPv6 was successfully updated",
+      description: "AnonBird Peer IPv6 was successfully updated",
       promise: update({ ipv6: newIPv6 }).then(() => {
         mutate("/peers/" + peer.id);
         setShowEditIPv6Modal(false);
@@ -523,11 +605,11 @@ function PeerInformationCard({ peer }: Readonly<{ peer: Peer }>) {
           <Card.ListItem
             copy
             tooltip={false}
-            copyText={"NetBird IP Address"}
+            copyText={"Overlay IPv4 Address"}
             label={
               <>
                 <MapPin size={16} className={"shrink-0"} />
-                NetBird IP Address
+                Overlay IPv4 Address
               </>
             }
             valueToCopy={peer.ip}
@@ -544,11 +626,11 @@ function PeerInformationCard({ peer }: Readonly<{ peer: Peer }>) {
             <Card.ListItem
               copy
               tooltip={false}
-              copyText={"NetBird IPv6 Address"}
+              copyText={"Overlay IPv6 Address"}
               label={
                 <>
                   <MapPin size={16} className={"shrink-0"} />
-                  NetBird IPv6 Address
+                  Overlay IPv6 Address
                 </>
               }
               valueToCopy={peer.ipv6}
@@ -562,17 +644,40 @@ function PeerInformationCard({ peer }: Readonly<{ peer: Peer }>) {
             />
           )}
 
-          <Card.ListItem
-            copy
-            copyText={"Public IP Address"}
-            label={
-              <>
-                <NetworkIcon size={16} className={"shrink-0"} />
-                Public IP Address
-              </>
-            }
-            value={peer.connection_ip}
-          />
+          {anonymous ? (
+            <>
+              <Card.ListItem
+                label={
+                  <>
+                    <ShieldCheck size={16} className={"shrink-0"} />
+                    Network Mode
+                  </>
+                }
+                value={"anonymous"}
+              />
+              <Card.ListItem
+                label={
+                  <>
+                    <NetworkIcon size={16} className={"shrink-0"} />
+                    Transport
+                  </>
+                }
+                value={getAnonymousPeerTransportLabel(peer)}
+              />
+            </>
+          ) : (
+            <Card.ListItem
+              copy
+              copyText={"Public IP Address"}
+              label={
+                <>
+                  <NetworkIcon size={16} className={"shrink-0"} />
+                  Public IP Address
+                </>
+              }
+              value={peer.connection_ip}
+            />
+          )}
 
           <Card.ListItem
             copy
@@ -604,35 +709,37 @@ function PeerInformationCard({ peer }: Readonly<{ peer: Peer }>) {
             value={peer.hostname}
           />
 
-          <Card.ListItem
-            label={
-              <>
-                <FlagIcon size={16} className={"shrink-0"} />
-                Region
-              </>
-            }
-            tooltip={false}
-            value={
-              isEmpty(peer.country_code) ? (
-                "Unknown"
-              ) : (
+          {!anonymous && (
+            <Card.ListItem
+              label={
                 <>
-                  {isLoading ? (
-                    <Skeleton width={140} />
-                  ) : (
-                    <div className={"flex gap-2 items-center"}>
-                      <div
-                        className={"border-0 border-nb-gray-800 rounded-full"}
-                      >
-                        <RoundedFlag country={peer.country_code} size={12} />
-                      </div>
-                      {countryText}
-                    </div>
-                  )}
+                  <FlagIcon size={16} className={"shrink-0"} />
+                  Region
                 </>
-              )
-            }
-          />
+              }
+              tooltip={false}
+              value={
+                isEmpty(peer.country_code) ? (
+                  "Unknown"
+                ) : (
+                  <>
+                    {isLoading ? (
+                      <Skeleton width={140} />
+                    ) : (
+                      <div className={"flex gap-2 items-center"}>
+                        <div
+                          className={"border-0 border-nb-gray-800 rounded-full"}
+                        >
+                          <RoundedFlag country={peer.country_code} size={12} />
+                        </div>
+                        {countryText}
+                      </div>
+                    )}
+                  </>
+                )
+              }
+            />
+          )}
 
           <Card.ListItem
             label={
@@ -644,7 +751,7 @@ function PeerInformationCard({ peer }: Readonly<{ peer: Peer }>) {
             value={peer.os}
           />
 
-          {peer.serial_number && peer.serial_number !== "" && (
+          {!anonymous && peer.serial_number && peer.serial_number !== "" && (
             <Card.ListItem
               label={
                 <>

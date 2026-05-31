@@ -57,8 +57,8 @@ const HEADER_AUTH_METHOD = {
 };
 
 const NETBIRD_ONLY_METHOD = {
-  label: "NetBird Only",
-  hoverLabel: "NetBird-Only Access",
+  label: "AnonBird Only",
+  hoverLabel: "AnonBird-Only Access",
   Icon: CircleUser,
 };
 
@@ -119,8 +119,8 @@ export default function ReverseProxyAuthCell({
       ? isPrivate
         ? NETBIRD_ONLY_METHOD
         : enabled.length === 1
-          ? enabled[0]
-          : HEADER_AUTH_METHOD
+        ? enabled[0]
+        : HEADER_AUTH_METHOD
       : null;
   const SingleAuthIcon = singleAuth?.Icon ?? null;
 
@@ -239,8 +239,8 @@ export default function ReverseProxyAuthCell({
                           {accessGroups.length === 0
                             ? "No groups"
                             : accessGroups.length === 1
-                              ? "1 Group"
-                              : `${accessGroups.length} Groups`}
+                            ? "1 Group"
+                            : `${accessGroups.length} Groups`}
                         </div>
                       }
                     >

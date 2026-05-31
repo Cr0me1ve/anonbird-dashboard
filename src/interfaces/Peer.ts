@@ -29,6 +29,7 @@ export interface Peer {
   city_name: string;
   country_code: string;
   connection_ip: string;
+  anonymous_transport?: string;
   serial_number: string;
   ephemeral: boolean;
   local_flags?: PeerLocalFlags;
@@ -42,7 +43,16 @@ export interface PeerLocalFlags {
   disable_firewall: boolean;
   disable_server_routes: boolean;
   lazy_connection_enabled: boolean;
+  anonymous_mode?: boolean;
   rosenpass_enabled: boolean;
   rosenpass_permissive: boolean;
   server_ssh_allowed: boolean;
 }
+
+export const isAnonymousPeer = (peer?: Peer | null) =>
+  !!peer?.local_flags?.anonymous_mode;
+
+export const getAnonymousPeerTransportLabel = (peer?: Peer | null) => {
+  if (!isAnonymousPeer(peer)) return "";
+  return peer?.anonymous_transport || "tor-relay-only";
+};

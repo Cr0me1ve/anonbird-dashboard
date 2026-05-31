@@ -3,7 +3,10 @@
 import HelpText from "@components/HelpText";
 import { Label } from "@components/Label";
 import { Modal } from "@components/modal/Modal";
-import { ClusterOption, PeerGroupSelector } from "@components/PeerGroupSelector";
+import {
+  ClusterOption,
+  PeerGroupSelector,
+} from "@components/PeerGroupSelector";
 import React, { useMemo, useState } from "react";
 import { Network } from "@/interfaces/Network";
 import {
@@ -57,15 +60,12 @@ export default function ReverseProxyTargetSelector({
     if (initialNetwork) return [];
     const privateCapable = (domains ?? []).filter(
       (d) =>
-        d.supports_private === true &&
-        d.type === ReverseProxyDomainType.FREE,
+        d.supports_private === true && d.type === ReverseProxyDomainType.FREE,
     );
     if (privateCapable.length === 0) return [];
     if (serviceCluster) {
       const match = privateCapable.find((d) => d.domain === serviceCluster);
-      return match
-        ? [{ domain: match.domain }]
-        : [{ domain: serviceCluster }];
+      return match ? [{ domain: match.domain }] : [{ domain: serviceCluster }];
     }
     return privateCapable.map((d) => ({ domain: d.domain }));
   }, [domains, initialNetwork, serviceCluster]);
@@ -92,12 +92,12 @@ export default function ReverseProxyTargetSelector({
               content={
                 <>
                   A <span className={"text-white font-medium"}>peer</span> is a
-                  machine (e.g., laptop, server, container) running NetBird.
+                  machine (e.g., laptop, server, container) running AnonBird.
                   Select a peer if your service runs directly on it.
                   <span className={"mt-1 block"}>
                     If you don&apos;t have a peer yet, you can{" "}
                     <InlineButtonLink onClick={() => setInstallModal(true)}>
-                      Install NetBird
+                      Install AnonBird
                     </InlineButtonLink>
                     .
                   </span>
@@ -114,7 +114,7 @@ export default function ReverseProxyTargetSelector({
                 <>
                   A <span className={"text-white font-medium"}>resource</span>{" "}
                   is a destination (IP, subnet, or domain) that can&apos;t run
-                  NetBird directly. Resources are part of a network and are
+                  AnonBird directly. Resources are part of a network and are
                   reached through a routing peer that forwards traffic to them.
                   <span className={"mt-1 block"}>
                     If you don&apos;t have resources yet, go to{" "}
@@ -129,17 +129,19 @@ export default function ReverseProxyTargetSelector({
             </HelpTooltip>
             {showClusters && (
               <>
-                {" "}or{" "}
+                {" "}
+                or{" "}
                 <HelpTooltip
                   className={"max-w-sm"}
                   content={
                     <>
-                      A <span className={"text-white font-medium"}>
+                      A{" "}
+                      <span className={"text-white font-medium"}>
                         proxy cluster
                       </span>{" "}
                       forwards inbound traffic to an upstream the proxy reaches
-                        without WireGuard. Useful for external APIs and services
-                        co-located with the proxy.
+                      without WireGuard. Useful for external APIs and services
+                      co-located with the proxy.
                     </>
                   }
                   interactive={true}

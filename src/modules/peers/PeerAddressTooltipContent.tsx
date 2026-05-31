@@ -1,17 +1,28 @@
 import CopyToClipboardText from "@components/CopyToClipboardText";
 import { ListItem } from "@components/ListItem";
-import { FlagIcon, GlobeIcon, MapPin, NetworkIcon } from "lucide-react";
+import {
+  FlagIcon,
+  GlobeIcon,
+  MapPin,
+  NetworkIcon,
+  ShieldCheck,
+} from "lucide-react";
 import * as React from "react";
 import { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useCountries } from "@/contexts/CountryProvider";
-import { Peer } from "@/interfaces/Peer";
+import {
+  getAnonymousPeerTransportLabel,
+  isAnonymousPeer,
+  Peer,
+} from "@/interfaces/Peer";
 
 type Props = {
   peer: Peer;
 };
 export const PeerAddressTooltipContent = ({ peer }: Props) => {
   const { isLoading, getRegionByPeer } = useCountries();
+  const anonymous = isAnonymousPeer(peer);
 
   const countryText = useMemo(() => {
     return getRegionByPeer(peer);
@@ -27,11 +38,11 @@ export const PeerAddressTooltipContent = ({ peer }: Props) => {
     >
       <ListItem
         icon={<MapPin size={14} />}
-        label={"NetBird IP"}
+        label={"Overlay IPv4"}
         value={
           <CopyToClipboardText
             iconAlignment={"right"}
-            message={"NetBird IP has been copied to your clipboard"}
+            message={"Overlay IPv4 has been copied to your clipboard"}
             alwaysShowIcon={true}
           >
             {peer.ip}
@@ -41,11 +52,11 @@ export const PeerAddressTooltipContent = ({ peer }: Props) => {
       {peer.ipv6 && (
         <ListItem
           icon={<MapPin size={14} />}
-          label={"NetBird IPv6"}
+          label={"Overlay IPv6"}
           value={
             <CopyToClipboardText
               iconAlignment={"right"}
-              message={"NetBird IPv6 has been copied to your clipboard"}
+              message={"Overlay IPv6 has been copied to your clipboard"}
               alwaysShowIcon={true}
             >
               {peer.ipv6}
@@ -53,19 +64,34 @@ export const PeerAddressTooltipContent = ({ peer }: Props) => {
           }
         />
       )}
-      <ListItem
-        icon={<NetworkIcon size={14} />}
-        label={"Public IP"}
-        value={
-          <CopyToClipboardText
-            iconAlignment={"right"}
-            message={"Public IP has been copied to your clipboard"}
-            alwaysShowIcon={true}
-          >
-            {peer.connection_ip}
-          </CopyToClipboardText>
-        }
-      />
+      {anonymous ? (
+        <>
+          <ListItem
+            icon={<ShieldCheck size={14} />}
+            label={"Network Mode"}
+            value={"anonymous"}
+          />
+          <ListItem
+            icon={<NetworkIcon size={14} />}
+            label={"Transport"}
+            value={getAnonymousPeerTransportLabel(peer)}
+          />
+        </>
+      ) : (
+        <ListItem
+          icon={<NetworkIcon size={14} />}
+          label={"Public IP"}
+          value={
+            <CopyToClipboardText
+              iconAlignment={"right"}
+              message={"Public IP has been copied to your clipboard"}
+              alwaysShowIcon={true}
+            >
+              {peer.connection_ip}
+            </CopyToClipboardText>
+          }
+        />
+      )}
       <ListItem
         icon={<GlobeIcon size={14} />}
         label={"Domain"}
@@ -99,23 +125,25 @@ export const PeerAddressTooltipContent = ({ peer }: Props) => {
           </div>
         }
       />
-      <ListItem
-        icon={<FlagIcon size={14} />}
-        label={"Region"}
-        value={
-          isLoading && !countryText ? (
-            <Skeleton width={100} />
-          ) : (
-            <CopyToClipboardText
-              iconAlignment={"right"}
-              message={"Region has been copied to your clipboard"}
-              alwaysShowIcon={true}
-            >
-              {countryText}
-            </CopyToClipboardText>
-          )
-        }
-      />
+      {!anonymous && (
+        <ListItem
+          icon={<FlagIcon size={14} />}
+          label={"Region"}
+          value={
+            isLoading && !countryText ? (
+              <Skeleton width={100} />
+            ) : (
+              <CopyToClipboardText
+                iconAlignment={"right"}
+                message={"Region has been copied to your clipboard"}
+                alwaysShowIcon={true}
+              >
+                {countryText}
+              </CopyToClipboardText>
+            )
+          }
+        />
+      )}
     </div>
   );
 };

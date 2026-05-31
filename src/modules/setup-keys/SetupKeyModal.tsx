@@ -149,7 +149,7 @@ export default function SetupKeyModal({
                 onClick={() => setInstallModal(true)}
               >
                 <DownloadIcon size={14} />
-                Install NetBird
+                Install AnonBird
               </Button>
             </div>
           </ModalFooter>
