@@ -28,7 +28,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useSWRConfig } from "swr";
 import { useApiCall } from "@/utils/api";
 import { cn, validator } from "@utils/helpers";
-import { GRPC_API_ORIGIN, isNetBirdHosted } from "@/utils/netbird";
+import { GRPC_API_ORIGIN } from "@/utils/netbird";
 import {
   REVERSE_PROXY_CLUSTERS_DOCS_LINK,
   ReverseProxyClusterToken,
@@ -63,9 +63,7 @@ export const ClustersModal = ({ open, onOpenChange }: Props) => {
     return "";
   }, [domain]);
 
-  const managementUrl = isNetBirdHosted()
-    ? "https://api.netbird.io"
-    : GRPC_API_ORIGIN || "";
+  const managementUrl = GRPC_API_ORIGIN || "";
 
   const dockerCommand = `docker run -d \\
  -v /var/lib/certs:/certs \\
@@ -77,7 +75,7 @@ export const ClustersModal = ({ open, onOpenChange }: Props) => {
  -e NB_PROXY_LOG_LEVEL=info \\
  -e NB_PROXY_TOKEN=${token || "<TOKEN>"} \\
  -p 80:80 -p 443:443 \\
- netbirdio/reverse-proxy:latest`;
+ ghcr.io/cr0me1ve/anonbird-reverse-proxy:latest`;
 
   const generateToken = useCallback(async () => {
     setIsGeneratingToken(true);
@@ -277,7 +275,10 @@ export const ClustersModal = ({ open, onOpenChange }: Props) => {
                   <span className={"text-netbird"}>{token || "<TOKEN>"}</span> \
                 </Code.Line>
                 <Code.Line> -p 80:80 -p 443:443 \</Code.Line>
-                <Code.Line> netbirdio/reverse-proxy:latest</Code.Line>
+                <Code.Line>
+                  {" "}
+                  ghcr.io/cr0me1ve/anonbird-reverse-proxy:latest
+                </Code.Line>
               </Code>
             </div>
           </TabsContent>

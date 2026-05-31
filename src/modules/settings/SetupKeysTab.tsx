@@ -59,7 +59,7 @@ export default function SetupKeysTab() {
           machines in your network.{" "}
           <InlineLink
             href={
-              "https://docs.netbird.io/how-to/register-machines-using-setup-keys"
+              "https://github.com/Cr0me1ve/netbird/tree/main/docs"
             }
             target={"_blank"}
           >

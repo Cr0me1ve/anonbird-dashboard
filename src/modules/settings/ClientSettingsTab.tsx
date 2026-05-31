@@ -249,7 +249,7 @@ function ClientSettingsTabContent({ account }: Readonly<Props>) {
               This requires at least AnonBird{" "}
               <span className={"text-white font-medium"}>v0.61.0</span>.{" "}
               <InlineLink
-                href={"https://docs.netbird.io/manage/peers/auto-update"}
+                href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
                 target={"_blank"}
               >
                 Learn more
@@ -322,7 +322,7 @@ function ClientSettingsTabContent({ account }: Readonly<Props>) {
                 <span className={"text-white font-medium"}>v0.66.0</span>.{" "}
                 <InlineLink
                   href={
-                    "https://docs.netbird.io/manage/reverse-proxy/expose-from-cli"
+                    "https://github.com/Cr0me1ve/netbird/tree/main/docs"
                   }
                   target={"_blank"}
                 >
@@ -377,7 +377,7 @@ function ClientSettingsTabContent({ account }: Readonly<Props>) {
               behavior may evolve. Instead of maintaining always-on connections,
               AnonBird activates them on-demand based on activity or signaling.{" "}
               <InlineLink
-                href={"https://docs.netbird.io/how-to/lazy-connection"}
+                href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
                 target={"_blank"}
               >
                 Learn more

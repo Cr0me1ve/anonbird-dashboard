@@ -236,7 +236,9 @@ function NetworkSettingsTabContent({ account }: Readonly<Props>) {
               <div className={"w-full"}>
                 <Input
                   placeholder={
-                    isNetBirdHosted() ? "netbird.cloud" : "netbird.selfhosted"
+                    isNetBirdHosted()
+                      ? "anonbird.cloud"
+                      : "anonbird.selfhosted"
                   }
                   errorTooltip={true}
                   errorTooltipPosition={"top"}
@@ -337,7 +339,7 @@ function NetworkSettingsTabContent({ account }: Readonly<Props>) {
                 the clients.{" "}
                 <InlineLink
                   href={
-                    "https://docs.netbird.io/how-to/accessing-entire-domains-within-networks#enabling-dns-wildcard-routing"
+                    "https://github.com/Cr0me1ve/netbird/tree/main/docs"
                   }
                   target={"_blank"}
                   onClick={(e) => e.stopPropagation()}

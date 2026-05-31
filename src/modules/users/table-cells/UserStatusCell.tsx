@@ -46,7 +46,7 @@ export default function UserStatusCell({ user }: Readonly<Props>) {
       <div>
         <InlineLink
           href={
-            "https://docs.netbird.io/selfhosted/identity-providers/disable-local-authentication"
+            "https://github.com/Cr0me1ve/netbird/tree/main/docs"
           }
           target={"_blank"}
         >
@@ -75,7 +75,7 @@ export default function UserStatusCell({ user }: Readonly<Props>) {
       <div>
         Learn more about{" "}
         <InlineLink
-          href={"https://docs.netbird.io/how-to/approve-users"}
+          href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
           target={"_blank"}
         >
           User Approval <ExternalLinkIcon size={12} />

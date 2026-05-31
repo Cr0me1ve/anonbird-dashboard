@@ -39,7 +39,7 @@ export default function Networks() {
         <Paragraph>
           Learn more about
           <InlineLink
-            href={"https://docs.netbird.io/how-to/networks"}
+            href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
             target={"_blank"}
           >
             Networks

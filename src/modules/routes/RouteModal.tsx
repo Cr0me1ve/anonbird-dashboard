@@ -799,8 +799,8 @@ export function RouteModalContent({
             <InlineLink
               href={
                 exitNode
-                  ? "https://docs.netbird.io/how-to/configuring-default-routes-for-internet-traffic"
-                  : "https://docs.netbird.io/how-to/routing-traffic-to-private-networks"
+                  ? "https://github.com/Cr0me1ve/netbird/tree/main/docs"
+                  : "https://github.com/Cr0me1ve/netbird/tree/main/docs"
               }
               target={"_blank"}
             >

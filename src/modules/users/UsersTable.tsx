@@ -242,7 +242,7 @@ export default function UsersTable({
                 Learn more about
                 <InlineLink
                   href={
-                    "https://docs.netbird.io/how-to/add-users-to-your-network"
+                    "https://github.com/Cr0me1ve/netbird/tree/main/docs"
                   }
                   target={"_blank"}
                 >
@@ -349,7 +349,7 @@ export const InviteUserButton = ({
             </p>
             <div className={"text-xs mt-1.5"}>
               <InlineLink
-                href={"https://docs.netbird.io/selfhosted/identity-providers/disable-local-authentication"}
+                href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
                 target={"_blank"}
                 className={"flex gap-1 items-center"}
               >

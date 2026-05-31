@@ -8,12 +8,10 @@ import React, {
   useState,
 } from "react";
 import { usePermissions } from "@/contexts/PermissionsProvider";
-import { isLocalDev, isNetBirdHosted } from "@utils/netbird";
+import { isNetBirdHosted } from "@utils/netbird";
 import announcementFile from "../../announcements.json";
 
-const ANNOUNCEMENTS_URL =
-  "https://raw.githubusercontent.com/netbirdio/dashboard/main/announcements.json";
-const STORAGE_KEY = "netbird-announcements";
+const STORAGE_KEY = "anonbird-announcements";
 const CACHE_DURATION_MS = 30 * 60 * 1000;
 const BANNER_HEIGHT = 40;
 
@@ -65,15 +63,10 @@ const getAnnouncements = async (): Promise<AnnouncementInfo[]> => {
 
     let raw: Announcement[];
 
-    if (isLocalDev()) {
-      raw = announcementFile as Announcement[];
-    } else if (stored && now - stored.timestamp < CACHE_DURATION_MS) {
+    if (stored && now - stored.timestamp < CACHE_DURATION_MS) {
       raw = stored.announcements;
     } else {
-      const response = await fetch(ANNOUNCEMENTS_URL);
-      if (!response.ok) return [];
-
-      raw = await response.json();
+      raw = announcementFile as Announcement[];
     }
 
     const isCloud = isNetBirdHosted();

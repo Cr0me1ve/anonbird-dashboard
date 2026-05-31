@@ -46,7 +46,7 @@ export default function AccessControlPage() {
           <Paragraph>
             Learn more about
             <InlineLink
-              href={"https://docs.netbird.io/how-to/manage-network-access"}
+              href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
               target={"_blank"}
             >
               Access Controls

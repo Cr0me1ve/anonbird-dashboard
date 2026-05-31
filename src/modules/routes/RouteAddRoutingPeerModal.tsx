@@ -223,7 +223,7 @@ function Content({ onSuccess, groupedRoute, peer }: ModalProps) {
             Learn more about
             <InlineLink
               href={
-                "https://docs.netbird.io/how-to/routing-traffic-to-private-networks"
+                "https://github.com/Cr0me1ve/netbird/tree/main/docs"
               }
               target={"_blank"}
             >

@@ -372,7 +372,7 @@ export function UserInviteModalContent({
                 <MailIcon size={16} className={"text-nb-gray-300"} />
               </div>
             }
-            placeholder={"hello@netbird.io"}
+            placeholder={"hello@anonbird.local"}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />

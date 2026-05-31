@@ -132,7 +132,7 @@ const NavigationVersionInfoContent = () => {
 
       {hasUpdate && (
         <a
-          href="https://docs.netbird.io/selfhosted/maintenance/upgrade"
+          href="https://github.com/Cr0me1ve/netbird/tree/main/docs"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-1.5 text-white font-medium bg-netbird hover:bg-netbird-500 transition-colors rounded-md py-1.5 px-2 mt-1"

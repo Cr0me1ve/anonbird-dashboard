@@ -50,7 +50,7 @@ export const NetworkRoutingPeersTabContent = ({
           <Paragraph>
             Learn more about
             <InlineLink
-              href={"https://docs.netbird.io/manage/networks#routing-peers"}
+              href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
               target={"_blank"}
             >
               Routing Peers

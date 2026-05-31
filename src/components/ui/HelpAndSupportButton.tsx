@@ -20,7 +20,6 @@ import {
 import { useState } from "react";
 import Button from "@components/Button";
 import { cn } from "@utils/helpers";
-import SlackIcon from "@/assets/icons/SlackIcon";
 
 export default function HelpAndSupportButton() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -53,7 +52,7 @@ export default function HelpAndSupportButton() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          href="https://docs.netbird.io/"
+          href="https://github.com/Cr0me1ve/netbird/tree/main/docs"
           target="_blank"
           rel="noopener noreferrer"
           asChild
@@ -67,7 +66,7 @@ export default function HelpAndSupportButton() {
           </DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem
-          href="https://docs.netbird.io/help/troubleshooting-client"
+          href="https://github.com/Cr0me1ve/netbird/tree/main/docs"
           target="_blank"
           rel="noopener noreferrer"
           asChild
@@ -82,28 +81,14 @@ export default function HelpAndSupportButton() {
         </DropdownMenuItem>
 
         <DropdownMenuItem
-          href="https://forum.netbird.io/"
+          href="https://github.com/Cr0me1ve/netbird/issues"
           target="_blank"
           rel="noopener noreferrer"
           asChild
         >
           <div className={"flex gap-3 items-center"}>
             <MessagesSquareIcon size={14} />
-            AnonBird Forum
-          </div>
-          <DropdownMenuShortcut>
-            <ArrowUpRightIcon size={16} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          href="https://docs.netbird.io/slack-url"
-          target="_blank"
-          rel="noopener noreferrer"
-          asChild
-        >
-          <div className={"flex gap-3 items-center"}>
-            <SlackIcon size={14} />
-            AnonBird Slack
+            Issues
           </div>
           <DropdownMenuShortcut>
             <ArrowUpRightIcon size={16} />

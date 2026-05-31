@@ -31,7 +31,7 @@ export function CustomDomainSelector({
   const options: SelectOption[] = useMemo(() => {
     const opts: SelectOption[] = [];
 
-    // Add free domains (connected proxy clusters, e.g., .eu.proxy.netbird.io)
+    // Add free domains (connected proxy clusters, e.g., .eu.proxy.anonbird.cloud)
     domains
       ?.filter((d) => d.type === ReverseProxyDomainType.FREE)
       .forEach((domain) => {

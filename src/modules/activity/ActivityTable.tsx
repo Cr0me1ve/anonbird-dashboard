@@ -157,7 +157,7 @@ export default function ActivityTable({
             <>
               Learn more in our{" "}
               <InlineLink
-                href={"https://docs.netbird.io/how-to/getting-started"}
+                href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
                 target={"_blank"}
               >
                 Getting Started Guide

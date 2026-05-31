@@ -38,8 +38,8 @@ export default function DockerTab({
   const buildCommand = [
     `git clone ${ANONBIRD_SOURCE_URL} anonbird`,
     "cd anonbird",
-    "CGO_ENABLED=0 go build -trimpath -o netbird ./client",
-    `docker build -t ${ANONBIRD_DOCKER_IMAGE} -f client/Dockerfile --build-arg NETBIRD_BINARY=netbird .`,
+    "CGO_ENABLED=0 go build -trimpath -o anonbird ./client",
+    `docker build -t ${ANONBIRD_DOCKER_IMAGE} -f client/Dockerfile --build-arg ANONBIRD_BINARY=anonbird .`,
   ].join("\n");
   return (
     <TabsContent value={String(OperatingSystem.DOCKER)}>
@@ -73,11 +73,11 @@ export default function DockerTab({
               <Code.Line>git clone {ANONBIRD_SOURCE_URL} anonbird</Code.Line>
               <Code.Line>cd anonbird</Code.Line>
               <Code.Line>
-                CGO_ENABLED=0 go build -trimpath -o netbird ./client
+                CGO_ENABLED=0 go build -trimpath -o anonbird ./client
               </Code.Line>
               <Code.Line>
                 docker build -t {ANONBIRD_DOCKER_IMAGE} -f client/Dockerfile
-                --build-arg NETBIRD_BINARY=netbird .
+                --build-arg ANONBIRD_BINARY=anonbird .
               </Code.Line>
             </Code>
           </Steps.Step>
@@ -113,7 +113,7 @@ export default function DockerTab({
                 </Code.Line>
               ))}
 
-              <Code.Line> -v netbird-client:/var/lib/netbird \</Code.Line>
+              <Code.Line> -v anonbird-client:/var/lib/anonbird \</Code.Line>
               {GRPC_API_ORIGIN && (
                 <Code.Line>
                   {" "}

@@ -184,7 +184,7 @@ export default function AuthenticationTab({ account }: Readonly<Props>) {
               Learn more about
               <InlineLink
                 href={
-                  "https://docs.netbird.io/how-to/enforce-periodic-user-authentication"
+                  "https://github.com/Cr0me1ve/netbird/tree/main/docs"
                 }
                 target={"_blank"}
               >

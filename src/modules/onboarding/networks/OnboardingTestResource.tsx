@@ -73,7 +73,7 @@ export const OnboardingTestResource = ({
             Everything working? Great! You can now continue with the onboarding.
             If something isn’t right, please check our{" "}
             <InlineLink
-              href={"https://docs.netbird.io/how-to/troubleshooting-client"}
+              href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
               target={"_blank"}
               onClick={onTroubleshootingClick}
             >

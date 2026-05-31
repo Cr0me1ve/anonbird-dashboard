@@ -1,21 +1,18 @@
-# NetBird Dashboard
+# AnonBird Dashboard
 
-This project is the UI for NetBird's Management service.
+This project is the UI for AnonBird's management service.
 
-**Hosted version:** https://app.netbird.io/
-
-See [NetBird repo](https://github.com/netbirdio/netbird)
+See the [AnonBird fork](https://github.com/Cr0me1ve/netbird).
 
 ## Why?
 
-The purpose of this project is simple - make it easy to manage VPN built with [NetBird](https://github.com/netbirdio/netbird).
-The dashboard makes it possible to:
+The dashboard makes it easy to operate an anonymous private mesh:
 
-- track the status of your peers
-- remove peers
-- manage Setup Keys (to authenticate new peers)
-- list users
+- track peer status without exposing real peer IPs
+- manage setup keys for unattended enrollment
+- list users and service users
 - define access controls
+- generate source-build install commands for AnonBird clients
 
 ## Some Screenshots
 
@@ -35,63 +32,49 @@ The dashboard makes it possible to:
 
 ## How to run
 
-Disclaimer. We believe that proper user management system is not a trivial task and requires quite some effort to make it right. Therefore we decided to
-use Auth0 service that covers all our needs (user management, social login, JWT for the management API).
-Auth0 so far is the only 3rd party dependency that can't be really self-hosted.
-
 1. Install [Docker](https://docs.docker.com/get-docker/)
-2. Register [Auth0](https://auth0.com/) account
-3. Running NetBird UI Dashboard requires the following Auth0 environmental variables to be set (see docker command below):
+2. Register an [Auth0](https://auth0.com/) account, or configure another OIDC provider supported by your management service.
+3. Set the required authentication environment variables:
 
    `AUTH0_DOMAIN` `AUTH0_CLIENT_ID` `AUTH0_AUDIENCE`
 
-   To obtain these, please use [Auth0 React SDK Guide](https://auth0.com/docs/quickstart/spa/react) up until "Configure Allowed Web Origins"
-
-4. NetBird UI Dashboard uses NetBird's Management Service HTTP API, so setting `NETBIRD_MGMT_API_ENDPOINT` is required. Most likely it will be `http://localhost:33071` if you are hosting Management API on the same server.
-5. Run docker container without SSL (Let's Encrypt):
+4. Set `NETBIRD_MGMT_API_ENDPOINT` to your AnonBird management HTTP API. For a local self-hosted deployment this is usually `http://localhost:33071`.
+5. Run the dashboard without SSL:
 
    ```shell
-   docker run -d --name netbird-dashboard \
+   docker run -d --name anonbird-dashboard \
      --rm -p 80:80 -p 443:443 \
      -e AUTH0_DOMAIN=<SET YOUR AUTH DOMAIN> \
      -e AUTH0_CLIENT_ID=<SET YOUR CLIENT ID> \
      -e AUTH0_AUDIENCE=<SET YOUR AUDIENCE> \
      -e NETBIRD_MGMT_API_ENDPOINT=<SET YOUR MANAGEMENT API URL> \
-     netbirdio/dashboard:main
+     ghcr.io/cr0me1ve/anonbird-dashboard:main
    ```
 
-6. Run docker container with SSL (Let's Encrypt):
+6. Run the dashboard with SSL:
 
    ```shell
-   docker run -d --name netbird-dashboard \
+   docker run -d --name anonbird-dashboard \
      --rm -p 80:80 -p 443:443 \
      -e NGINX_SSL_PORT=443 \
      -e LETSENCRYPT_DOMAIN=<YOUR PUBLIC DOMAIN> \
      -e LETSENCRYPT_EMAIL=<YOUR EMAIL> \
      -e AUTH0_DOMAIN=<SET YOUR AUTH DOMAIN> \
-     -e AUTH0_CLIENT_ID=<SET YOUR CLEITN ID> \
+     -e AUTH0_CLIENT_ID=<SET YOUR CLIENT ID> \
      -e AUTH0_AUDIENCE=<SET YOUR AUDIENCE> \
      -e NETBIRD_MGMT_API_ENDPOINT=<SET YOUR MANAGEMENT API URL> \
-     netbirdio/dashboard:main
+     ghcr.io/cr0me1ve/anonbird-dashboard:main
    ```
 
 ## How to run local development
 
 1. Install [Node](https://nodejs.org/)
-2. Create and update the `.local-config.json` file. This file should contain values to be replaced from `config.json`
-3. Run `npm install` to install dependencies
-4. Run `npm run dev` to start the development server
+2. Create and update the `.local-config.json` file. This file should contain values to be replaced from `config.json`.
+3. Run `npm install` to install dependencies.
+4. Run `npm run dev` to start the development server.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing by modifying the code inside `src/..`  
-The page auto-updates as you edit the file.
+## Migration Notes
 
-## How to migrate from old dashboard (v1)
-
-The new dashboard comes with a new docker image `netbirdio/dashboard:main`.  
-To migrate from the old dashboard (v1) `wiretrustee/dashboard:main` to the new one, please follow the steps below.
-
-1. Stop the dashboard container `docker compose down dashboard`
-2. Replace the docker image name in your `docker-compose.yml` with `netbirdio/dashboard:main`
-3. Recreate the dashboard container `docker compose up -d --force-recreate dashboard`
+Replace old dashboard images in your compose files with `ghcr.io/cr0me1ve/anonbird-dashboard:main`, then recreate the dashboard container.

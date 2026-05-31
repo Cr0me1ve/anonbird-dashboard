@@ -83,7 +83,7 @@ export default function PeerActionCell() {
           create an explicit access control policy and update your AnonBird
           client to restore SSH functionality.{" "}
           <InlineLink
-            href={"https://docs.netbird.io/manage/peers/ssh"}
+            href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
             target={"_blank"}
             onClick={(e) => e.stopPropagation()}
           >

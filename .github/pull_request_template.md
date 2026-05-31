@@ -7,6 +7,6 @@ Select exactly one:
 - [ ] Documentation is **not needed** for this change (explain why)
 
 ### Docs PR URL (required if "docs added" is checked)
-Paste the PR link from https://github.com/netbirdio/docs here:
+Paste the PR link from https://github.com/Cr0me1ve/netbird here:
 
-https://github.com/netbirdio/docs/pull/__
+https://github.com/Cr0me1ve/netbird/pull/__

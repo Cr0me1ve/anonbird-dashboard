@@ -51,7 +51,7 @@ export default function PostureChecksPage() {
           <Paragraph>
             Learn more about
             <InlineLink
-              href={"https://docs.netbird.io/how-to/manage-posture-checks"}
+              href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
               target={"_blank"}
             >
               Posture Checks

@@ -155,7 +155,7 @@ export const isNetBirdHosted = () => {
   const hostname = window.location.hostname;
   if (hostname.includes("selfhosted")) return false;
   return (
-    hostname.endsWith(".netbird.io") || hostname.endsWith(".wiretrustee.com")
+    hostname.endsWith(".anonbird.cloud") || hostname.endsWith(".anonbird.app")
   );
 };
 

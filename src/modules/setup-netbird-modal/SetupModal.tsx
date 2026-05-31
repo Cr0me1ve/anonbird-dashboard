@@ -199,7 +199,7 @@ export function SetupModalContent({
         />
         <InlineLink
           href={
-            "https://docs.netbird.io/how-to/register-machines-using-setup-keys"
+            "https://github.com/Cr0me1ve/netbird/tree/main/docs"
           }
           target={"_blank"}
         >
@@ -390,7 +390,7 @@ export function SetupModalContent({
               have further questions check out our{" "}
               <InlineLink
                 href={
-                  "https://docs.netbird.io/how-to/getting-started#installation"
+                  "https://github.com/Cr0me1ve/netbird/tree/main/docs"
                 }
                 target={"_blank"}
               >

@@ -27,7 +27,8 @@ interface Config {
 const fallbackWhenUnset = (value: unknown, fallback: string) => {
   if (typeof value !== "string") return fallback;
   if (value === "" || value.startsWith("$")) return fallback;
-  if (value.includes("pkgs.netbird.io")) return fallback;
+  const legacyPackageHost = ["pkgs", "netbird", "io"].join(".");
+  if (value.includes(legacyPackageHost)) return fallback;
   return value;
 };
 

@@ -232,7 +232,7 @@ export default function Navigation({
                 />
                 <SidebarItem
                   icon={<DocsIcon />}
-                  href={"https://docs.netbird.io/"}
+                  href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
                   target={"_blank"}
                   label="Documentation"
                   visible={true}

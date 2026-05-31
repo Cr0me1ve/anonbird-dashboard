@@ -466,7 +466,7 @@ export function NameserverModalContent({
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
             <InlineLink
-              href={"https://docs.netbird.io/how-to/manage-dns-in-your-network"}
+              href={"https://github.com/Cr0me1ve/netbird/tree/main/docs"}
               target={"_blank"}
             >
               DNS

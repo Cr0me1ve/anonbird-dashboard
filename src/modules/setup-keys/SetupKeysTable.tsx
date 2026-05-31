@@ -232,7 +232,7 @@ export default function SetupKeysTable({
                   Learn more about
                   <InlineLink
                     href={
-                      "https://docs.netbird.io/how-to/register-machines-using-setup-keys"
+                      "https://github.com/Cr0me1ve/netbird/tree/main/docs"
                     }
                     target={"_blank"}
                   >
