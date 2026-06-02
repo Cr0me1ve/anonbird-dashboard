@@ -29,7 +29,7 @@ import {
   Trash2,
   User2,
 } from "lucide-react";
-import NetBirdIcon from "@/assets/icons/NetBirdIcon";
+import AnonBirdIcon from "@/assets/icons/AnonBirdIcon";
 import Badge from "@components/Badge";
 import { usePathname } from "next/navigation";
 import React, { useMemo, useState } from "react";
@@ -41,7 +41,11 @@ import useCopyToClipboard from "@/hooks/useCopyToClipboard";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { cn, generateColorFromString } from "@utils/helpers";
 import { Group } from "@/interfaces/Group";
-import { Role, UserInvite, UserInviteRegenerateResponse } from "@/interfaces/User";
+import {
+  Role,
+  UserInvite,
+  UserInviteRegenerateResponse,
+} from "@/interfaces/User";
 import UserInviteModal from "@/modules/users/UserInviteModal";
 import { useAccount } from "@/modules/account/useAccount";
 
@@ -93,7 +97,7 @@ function InviteRoleCell({ invite }: { invite: UserInvite }) {
         )}
         {role === Role.Owner && (
           <>
-            <NetBirdIcon size={14} />
+            <AnonBirdIcon size={14} />
             Owner
           </>
         )}
@@ -125,7 +129,8 @@ function InviteRegenerateCell({ invite }: { invite: UserInvite }) {
   const { mutate } = useSWRConfig();
   const { permission } = usePermissions();
   const [modalOpen, setModalOpen] = useState(false);
-  const [regeneratedData, setRegeneratedData] = useState<UserInviteRegenerateResponse | null>(null);
+  const [regeneratedData, setRegeneratedData] =
+    useState<UserInviteRegenerateResponse | null>(null);
 
   const regenerateRequest = useApiCall<UserInviteRegenerateResponse>(
     `/users/invites/${invite.id}/regenerate`,
@@ -194,7 +199,8 @@ function InviteRegenerateCell({ invite }: { invite: UserInvite }) {
                   Invite link regenerated!
                 </h2>
                 <Paragraph className={"mt-0 text-sm text-center"}>
-                  Share this link with the user. They will be able to set their own password.
+                  Share this link with the user. They will be able to set their
+                  own password.
                 </Paragraph>
               </div>
             </div>
@@ -210,7 +216,9 @@ function InviteRegenerateCell({ invite }: { invite: UserInvite }) {
               </span>
             </Code>
             {regeneratedData && (
-              <Paragraph className={"mt-3 text-xs text-nb-gray-400 text-center"}>
+              <Paragraph
+                className={"mt-3 text-xs text-nb-gray-400 text-center"}
+              >
                 Expires on{" "}
                 {new Date(regeneratedData.invite_expires_at).toLocaleString()}
               </Paragraph>
@@ -252,12 +260,7 @@ function InviteGroupCell({ invite }: { invite: UserInvite }) {
     );
   }
 
-  return (
-    <MultipleGroups
-      groups={foundGroups}
-      label={"Auto-assigned Groups"}
-    />
-  );
+  return <MultipleGroups groups={foundGroups} label={"Auto-assigned Groups"} />;
 }
 
 // Status cell for invites - shows Valid/Expired based on expired field
@@ -398,7 +401,8 @@ export default function UserInvitesTable({
   onShowUsers,
 }: Readonly<Props>) {
   useFetchApi("/groups");
-  const { data: invites, isLoading } = useFetchApi<UserInvite[]>("/users/invites");
+  const { data: invites, isLoading } =
+    useFetchApi<UserInvite[]>("/users/invites");
   const { mutate } = useSWRConfig();
   const path = usePathname();
 
@@ -449,9 +453,7 @@ export default function UserInvitesTable({
             <>
               Learn more about
               <InlineLink
-                href={
-                  "https://github.com/Cr0me1ve/anonbird/tree/main/docs"
-                }
+                href={"https://github.com/Cr0me1ve/anonbird/tree/main/docs"}
                 target={"_blank"}
               >
                 Users
@@ -471,7 +473,10 @@ export default function UserInvitesTable({
       {(table) => {
         return (
           <>
-            <DataTableRowsPerPage table={table} disabled={invites?.length == 0} />
+            <DataTableRowsPerPage
+              table={table}
+              disabled={invites?.length == 0}
+            />
             <DataTableRefreshButton
               isDisabled={invites?.length == 0}
               onClick={() => {
@@ -525,4 +530,3 @@ export const InviteUserButton = ({
     </UserInviteModal>
   );
 };
-

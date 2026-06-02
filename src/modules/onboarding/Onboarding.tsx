@@ -1,6 +1,6 @@
 import InlineLink from "@components/InlineLink";
 import { Modal, ModalPortal } from "@components/modal/Modal";
-import { NetBirdLogo } from "@components/NetBirdLogo";
+import { AnonBirdLogo } from "@components/AnonBirdLogo";
 import { notify } from "@components/Notification";
 import { GradientFadedBackground } from "@components/ui/GradientFadedBackground";
 import { DialogContent, DialogTitle } from "@radix-ui/react-dialog";
@@ -315,7 +315,7 @@ export const Onboarding = ({
                 intent === Intent.NETWORKS && step === 7 && "max-w-5xl",
               )}
             >
-              <NetBirdLogo size={"large"} mobile={false} />
+              <AnonBirdLogo size={"large"} mobile={false} />
 
               <div
                 className={

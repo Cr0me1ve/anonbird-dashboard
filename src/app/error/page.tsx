@@ -7,7 +7,7 @@ import loadConfig from "@utils/config";
 import { ArrowRightIcon, RefreshCw } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import NetBirdIcon from "@/assets/icons/NetBirdIcon";
+import AnonBirdIcon from "@/assets/icons/AnonBirdIcon";
 
 const config = loadConfig();
 
@@ -76,7 +76,7 @@ export default function ErrorPage() {
   return (
     <div className="flex items-center justify-center flex-col h-screen max-w-xl mx-auto">
       <div className="bg-nb-gray-930 mb-3 border border-nb-gray-900 h-12 w-12 rounded-md flex items-center justify-center">
-        <NetBirdIcon size={23} />
+        <AnonBirdIcon size={23} />
       </div>
 
       <h1 className="text-center mt-2">{getTitle()}</h1>

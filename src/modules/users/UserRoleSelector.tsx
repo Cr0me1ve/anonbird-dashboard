@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 import { useState } from "react";
-import NetBirdIcon from "@/assets/icons/NetBirdIcon";
+import AnonBirdIcon from "@/assets/icons/AnonBirdIcon";
 import { useDialog } from "@/contexts/DialogProvider";
 import { useLoggedInUser } from "@/contexts/UsersProvider";
 import { useElementSize } from "@/hooks/useElementSize";
@@ -37,7 +37,7 @@ export const UserRoles = [
   {
     name: "Owner",
     value: Role.Owner,
-    icon: NetBirdIcon,
+    icon: AnonBirdIcon,
   },
   {
     name: "Admin",

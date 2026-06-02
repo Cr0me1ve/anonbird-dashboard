@@ -10,7 +10,7 @@ import { isEmpty } from "lodash";
 import { ExternalLinkIcon } from "lucide-react";
 import * as React from "react";
 import { useMemo, useState } from "react";
-import NetBirdIcon from "@/assets/icons/NetBirdIcon";
+import AnonBirdIcon from "@/assets/icons/AnonBirdIcon";
 import { NetBirdVersionCheck } from "@/interfaces/PostureCheck";
 import { PostureCheckCard } from "@/modules/posture-checks/ui/PostureCheckCard";
 
@@ -37,7 +37,7 @@ export const PostureCheckNetBirdVersion = ({
       description={
         "Restrict access to peers with a specific AnonBird client version."
       }
-      icon={<NetBirdIcon size={18} />}
+      icon={<AnonBirdIcon size={18} />}
       modalWidthClass={"max-w-lg"}
       onReset={() => onChange(undefined)}
     >
@@ -99,9 +99,7 @@ const CheckContent = ({ value, onChange, disabled }: Props) => {
           <Paragraph className={"text-sm mt-auto"}>
             Learn more about
             <InlineLink
-              href={
-                "https://github.com/Cr0me1ve/anonbird/tree/main/docs"
-              }
+              href={"https://github.com/Cr0me1ve/anonbird/tree/main/docs"}
               target={"_blank"}
             >
               Client Version Check

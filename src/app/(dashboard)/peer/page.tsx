@@ -54,7 +54,7 @@ import Skeleton from "react-loading-skeleton";
 import { useSWRConfig } from "swr";
 import RoundedFlag from "@/assets/countries/RoundedFlag";
 import CircleIcon from "@/assets/icons/CircleIcon";
-import NetBirdIcon from "@/assets/icons/NetBirdIcon";
+import AnonBirdIcon from "@/assets/icons/AnonBirdIcon";
 import PeerIcon from "@/assets/icons/PeerIcon";
 import ReverseProxyIcon from "@/assets/icons/ReverseProxyIcon";
 import { useCountries } from "@/contexts/CountryProvider";
@@ -800,7 +800,7 @@ function PeerInformationCard({ peer }: Readonly<{ peer: Peer }>) {
           <Card.ListItem
             label={
               <>
-                <NetBirdIcon size={16} className={"shrink-0"} />
+                <AnonBirdIcon size={16} className={"shrink-0"} />
                 Agent Version
               </>
             }
@@ -811,7 +811,7 @@ function PeerInformationCard({ peer }: Readonly<{ peer: Peer }>) {
             <Card.ListItem
               label={
                 <>
-                  <NetBirdIcon size={16} className={"shrink-0"} />
+                  <AnonBirdIcon size={16} className={"shrink-0"} />
                   UI Version
                 </>
               }

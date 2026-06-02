@@ -16,7 +16,7 @@ import {
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
-import NetBirdIcon from "@/assets/icons/NetBirdIcon";
+import AnonBirdIcon from "@/assets/icons/AnonBirdIcon";
 import { UserInviteInfo } from "@/interfaces/User";
 
 export default function InviteAcceptPage() {
@@ -218,7 +218,7 @@ function InviteAcceptContent() {
     <div className="min-h-screen flex items-center justify-center bg-nb-gray-950 p-4">
       <div className="max-w-md w-full">
         <div className="mb-8 flex justify-center">
-          <NetBirdIcon size={48} />
+          <AnonBirdIcon size={48} />
         </div>
 
         <div className="text-center mb-8">

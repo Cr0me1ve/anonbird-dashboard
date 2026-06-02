@@ -19,7 +19,7 @@ import * as React from "react";
 import { useState } from "react";
 import sshImage from "@/assets/ssh/ssh-client.png";
 import { SegmentedTabs } from "@components/SegmentedTabs";
-import NetBirdIcon from "@/assets/icons/NetBirdIcon";
+import AnonBirdIcon from "@/assets/icons/AnonBirdIcon";
 import { Peer } from "@/interfaces/Peer";
 import { PeerSSHPolicyModal } from "@/modules/peer/PeerSSHPolicyModal";
 
@@ -64,7 +64,7 @@ export const PeerSSHInstructions = ({
                 CLI
               </SegmentedTabs.Trigger>
               <SegmentedTabs.Trigger value={"gui"}>
-                <NetBirdIcon size={16} />
+                <AnonBirdIcon size={16} />
                 Desktop Client
               </SegmentedTabs.Trigger>
             </SegmentedTabs.List>
