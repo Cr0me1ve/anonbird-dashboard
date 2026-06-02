@@ -2,6 +2,7 @@ import loadConfig from "@utils/config";
 
 const config = loadConfig();
 export const GRPC_API_ORIGIN = config.grpcApiOrigin;
+export const PEER_MANAGEMENT_ENDPOINT = config.peerManagementEndpoint;
 export const ANONBIRD_SOURCE_URL = config.anonbirdSourceURL;
 export const ANONBIRD_DOCKER_IMAGE = config.anonbirdDockerImage;
 
@@ -10,6 +11,7 @@ export type I2PDaemonMode = "external" | "auto" | "managed";
 
 export type AnonymousTransportCommandOptions = {
   transport?: AnonymousTransportType;
+  managementURL?: string;
   torSOCKS5?: string;
   i2pSAM?: string;
   i2pTunnelLength?: string | number;
@@ -28,10 +30,32 @@ export const DEFAULT_I2PD_PATH = "i2pd";
 export const ANONYMOUS_MANAGEMENT_URL_PLACEHOLDER =
   "ANONYMOUS_MANAGEMENT_URL_REQUIRED";
 
+const normalizeManagementURL = (rawURL?: string) => rawURL?.trim() ?? "";
+const BASE32_ALPHABET = "abcdefghijklmnopqrstuvwxyz234567";
+
+const randomBase32 = (length: number) => {
+  const bytes = new Uint8Array(length);
+  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+    crypto.getRandomValues(bytes);
+  } else {
+    for (let i = 0; i < length; i++) {
+      bytes[i] = Math.floor(Math.random() * 256);
+    }
+  }
+  return Array.from(bytes, (value) => BASE32_ALPHABET[value % 32]).join("");
+};
+
+export const generateRandomOnionManagementURL = () =>
+  `http://${randomBase32(56)}.onion`;
+
+export const generateRandomI2PManagementURL = () =>
+  `http://${randomBase32(52)}.b32.i2p`;
+
 export const isAnonymousManagementURL = (rawURL?: string) => {
-  if (!rawURL) return false;
+  const normalizedURL = normalizeManagementURL(rawURL);
+  if (!normalizedURL) return false;
   try {
-    const parsed = new URL(rawURL);
+    const parsed = new URL(normalizedURL);
     if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
       return false;
     }
@@ -42,29 +66,41 @@ export const isAnonymousManagementURL = (rawURL?: string) => {
   }
 };
 
-export const ANONYMOUS_MANAGEMENT_ORIGIN = isAnonymousManagementURL(
-  GRPC_API_ORIGIN,
-)
-  ? GRPC_API_ORIGIN
-  : "";
+export const getAnonymousManagementOrigin = (
+  options?: AnonymousTransportCommandOptions,
+) => {
+  const hasExplicitManagementURL =
+    !!options &&
+    Object.prototype.hasOwnProperty.call(options, "managementURL");
+  const rawURL = hasExplicitManagementURL
+    ? options?.managementURL
+    : PEER_MANAGEMENT_ENDPOINT || GRPC_API_ORIGIN;
+  const normalizedURL = normalizeManagementURL(rawURL);
+  return isAnonymousManagementURL(normalizedURL) ? normalizedURL : "";
+};
+
+export const ANONYMOUS_MANAGEMENT_ORIGIN = getAnonymousManagementOrigin();
 export const ANONYMOUS_MANAGEMENT_URL_REQUIRED =
-  !!GRPC_API_ORIGIN && !ANONYMOUS_MANAGEMENT_ORIGIN;
+  !ANONYMOUS_MANAGEMENT_ORIGIN;
+export const getAnonymousManagementCommandURL = (
+  options?: AnonymousTransportCommandOptions,
+) =>
+  getAnonymousManagementOrigin(options) ||
+  ANONYMOUS_MANAGEMENT_URL_PLACEHOLDER;
 export const ANONYMOUS_MANAGEMENT_COMMAND_URL =
-  ANONYMOUS_MANAGEMENT_ORIGIN ||
-  (ANONYMOUS_MANAGEMENT_URL_REQUIRED
-    ? ANONYMOUS_MANAGEMENT_URL_PLACEHOLDER
-    : "");
+  getAnonymousManagementCommandURL();
 
 export const getAnonBirdJoinURL = (
   setupKey: string,
   options?: AnonymousTransportCommandOptions,
   hostname?: string,
 ) => {
-  if (!setupKey || !ANONYMOUS_MANAGEMENT_ORIGIN) return undefined;
+  const managementOrigin = getAnonymousManagementOrigin(options);
+  if (!setupKey || !managementOrigin) return undefined;
 
   const transport = options?.transport ?? "tor-relay-only";
   const params = new URLSearchParams({
-    server: ANONYMOUS_MANAGEMENT_ORIGIN,
+    server: managementOrigin,
     setup_key: setupKey,
     transport,
   });
@@ -136,9 +172,7 @@ export const getAnonBirdUpCommand = (
     }
   }
 
-  if (ANONYMOUS_MANAGEMENT_COMMAND_URL) {
-    cmd += " --management-url " + ANONYMOUS_MANAGEMENT_COMMAND_URL;
-  }
+  cmd += " --management-url " + getAnonymousManagementCommandURL(options);
   return cmd;
 };
 
@@ -149,6 +183,7 @@ export const getAnonymousTransportDockerEnv = (
   const env = [
     ["NB_ANONYMOUS_MODE", "true"],
     ["NB_ANONYMOUS_TRANSPORT", transport],
+    ["NB_MANAGEMENT_URL", getAnonymousManagementCommandURL(options)],
   ];
 
   if (transport == "tor-relay-only") {

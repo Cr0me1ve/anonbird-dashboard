@@ -35,6 +35,7 @@ import { useSWRConfig } from "swr";
 import SetupKeysIcon from "@/assets/icons/SetupKeysIcon";
 import { Group } from "@/interfaces/Group";
 import { SetupKey } from "@/interfaces/SetupKey";
+import { useAccount } from "@/modules/account/useAccount";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
 import SetupModal from "@/modules/setup-netbird-modal/SetupModal";
 
@@ -60,6 +61,9 @@ export default function SetupKeyModal({
   const [successModal, setSuccessModal] = useState(false);
   const [setupKey, setSetupKey] = useState<SetupKey>();
   const [installModal, setInstallModal] = useState(false);
+  const account = useAccount();
+  const peerManagementEndpoint =
+    account?.settings?.extra?.peer_management_endpoint;
   const handleSuccess = (setupKey: SetupKey) => {
     setSetupKey(setupKey);
     setSuccessModal(true);
@@ -88,6 +92,7 @@ export default function SetupKeyModal({
           showClose={true}
           setupKey={setupKey?.key}
           showOnlyRoutingPeerOS={showOnlyRoutingPeerOS}
+          peerManagementEndpoint={peerManagementEndpoint}
         />
       </Modal>
 

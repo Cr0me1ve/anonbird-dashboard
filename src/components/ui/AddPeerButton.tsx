@@ -6,6 +6,7 @@ import { PlusCircle } from "lucide-react";
 import React, { memo, useState } from "react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Peer } from "@/interfaces/Peer";
+import { useAccount } from "@/modules/account/useAccount";
 import SetupModal from "@/modules/setup-netbird-modal/SetupModal";
 
 type Props = {
@@ -15,6 +16,9 @@ type Props = {
 function AddPeerButton({ isUserDevice }: Readonly<Props>) {
   const { data: peers } = useFetchApi<Peer[]>("/peers");
   const { oidcUser: user } = useOidcUser();
+  const account = useAccount();
+  const peerManagementEndpoint =
+    account?.settings?.extra?.peer_management_endpoint;
 
   const [hasOnboardingFormCompleted] = useLocalStorage(
     "netbird-onboarding-modal",
@@ -48,7 +52,11 @@ function AddPeerButton({ isUserDevice }: Readonly<Props>) {
             Add Peer
           </Button>
         </ModalTrigger>
-        <SetupModal user={user} isUserDevice={isUserDevice} />
+        <SetupModal
+          user={user}
+          isUserDevice={isUserDevice}
+          peerManagementEndpoint={peerManagementEndpoint}
+        />
       </Modal>
     </>
   );

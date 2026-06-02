@@ -12,7 +12,25 @@ The dashboard makes it easy to operate an anonymous private mesh:
 - manage setup keys for unattended enrollment
 - list users and service users
 - define access controls
-- generate source-build install commands for AnonBird clients
+- generate source-build install commands and `anonbird://join?...` links for
+  AnonBird clients
+
+## Anonymous install flow
+
+Set `ANONBIRD_PEER_MANAGEMENT_ENDPOINT` to the anonymous management URL that
+peers should use, for example `http://...onion` or `http://...b32.i2p`. The
+dashboard can still call the admin API through `NETBIRD_MGMT_API_ENDPOINT`, but
+copied peer commands and setup-key flows will use the anonymous peer endpoint.
+
+When a setup key is available, the UI prefers:
+
+```shell
+anonbird join "anonbird://join?server=http%3A%2F%2F...onion&setup_key=...&transport=tor-relay-only"
+```
+
+The client validates that management is `.onion` or `.b32.i2p`, enables
+anonymous mode, and starts the required local Tor/i2pd runtime automatically
+when the clean machine does not already have it running.
 
 ## Some Screenshots
 
@@ -39,6 +57,9 @@ The dashboard makes it easy to operate an anonymous private mesh:
    `AUTH0_DOMAIN` `AUTH0_CLIENT_ID` `AUTH0_AUDIENCE`
 
 4. Set `NETBIRD_MGMT_API_ENDPOINT` to your AnonBird management HTTP API. For a local self-hosted deployment this is usually `http://localhost:33071`.
+   Set `ANONBIRD_PEER_MANAGEMENT_ENDPOINT` when copied peer install commands
+   should use a Tor onion or I2P `.b32.i2p` management URL instead of the admin
+   API origin.
 5. Run the dashboard without SSL:
 
    ```shell
@@ -48,6 +69,7 @@ The dashboard makes it easy to operate an anonymous private mesh:
      -e AUTH0_CLIENT_ID=<SET YOUR CLIENT ID> \
      -e AUTH0_AUDIENCE=<SET YOUR AUDIENCE> \
      -e NETBIRD_MGMT_API_ENDPOINT=<SET YOUR MANAGEMENT API URL> \
+     -e ANONBIRD_PEER_MANAGEMENT_ENDPOINT=<SET YOUR ONION OR B32.I2P URL> \
      ghcr.io/cr0me1ve/anonbird-dashboard:latest
    ```
 
@@ -63,6 +85,7 @@ The dashboard makes it easy to operate an anonymous private mesh:
      -e AUTH0_CLIENT_ID=<SET YOUR CLIENT ID> \
      -e AUTH0_AUDIENCE=<SET YOUR AUDIENCE> \
      -e NETBIRD_MGMT_API_ENDPOINT=<SET YOUR MANAGEMENT API URL> \
+     -e ANONBIRD_PEER_MANAGEMENT_ENDPOINT=<SET YOUR ONION OR B32.I2P URL> \
      ghcr.io/cr0me1ve/anonbird-dashboard:latest
    ```
 

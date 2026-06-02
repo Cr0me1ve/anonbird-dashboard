@@ -11,6 +11,7 @@ import { Group } from "@/interfaces/Group";
 import { Network, NetworkRouter } from "@/interfaces/Network";
 import { Peer } from "@/interfaces/Peer";
 import { SetupKey } from "@/interfaces/SetupKey";
+import { useAccount } from "@/modules/account/useAccount";
 import { SetupModalContent } from "@/modules/setup-netbird-modal/SetupModal";
 
 type Props = {
@@ -27,6 +28,9 @@ export const OnboardingAddRoutingPeer = ({
   const [open, setOpen] = useState(false);
   const [setupKey, setSetupKey] = useState<SetupKey>();
   const { groups } = useGroups();
+  const account = useAccount();
+  const peerManagementEndpoint =
+    account?.settings?.extra?.peer_management_endpoint;
   const setupKeyRequest = useApiCall<SetupKey>("/setup-keys", true);
   const groupRequest = useApiCall<Group>("/groups", true);
   const routerRequest = useApiCall<NetworkRouter>("/networks", true);
@@ -177,6 +181,7 @@ export const OnboardingAddRoutingPeer = ({
               hostname={"routing-peer"}
               title={"Install AnonBird"}
               setupKey={setupKey.key}
+              peerManagementEndpoint={peerManagementEndpoint}
             />
           </ModalContent>
         </Modal>

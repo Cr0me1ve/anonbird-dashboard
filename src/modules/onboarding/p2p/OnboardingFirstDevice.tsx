@@ -4,6 +4,7 @@ import { DownloadIcon } from "lucide-react";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Peer } from "@/interfaces/Peer";
+import { useAccount } from "@/modules/account/useAccount";
 import { SetupModalContent } from "@/modules/setup-netbird-modal/SetupModal";
 
 type Props = {
@@ -18,6 +19,9 @@ export const OnboardingFirstDevice = ({
   onFinish,
 }: Props) => {
   const [open, setOpen] = useState(false);
+  const account = useAccount();
+  const peerManagementEndpoint =
+    account?.settings?.extra?.peer_management_endpoint;
 
   /**
    * Continue to next step once first device is recognized
@@ -54,7 +58,11 @@ export const OnboardingFirstDevice = ({
 
       <Modal open={open} onOpenChange={setOpen}>
         <ModalContent className={"!z-[70]"}>
-          <SetupModalContent title={"Install AnonBird"} isUserDevice={true} />
+          <SetupModalContent
+            title={"Install AnonBird"}
+            isUserDevice={true}
+            peerManagementEndpoint={peerManagementEndpoint}
+          />
         </ModalContent>
       </Modal>
     </div>

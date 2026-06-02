@@ -7,6 +7,7 @@
   "authAudience": "$AUTH_AUDIENCE",
   "apiOrigin": "$NETBIRD_MGMT_API_ENDPOINT",
   "grpcApiOrigin": "$NETBIRD_MGMT_GRPC_API_ENDPOINT",
+  "peerManagementEndpoint": "$ANONBIRD_PEER_MANAGEMENT_ENDPOINT",
   "redirectURI": "$AUTH_REDIRECT_URI",
   "silentRedirectURI": "$AUTH_SILENT_REDIRECT_URI",
   "tokenSource": "$NETBIRD_TOKEN_SOURCE",

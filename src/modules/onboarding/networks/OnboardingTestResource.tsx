@@ -9,6 +9,7 @@ import * as React from "react";
 import { useMemo, useState } from "react";
 import { NetworkResource } from "@/interfaces/Network";
 import { Peer } from "@/interfaces/Peer";
+import { useAccount } from "@/modules/account/useAccount";
 import { SetupModalContent } from "@/modules/setup-netbird-modal/SetupModal";
 
 type Props = {
@@ -25,6 +26,9 @@ export const OnboardingTestResource = ({
   onTroubleshootingClick,
 }: Props) => {
   const [open, setOpen] = useState(false);
+  const account = useAccount();
+  const peerManagementEndpoint =
+    account?.settings?.extra?.peer_management_endpoint;
 
   const isSubnet = resource?.type === "subnet";
   const isWildCard = resource?.address.includes("*");
@@ -95,7 +99,10 @@ export const OnboardingTestResource = ({
 
       <Modal open={open} onOpenChange={setOpen}>
         <ModalContent>
-          <SetupModalContent title={"Install AnonBird"} />
+          <SetupModalContent
+            title={"Install AnonBird"}
+            peerManagementEndpoint={peerManagementEndpoint}
+          />
         </ModalContent>
       </Modal>
     </div>

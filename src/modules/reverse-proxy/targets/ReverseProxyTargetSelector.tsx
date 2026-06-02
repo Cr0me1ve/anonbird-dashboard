@@ -19,6 +19,7 @@ import {
 } from "@/contexts/ReverseProxiesProvider";
 import { HelpTooltip } from "@components/HelpTooltip";
 import InlineLink, { InlineButtonLink } from "@components/InlineLink";
+import { useAccount } from "@/modules/account/useAccount";
 import SetupModal from "@/modules/setup-netbird-modal/SetupModal";
 
 export type Target = {
@@ -52,6 +53,9 @@ export default function ReverseProxyTargetSelector({
 }: Readonly<Props>) {
   const { resources, peers, domains } = useReverseProxies();
   const [installModal, setInstallModal] = useState(false);
+  const account = useAccount();
+  const peerManagementEndpoint =
+    account?.settings?.extra?.peer_management_endpoint;
 
   // Clusters tab is only available when at least one domain advertises
   // supports_private. Inside a network-resource flow there is no cluster
@@ -234,7 +238,7 @@ export default function ReverseProxyTargetSelector({
         }}
       />
       <Modal open={installModal} onOpenChange={setInstallModal}>
-        <SetupModal />
+        <SetupModal peerManagementEndpoint={peerManagementEndpoint} />
       </Modal>
     </div>
   );

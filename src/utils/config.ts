@@ -9,6 +9,7 @@ interface Config {
   scopesSupported: string;
   apiOrigin: string;
   grpcApiOrigin: string;
+  peerManagementEndpoint: string;
   audience: string;
   redirectURI: string;
   silentRedirectURI: string;
@@ -71,6 +72,10 @@ const loadConfig = (): Config => {
     scopesSupported: configJson.authScopesSupported,
     apiOrigin: configJson.apiOrigin,
     grpcApiOrigin: configJson.grpcApiOrigin,
+    peerManagementEndpoint: fallbackWhenUnset(
+      configJson?.peerManagementEndpoint,
+      "",
+    ),
     audience: configJson.authAudience,
     redirectURI: redirectURI,
     silentRedirectURI: silentRedirectURI,

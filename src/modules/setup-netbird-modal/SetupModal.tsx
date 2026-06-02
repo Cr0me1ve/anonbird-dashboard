@@ -22,7 +22,8 @@ import { Tabs, TabsList, TabsTrigger } from "@components/Tabs";
 import { useApiCall } from "@utils/api";
 import { cn } from "@utils/helpers";
 import {
-  ANONYMOUS_MANAGEMENT_URL_REQUIRED,
+  ANONYMOUS_MANAGEMENT_ORIGIN,
+  ANONYMOUS_MANAGEMENT_URL_PLACEHOLDER,
   AnonymousTransportCommandOptions,
   AnonymousTransportType,
   DEFAULT_I2P_DAEMON_MODE,
@@ -33,6 +34,7 @@ import {
   getAnonBirdJoinCommand,
   getAnonBirdUpCommand,
   I2PDaemonMode,
+  isAnonymousManagementURL,
 } from "@utils/netbird";
 import {
   CopyIcon,
@@ -78,6 +80,7 @@ type Props = {
   //   undefined – legacy: keep historical heuristic (mobile shown unless
   //               a setupKey is already provided; Docker shown).
   isUserDevice?: boolean;
+  peerManagementEndpoint?: string;
 };
 
 export default function SetupModal({
@@ -87,6 +90,7 @@ export default function SetupModal({
   showOnlyRoutingPeerOS = false,
   className,
   isUserDevice,
+  peerManagementEndpoint,
 }: Readonly<Props>) {
   return (
     <ModalContent showClose={showClose} className={className}>
@@ -95,6 +99,7 @@ export default function SetupModal({
         setupKey={setupKey}
         showOnlyRoutingPeerOS={showOnlyRoutingPeerOS}
         isUserDevice={isUserDevice}
+        peerManagementEndpoint={peerManagementEndpoint}
       />
     </ModalContent>
   );
@@ -110,6 +115,7 @@ type SetupModalContentProps = {
   title?: string;
   hostname?: string;
   isUserDevice?: boolean;
+  peerManagementEndpoint?: string;
 };
 
 export function SetupModalContent({
@@ -122,6 +128,7 @@ export function SetupModalContent({
   title,
   hostname,
   isUserDevice,
+  peerManagementEndpoint,
 }: Readonly<SetupModalContentProps>) {
   const os = useOperatingSystem();
   const [isFirstRun] = useLocalStorage<boolean>("netbird-first-run", true);
@@ -133,6 +140,8 @@ export function SetupModalContent({
   // the in-modal banner stay in sync.
   const [generatedKey, setGeneratedKey] = useState<SetupKey | undefined>();
   const effectiveSetupKey = setupKey ?? generatedKey?.key;
+  const effectivePeerManagementEndpoint =
+    peerManagementEndpoint || ANONYMOUS_MANAGEMENT_ORIGIN;
   const [anonymousTransportType, setAnonymousTransportType] =
     useState<AnonymousTransportType>("tor-relay-only");
   const [i2pSAM, setI2PSAM] = useState(DEFAULT_I2P_SAM);
@@ -147,9 +156,12 @@ export function SetupModalContent({
   );
   const [i2pdPath, setI2PDPath] = useState(DEFAULT_I2PD_PATH);
   const [i2pDataDir, setI2PDataDir] = useState("");
+  const peerManagementURLIsValid =
+    isAnonymousManagementURL(effectivePeerManagementEndpoint);
   const anonymousTransport = useMemo<AnonymousTransportCommandOptions>(
     () => ({
       transport: anonymousTransportType,
+      managementURL: effectivePeerManagementEndpoint,
       i2pSAM,
       i2pTunnelLength,
       i2pTunnelQuantity,
@@ -159,6 +171,7 @@ export function SetupModalContent({
     }),
     [
       anonymousTransportType,
+      effectivePeerManagementEndpoint,
       i2pSAM,
       i2pTunnelLength,
       i2pTunnelQuantity,
@@ -273,9 +286,11 @@ export function SetupModalContent({
         onI2PDataDirChange={setI2PDataDir}
       />
 
-      {ANONYMOUS_MANAGEMENT_URL_REQUIRED && (
+      {!peerManagementURLIsValid && (
         <div className={"px-8 pb-5"}>
-          <UnsafeClearnetSetupWarning />
+          <AnonymousManagementEndpointWarning
+            hasValue={!!effectivePeerManagementEndpoint.trim()}
+          />
         </div>
       )}
 
@@ -371,8 +386,8 @@ export function SetupModalContent({
 
         {!hideMobile && (
           <>
-            <AndroidTab />
-            <IOSTab />
+            <AndroidTab anonymousTransport={anonymousTransport} />
+            <IOSTab anonymousTransport={anonymousTransport} />
           </>
         )}
 
@@ -409,10 +424,14 @@ export function SetupModalContent({
   );
 }
 
-export const UnsafeClearnetSetupWarning = () => {
+export const AnonymousManagementEndpointWarning = ({
+  hasValue,
+}: {
+  hasValue: boolean;
+}) => {
   return (
     <Callout
-      variant={"error"}
+      variant={"warning"}
       icon={
         <AlertTriangleIcon
           size={15}
@@ -422,15 +441,33 @@ export const UnsafeClearnetSetupWarning = () => {
     >
       <div className={"flex flex-col gap-1.5"}>
         <span>
-          Peer setup is blocked from using the current clearnet management URL.
+          Peer install commands need an anonymous management endpoint.
         </span>
         <span>
-          Unsafe setup would expose the peer real IP address, NAT endpoint and
-          local network metadata to the management server, relay or other peers.
+          The dashboard may stay available from clearnet, but peers must connect
+          to the management server through Tor or I2P.
         </span>
         <span>
-          Set <code>NETBIRD_MGMT_GRPC_API_ENDPOINT</code> to an onion or I2P
-          endpoint before copying install commands.
+          {hasValue ? (
+            <>
+              Save an http(s) onion or I2P URL in{" "}
+              <InlineLink href={"/settings?tab=anonymous-network"}>
+                Settings
+              </InlineLink>{" "}
+              before copying commands.
+            </>
+          ) : (
+            "Set "
+          )}
+          {!hasValue && <code>ANONBIRD_PEER_MANAGEMENT_ENDPOINT</code>}
+          {!hasValue && " in the dashboard environment, or save one in "}
+          {!hasValue && (
+            <InlineLink href={"/settings?tab=anonymous-network"}>
+              Settings
+            </InlineLink>
+          )}
+          {!hasValue && "."} Commands currently use{" "}
+          <code>{ANONYMOUS_MANAGEMENT_URL_PLACEHOLDER}</code>.
         </span>
       </div>
     </Callout>
