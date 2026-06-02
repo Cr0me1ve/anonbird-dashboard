@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useDialog } from "@/contexts/DialogProvider";
 import { Peer } from "@/interfaces/Peer";
 import { SetupKey } from "@/interfaces/SetupKey";
+import { useAccount } from "@/modules/account/useAccount";
 import { SetupModalContent } from "@/modules/setup-netbird-modal/SetupModal";
 
 type Props = {
@@ -22,6 +23,9 @@ export const OnboardingSecondDevice = ({ secondDevice, onFinish }: Props) => {
   const setupKeyRequest = useApiCall<SetupKey>("/setup-keys", true);
   const [setupKey, setSetupKey] = useState<SetupKey>();
   const { confirm } = useDialog();
+  const account = useAccount();
+  const peerManagementEndpoint =
+    account?.settings?.extra?.peer_management_endpoint;
 
   const [open, setOpen] = useState(false);
   const isShareSupported = navigator.share !== undefined;
@@ -126,6 +130,7 @@ export const OnboardingSecondDevice = ({ secondDevice, onFinish }: Props) => {
             <SetupModalContent
               title={"Install AnonBird"}
               setupKey={setupKey.key}
+              peerManagementEndpoint={peerManagementEndpoint}
             />
           </ModalContent>
         </Modal>

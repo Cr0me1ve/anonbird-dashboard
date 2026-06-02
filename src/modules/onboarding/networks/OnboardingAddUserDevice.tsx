@@ -8,6 +8,7 @@ import { useSWRConfig } from "swr";
 import { Group, GroupPeer } from "@/interfaces/Group";
 import { Peer } from "@/interfaces/Peer";
 import { Policy } from "@/interfaces/Policy";
+import { useAccount } from "@/modules/account/useAccount";
 import { SetupModalContent } from "@/modules/setup-netbird-modal/SetupModal";
 
 type Props = {
@@ -20,6 +21,9 @@ export const OnboardingAddUserDevice = ({ device, policy, onNext }: Props) => {
   const groupRequest = useApiCall<Group>("/groups", true);
   const { mutate } = useSWRConfig();
   const [open, setOpen] = useState(false);
+  const account = useAccount();
+  const peerManagementEndpoint =
+    account?.settings?.extra?.peer_management_endpoint;
 
   const usersGroup = useMemo(() => {
     let rule = policy?.rules?.[0];
@@ -87,7 +91,11 @@ export const OnboardingAddUserDevice = ({ device, policy, onNext }: Props) => {
 
       <Modal open={open} onOpenChange={setOpen}>
         <ModalContent>
-          <SetupModalContent title={"Install AnonBird"} isUserDevice={true} />
+          <SetupModalContent
+            title={"Install AnonBird"}
+            isUserDevice={true}
+            peerManagementEndpoint={peerManagementEndpoint}
+          />
         </ModalContent>
       </Modal>
     </div>

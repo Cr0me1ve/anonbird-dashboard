@@ -9,6 +9,7 @@ import {
   LockIcon,
   MonitorSmartphoneIcon,
   NetworkIcon,
+  RadioTowerIcon,
   ShieldIcon,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -19,6 +20,7 @@ import { useLoggedInUser } from "@/contexts/UsersProvider";
 import PageContainer from "@/layouts/PageContainer";
 import { useAccount } from "@/modules/account/useAccount";
 import AuthenticationTab from "@/modules/settings/AuthenticationTab";
+import AnonymousNetworkSettingsTab from "@/modules/settings/AnonymousNetworkSettingsTab";
 import ClientSettingsTab from "@/modules/settings/ClientSettingsTab";
 import DangerZoneTab from "@/modules/settings/DangerZoneTab";
 import IdentityProvidersTab from "@/modules/settings/IdentityProvidersTab";
@@ -82,6 +84,10 @@ export default function NetBirdSettings() {
                 <NetworkIcon size={14} />
                 Networks
               </VerticalTabs.Trigger>
+              <VerticalTabs.Trigger value="anonymous-network">
+                <RadioTowerIcon size={14} />
+                Anonymous Network
+              </VerticalTabs.Trigger>
               <VerticalTabs.Trigger value="clients">
                 <MonitorSmartphoneIcon size={14} />
                 Clients
@@ -103,6 +109,7 @@ export default function NetBirdSettings() {
             {account && <PermissionsTab account={account} />}
             {account && <GroupsSettings account={account} />}
             {account && <NetworkSettingsTab account={account} />}
+            {account && <AnonymousNetworkSettingsTab account={account} />}
             {account && <ClientSettingsTab account={account} />}
             {account && <DangerZoneTab account={account} />}
           </div>

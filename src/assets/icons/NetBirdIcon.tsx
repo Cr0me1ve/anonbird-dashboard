@@ -1,7 +1,7 @@
 import Image from "next/image";
 import * as React from "react";
 import { memo } from "react";
-import NetBirdLogo from "@/assets/anonbird-logo.png";
+import NetBirdLogo from "@/assets/anonbird-logo-square.png";
 
 type Props = {
   size?: number;
@@ -13,6 +13,7 @@ function NetBirdIcon({ size = 16, className }: Props) {
       src={NetBirdLogo}
       alt={"AnonBird Icon"}
       width={size}
+      height={size}
       className={className}
     />
   );

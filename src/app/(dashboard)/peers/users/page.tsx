@@ -12,6 +12,7 @@ import PeersProvider, { usePeers } from "@/contexts/PeersProvider";
 import { usePermissions } from "@/contexts/PermissionsProvider";
 import { useUsers } from "@/contexts/UsersProvider";
 import PageContainer from "@/layouts/PageContainer";
+import { useAccount } from "@/modules/account/useAccount";
 import { SetupModalContent } from "@/modules/setup-netbird-modal/SetupModal";
 
 const PeersTable = lazy(() => import("@/modules/peers/PeersTable"));
@@ -35,6 +36,9 @@ export default function UserDevicesPage() {
 function UserDevicesView() {
   const { peers, isLoading: isPeersLoading } = usePeers();
   const { users, isLoading: isUsersLoading } = useUsers();
+  const account = useAccount();
+  const peerManagementEndpoint =
+    account?.settings?.extra?.peer_management_endpoint;
   const { ref: headingRef, portalTarget } =
     usePortalElement<HTMLHeadingElement>();
 
@@ -91,6 +95,10 @@ function UserDevicesView() {
 }
 
 function UserDevicesBlockedView() {
+  const account = useAccount();
+  const peerManagementEndpoint =
+    account?.settings?.extra?.peer_management_endpoint;
+
   return (
     <div className={"flex items-center justify-center flex-col"}>
       <div className={"p-default py-6 max-w-3xl text-center"}>
@@ -114,7 +122,12 @@ function UserDevicesBlockedView() {
             "rounded-md border border-nb-gray-900/70 grid w-full bg-nb-gray-930/40 stepper-bg-variant"
           }
         >
-          <SetupModalContent header={false} footer={false} isUserDevice />
+          <SetupModalContent
+            header={false}
+            footer={false}
+            isUserDevice
+            peerManagementEndpoint={peerManagementEndpoint}
+          />
         </div>
       </div>
     </div>

@@ -1,3 +1,5 @@
+const { version } = require("./package.json");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
@@ -8,7 +10,7 @@ const nextConfig = {
   env: {
     APP_ENV: process.env.APP_ENV || "production",
     NEXT_PUBLIC_DASHBOARD_VERSION:
-      process.env.NEXT_PUBLIC_DASHBOARD_VERSION || "development",
+      process.env.NEXT_PUBLIC_DASHBOARD_VERSION || version,
   },
 };
 

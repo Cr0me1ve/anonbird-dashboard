@@ -2,9 +2,9 @@ import Code from "@components/Code";
 import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
 import {
-  ANONYMOUS_MANAGEMENT_ORIGIN,
   ANONBIRD_SOURCE_URL,
   AnonymousTransportCommandOptions,
+  getAnonymousManagementOrigin,
 } from "@utils/netbird";
 import { PackageOpenIcon } from "lucide-react";
 import React from "react";
@@ -36,8 +36,9 @@ export default function WindowsTab({
   // command shape consistent. Otherwise we fall back to the existing
   // setupKey-driven branching.
   const useCliRun = !!setupKey || !!setupKeyContent;
+  const managementOrigin = getAnonymousManagementOrigin(anonymousTransport);
   const baseMgmtStep = 2;
-  const keyStep = ANONYMOUS_MANAGEMENT_ORIGIN ? 3 : 2;
+  const keyStep = managementOrigin ? 3 : 2;
   const runStep = keyStep + (setupKeyContent ? 1 : 0);
   const installCommand = [
     `git clone ${ANONBIRD_SOURCE_URL} anonbird`,
@@ -65,13 +66,13 @@ export default function WindowsTab({
             </Code>
           </Steps.Step>
 
-          {ANONYMOUS_MANAGEMENT_ORIGIN && (
+          {managementOrigin && (
             <Steps.Step step={baseMgmtStep}>
               <p>
                 {`Click on "Settings" then "Advanced Settings" from the AnonBird icon in your system tray and enter the following "Management URL"`}
               </p>
               <Code>
-                <Code.Line>{ANONYMOUS_MANAGEMENT_ORIGIN}</Code.Line>
+                <Code.Line>{managementOrigin}</Code.Line>
               </Code>
             </Steps.Step>
           )}

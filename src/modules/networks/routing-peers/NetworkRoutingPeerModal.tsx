@@ -42,6 +42,7 @@ import { Network, NetworkRouter } from "@/interfaces/Network";
 import { OperatingSystem } from "@/interfaces/OperatingSystem";
 import { Peer } from "@/interfaces/Peer";
 import { SetupKey } from "@/interfaces/SetupKey";
+import { useAccount } from "@/modules/account/useAccount";
 import useGroupHelper from "@/modules/groups/useGroupHelper";
 import { RoutingPeerMasqueradeSwitch } from "@/modules/networks/routing-peers/RoutingPeerMasqueradeSwitch";
 import SetupModal from "@/modules/setup-netbird-modal/SetupModal";
@@ -414,6 +415,9 @@ const InstallNetBirdWithSetupKeyButton = ({
   const setupKeyRequest = useApiCall<SetupKey>("/setup-keys", true);
   const { mutate } = useSWRConfig();
   const { confirm } = useDialog();
+  const account = useAccount();
+  const peerManagementEndpoint =
+    account?.settings?.extra?.peer_management_endpoint;
 
   const [installModal, setInstallModal] = useState(false);
   const [setupKey, setSetupKey] = useState<SetupKey>();
@@ -480,6 +484,7 @@ const InstallNetBirdWithSetupKeyButton = ({
             showClose={true}
             setupKey={setupKey.key}
             showOnlyRoutingPeerOS={true}
+            peerManagementEndpoint={peerManagementEndpoint}
           />
         </Modal>
       )}

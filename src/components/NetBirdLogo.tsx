@@ -2,6 +2,7 @@ import { cn } from "@utils/helpers";
 import Image from "next/image";
 import * as React from "react";
 import NetBirdLogoMark from "@/assets/anonbird-logo.png";
+import NetBirdLogoSquare from "@/assets/anonbird-logo-square.png";
 
 type Props = {
   size?: "default" | "large";
@@ -10,11 +11,11 @@ type Props = {
 
 const sizes = {
   default: {
-    desktop: 22,
-    mobile: 30,
+    desktop: 38,
+    mobile: 32,
   },
   large: {
-    desktop: 24,
+    desktop: 42,
     mobile: 40,
   },
 };
@@ -31,15 +32,16 @@ export const NetBirdLogo = ({ size = "default", mobile = true }: Props) => {
       >
         <Image
           src={NetBirdLogoMark}
-          width={sizes[size].desktop + 7}
+          width={sizes[size].desktop}
           alt={"AnonBird Logo"}
         />
         <span>AnonBird</span>
       </div>
       {mobile && (
         <Image
-          src={NetBirdLogoMark}
+          src={NetBirdLogoSquare}
           width={sizes[size].mobile}
+          height={sizes[size].mobile}
           alt={"AnonBird Logo"}
           className={cn(mobile && "md:hidden ml-4")}
         />

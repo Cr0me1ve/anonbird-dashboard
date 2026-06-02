@@ -4,7 +4,6 @@ import Steps from "@components/Steps";
 import TabsContentPadding, { TabsContent } from "@components/Tabs";
 import { IconBrandUbuntu } from "@tabler/icons-react";
 import {
-  ANONYMOUS_MANAGEMENT_COMMAND_URL,
   ANONBIRD_DOCKER_IMAGE,
   ANONBIRD_SOURCE_URL,
   AnonymousTransportCommandOptions,
@@ -114,16 +113,6 @@ export default function DockerTab({
               ))}
 
               <Code.Line> -v anonbird-client:/var/lib/anonbird \</Code.Line>
-              {ANONYMOUS_MANAGEMENT_COMMAND_URL && (
-                <Code.Line>
-                  {" "}
-                  -e NB_MANAGEMENT_URL=
-                  <span className={"text-netbird"}>
-                    {ANONYMOUS_MANAGEMENT_COMMAND_URL}
-                  </span>{" "}
-                  \
-                </Code.Line>
-              )}
               <Code.Line> {ANONBIRD_DOCKER_IMAGE}</Code.Line>
             </Code>
           </Steps.Step>
