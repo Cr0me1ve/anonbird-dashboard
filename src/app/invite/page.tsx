@@ -215,112 +215,133 @@ function InviteAcceptContent() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-nb-gray-950 p-4">
-      <div className="max-w-md w-full">
-        <div className="mb-8 flex justify-center">
-          <AnonBirdIcon size={48} />
+    <div className="min-h-screen bg-nb-gray-950 px-5 py-8 text-white">
+      <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-5xl flex-col items-center justify-center gap-10">
+        <div className="flex items-center justify-center gap-5 text-white sm:gap-7">
+          <AnonBirdIcon size={96} />
+          <span className="text-5xl font-semibold leading-none text-white sm:text-6xl">
+            AnonBird
+          </span>
         </div>
 
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold text-white mb-2">
-            Welcome to AnonBird
-          </h1>
-          <p className="dark:text-nb-gray-400 text-nb-gray-500 text-base">
-            You&apos;ve been invited by{" "}
-            <span className="dark:text-white text-nb-gray-900 font-medium">
-              {inviteInfo.invited_by}
-            </span>{" "}
-            to join the network. Set your password to complete your account
-            setup.
-          </p>
-        </div>
-
-        <div className="bg-nb-gray-930 border border-nb-gray-900 rounded-lg p-6 mb-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-nb-gray-900 rounded-full flex items-center justify-center">
-              <User2 className="w-5 h-5 text-nb-gray-400" />
-            </div>
+        <div className="grid w-full overflow-hidden rounded-[28px] border border-nb-gray-800 bg-nb-gray-940 shadow-2xl shadow-black/20 lg:grid-cols-[0.9fr_1.1fr]">
+          <aside className="flex min-h-[22rem] flex-col justify-between bg-[#20252b] p-8 sm:p-10 lg:min-h-[34rem]">
             <div>
-              <div className="text-white font-medium">{inviteInfo.name}</div>
-              <div className="text-nb-gray-400 text-sm flex items-center gap-1">
-                <Mail className="w-3 h-3" />
+              <div className="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-netbird/15">
+                <User2 size={34} className="text-netbird-300" />
+              </div>
+              <h1 className="max-w-sm text-4xl font-semibold leading-tight text-white sm:text-5xl">
+                Welcome to AnonBird
+              </h1>
+              <p className="mt-5 text-lg font-medium leading-relaxed text-white/70">
+                You&apos;ve been invited by{" "}
+                <span className="font-semibold text-white">
+                  {inviteInfo.invited_by}
+                </span>
+                . Set your password to complete your account setup.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-nb-gray-800 bg-nb-gray-925 p-5">
+              <div className="text-lg font-semibold text-white">
+                {inviteInfo.name}
+              </div>
+              <div className="mt-2 flex items-center gap-2 text-base font-medium text-white/60">
+                <Mail size={16} />
                 {inviteInfo.email}
               </div>
             </div>
-          </div>
+          </aside>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                customPrefix={
-                  <KeyRound size={16} className="text-nb-gray-400" />
-                }
-              />
-              {password && (
-                <div className="mt-2 space-y-1">
-                  <PasswordRule
-                    met={hasMinLength}
-                    text="At least 8 characters"
-                  />
-                  <PasswordRule
-                    met={hasUppercase}
-                    text="One uppercase letter"
-                  />
-                  <PasswordRule
-                    met={hasLowercase}
-                    text="One lowercase letter"
-                  />
-                  <PasswordRule met={hasNumber} text="One number" />
-                  <PasswordRule
-                    met={hasSpecialChar}
-                    text="One special character (!@#$%^&*)"
-                  />
-                </div>
-              )}
+          <form onSubmit={handleSubmit} className="p-8 sm:p-10 lg:p-12">
+            <div className="mb-9">
+              <h2 className="text-3xl font-semibold text-white">
+                Registration
+              </h2>
+              <p className="mt-3 text-lg font-medium text-white/65">
+                Create a password for your new account.
+              </p>
             </div>
 
-            <div>
-              <Input
-                type="password"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                customPrefix={
-                  <KeyRound size={16} className="text-nb-gray-400" />
-                }
-              />
-              {confirmPassword && !passwordsMatch && (
-                <p className="text-xs text-red-500 mt-1">
-                  Passwords do not match
-                </p>
-              )}
+            <div className="space-y-6">
+              <div>
+                <label className="mb-3 block text-xl font-semibold text-white">
+                  Password
+                </label>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  icon={<KeyRound size={22} className="text-white/65" />}
+                  className="h-16 border-nb-gray-700 bg-[#303a4a] px-5 text-xl font-medium text-white placeholder:text-nb-gray-350 focus-visible:ring-netbird-400/40"
+                  showPasswordToggle
+                />
+                {password && (
+                  <div className="mt-4 grid gap-3 text-base font-medium sm:grid-cols-2">
+                    <PasswordRule
+                      met={hasMinLength}
+                      text="At least 8 characters"
+                    />
+                    <PasswordRule
+                      met={hasUppercase}
+                      text="One uppercase letter"
+                    />
+                    <PasswordRule
+                      met={hasLowercase}
+                      text="One lowercase letter"
+                    />
+                    <PasswordRule met={hasNumber} text="One number" />
+                    <PasswordRule
+                      met={hasSpecialChar}
+                      text="One special character"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label className="mb-3 block text-xl font-semibold text-white">
+                  Confirm Password
+                </label>
+                <Input
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  icon={<KeyRound size={22} className="text-white/65" />}
+                  className="h-16 border-nb-gray-700 bg-[#303a4a] px-5 text-xl font-medium text-white placeholder:text-nb-gray-350 focus-visible:ring-netbird-400/40"
+                  showPasswordToggle
+                />
+                {confirmPassword && !passwordsMatch && (
+                  <p className="mt-2 text-sm font-medium text-red-500">
+                    Passwords do not match
+                  </p>
+                )}
+              </div>
             </div>
 
             {error && (
-              <div className="bg-red-500/10 border border-red-500/20 rounded-md p-3">
-                <p className="text-sm text-red-500">{error}</p>
+              <div className="mt-6 rounded-lg border border-red-500/20 bg-red-500/10 p-3">
+                <p className="text-sm font-medium text-red-500">{error}</p>
               </div>
             )}
 
             <Button
               type="submit"
               variant="primary"
-              className="w-full"
+              className="mt-9 h-16 w-full rounded-2xl !text-2xl font-semibold text-white"
               disabled={!canSubmit}
             >
               {submitting ? "Creating Account..." : "Create Account"}
             </Button>
+
+            <p className="mt-7 text-center text-base font-medium text-white/50">
+              Invite expires on{" "}
+              {dayjs(inviteInfo.expires_at).format("D MMMM, YYYY [at] h:mm A")}
+            </p>
           </form>
         </div>
-
-        <p className="text-center text-xs text-nb-gray-500">
-          Invite expires on{" "}
-          {dayjs(inviteInfo.expires_at).format("D MMMM, YYYY [at] h:mm A")}
-        </p>
       </div>
     </div>
   );
