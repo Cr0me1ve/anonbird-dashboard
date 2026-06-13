@@ -20,7 +20,7 @@ import { Textarea } from "@components/Textarea";
 import InputDomain, { domainReducer } from "@components/ui/InputDomain";
 import { useApiCall } from "@utils/api";
 import { cn } from "@utils/helpers";
-import cidr from "ip-cidr";
+import cidr from "@utils/cidr";
 import { uniqueId } from "lodash";
 import {
   ExternalLinkIcon,

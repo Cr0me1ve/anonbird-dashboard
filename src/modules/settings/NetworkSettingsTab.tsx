@@ -12,7 +12,7 @@ import * as Tabs from "@radix-ui/react-tabs";
 import { useApiCall } from "@utils/api";
 import { validator } from "@utils/helpers";
 import { isNetBirdHosted } from "@utils/netbird";
-import cidr from "ip-cidr";
+import cidr from "@utils/cidr";
 import { ExternalLinkIcon, GlobeIcon, NetworkIcon } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import { useSWRConfig } from "swr";

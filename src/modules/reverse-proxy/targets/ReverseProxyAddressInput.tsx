@@ -1,6 +1,6 @@
 import { Input } from "@components/Input";
 import React, { useMemo } from "react";
-import cidr from "ip-cidr";
+import cidr from "@utils/cidr";
 import type { Target } from "@/modules/reverse-proxy/targets/ReverseProxyTargetSelector";
 import { ReverseProxyTargetType } from "@/interfaces/ReverseProxy";
 import { useReverseProxies } from "@/contexts/ReverseProxiesProvider";

@@ -3,7 +3,7 @@ import { Label } from "@components/Label";
 import HelpText from "@components/HelpText";
 import Button from "@components/Button";
 import { Input } from "@components/Input";
-import cidr from "ip-cidr";
+import cidr from "@utils/cidr";
 import { isIPv6 } from "@utils/ip";
 import {
   FlagIcon,

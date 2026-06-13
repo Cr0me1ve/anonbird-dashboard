@@ -6,7 +6,7 @@ import { Label } from "@components/Label";
 import { ModalClose, ModalFooter } from "@components/modal/Modal";
 import Paragraph from "@components/Paragraph";
 import { RadioGroup, RadioGroupItem } from "@components/RadioGroup";
-import cidr from "ip-cidr";
+import cidr from "@utils/cidr";
 import { isEmpty, uniqueId } from "lodash";
 import {
   ExternalLinkIcon,

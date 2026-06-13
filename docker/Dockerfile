@@ -1,24 +1,21 @@
-FROM alpine:3.14
+FROM node:24-alpine AS build
+WORKDIR /app
 
-RUN apk add --no-cache bash curl less ca-certificates git tzdata zip gettext \
-    nginx curl supervisor certbot-nginx && \
-    rm -rf /var/cache/apk/* && mkdir -p /run/nginx
+ARG NEXT_PUBLIC_BASE_PATH=""
+ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
 
-STOPSIGNAL SIGINT
-EXPOSE 80
-EXPOSE 443
-ENTRYPOINT ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]
+COPY package.json package-lock.json ./
+RUN npm ci
 
-WORKDIR /usr/share/nginx/html
-# copy configuration files
-COPY docker/default.conf /etc/nginx/http.d/default.conf
-COPY docker/nginx.conf /etc/nginx/nginx.conf
-COPY docker/init_cert.sh /usr/local/init_cert.sh
-COPY docker/init_react_envs.sh /usr/local/init_react_envs.sh
-RUN chmod +x /usr/local/init_cert.sh && rm /etc/crontabs/root
-RUN chmod +x /usr/local/init_react_envs.sh
+COPY . .
+RUN npm run build
 
-# configure supervisor
-COPY docker/supervisord.conf /etc/supervisord.conf
-# copy build files
-COPY out/ /usr/share/nginx/html/
+FROM nginx:1.29-alpine
+
+RUN apk add --no-cache bash gettext
+
+COPY docker/default.conf /etc/nginx/conf.d/default.conf
+COPY docker/init_react_envs.sh /docker-entrypoint.d/20-init-react-envs.sh
+RUN chmod +x /docker-entrypoint.d/20-init-react-envs.sh
+
+COPY --from=build /app/out/ /usr/share/nginx/html/

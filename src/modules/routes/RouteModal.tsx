@@ -27,7 +27,7 @@ import { getOperatingSystem } from "@hooks/useOperatingSystem";
 import { IconDirectionSign } from "@tabler/icons-react";
 import { cn } from "@utils/helpers";
 import { normalizeHostCIDR } from "@utils/ip";
-import cidr from "ip-cidr";
+import cidr from "@utils/cidr";
 import { uniqBy } from "lodash";
 import {
   ArrowDownWideNarrow,

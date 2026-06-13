@@ -2,7 +2,7 @@ import HelpText from "@components/HelpText";
 import { Input } from "@components/Input";
 import { Label } from "@components/Label";
 import { validator } from "@utils/helpers";
-import cidr from "ip-cidr";
+import cidr from "@utils/cidr";
 import { GlobeIcon, NetworkIcon, WorkflowIcon } from "lucide-react";
 import * as React from "react";
 import { useEffect, useMemo } from "react";

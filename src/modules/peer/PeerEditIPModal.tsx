@@ -8,7 +8,7 @@ import {
   ModalFooter,
 } from "@components/modal/Modal";
 import ModalHeader from "@components/modal/ModalHeader";
-import cidr from "ip-cidr";
+import cidr from "@utils/cidr";
 import { trim } from "lodash";
 import React, { useMemo, useState } from "react";
 
