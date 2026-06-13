@@ -27,6 +27,11 @@ type Props = {
 export const SecureProvider = ({ children }: Props) => {
   const { isAuthenticated, login } = useOidc();
   const currentPath = usePathname();
+  const browserPath =
+    typeof window === "undefined"
+      ? currentPath
+      : `${window.location.pathname}${window.location.search}`;
+  const authCallbackPath = browserPath || currentPath;
 
   useEffect(() => {
     if (isAuthenticated && !PRESERVE_QUERY_PARAMS_PATHS.includes(currentPath)) {
@@ -49,18 +54,18 @@ export const SecureProvider = ({ children }: Props) => {
     if (!isAuthenticated) {
       timeout = setTimeout(async () => {
         if (!isAuthenticated) {
-          await login(currentPath);
+          await login(authCallbackPath);
         }
       }, 1500);
     }
     return () => {
       clearTimeout(timeout);
     };
-  }, [currentPath, isAuthenticated, login]);
+  }, [authCallbackPath, isAuthenticated, login]);
 
   return (
     <>
-      <OidcSecure callbackPath={currentPath}>{children}</OidcSecure>
+      <OidcSecure callbackPath={authCallbackPath}>{children}</OidcSecure>
     </>
   );
 };

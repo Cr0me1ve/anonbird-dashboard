@@ -3,6 +3,7 @@
 import FullScreenLoading from "@components/ui/FullScreenLoading";
 import { useLocalStorage } from "@hooks/useLocalStorage";
 import { useRedirect } from "@hooks/useRedirect";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export default function Home() {
+  const path = usePathname();
   const [mounted, setMounted] = useState(false);
   const [tempQueryParams, setTempQueryParams] = useLocalStorage(
     "netbird-query-params",
@@ -27,7 +29,7 @@ export default function Home() {
 
   return mounted ? (
     <Redirect
-      url={window?.location?.pathname || "/"}
+      url={path || "/"}
       queryParams={queryParams}
     />
   ) : (
