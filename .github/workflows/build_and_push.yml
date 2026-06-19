@@ -24,11 +24,11 @@ jobs:
       - name: setup-node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - run: echo '{}' > .local-config.json
 
@@ -74,6 +74,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
+          NEXT_PUBLIC_ANONBIRD_DISABLE_SIGNUP_SURVEY: "true"
           NEXT_PUBLIC_DASHBOARD_VERSION: ${{ steps.version.outputs.version }}
       -
         name: Set up QEMU
@@ -108,6 +109,6 @@ jobs:
           context: .
           file: docker/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          platforms: linux/amd64,linux/arm64,linux/arm
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
