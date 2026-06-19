@@ -12,6 +12,8 @@ const nextConfig = {
   reactStrictMode: false,
   env: {
     APP_ENV: process.env.APP_ENV || "production",
+    NEXT_PUBLIC_ANONBIRD_DISABLE_SIGNUP_SURVEY:
+      process.env.NEXT_PUBLIC_ANONBIRD_DISABLE_SIGNUP_SURVEY || "false",
     NEXT_PUBLIC_DASHBOARD_VERSION:
       process.env.NEXT_PUBLIC_DASHBOARD_VERSION || version,
   },

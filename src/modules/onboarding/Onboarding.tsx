@@ -115,6 +115,8 @@ export const Onboarding = ({
   const [firstRoutingPeer, setFirstRoutingPeer] = useState<Peer>();
   const [useCases, setUseCases] = useState("");
   const [isBusiness, setIsBusiness] = useState(false);
+  const signupSurveyEnabled =
+    process.env.NEXT_PUBLIC_ANONBIRD_DISABLE_SIGNUP_SURVEY !== "true";
 
   const firstNetwork = useMemo(() => {
     return networks?.find((n) => n.name === "My First Network") ?? undefined;
@@ -361,7 +363,7 @@ export const Onboarding = ({
                     />
                   )}
 
-                  {step === 1 && domainCategory && (
+                  {step === 1 && signupSurveyEnabled && domainCategory && (
                     <OnboardingSurvey
                       domainCategory={domainCategory}
                       onSubmit={(fields) => {

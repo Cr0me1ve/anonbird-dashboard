@@ -63,17 +63,19 @@ export const OnboardingProvider = ({
       step: 1,
     },
   );
+  const signupSurveyEnabled =
+    process.env.NEXT_PUBLIC_ANONBIRD_DISABLE_SIGNUP_SURVEY !== "true";
 
   const showOnboarding = useMemo(() => {
     if (process.env.APP_ENV === "test") return false;
     if (!account) return false;
-    const isSignupFormPending = isNetBirdHosted()
+    const isSignupFormPending = signupSurveyEnabled && isNetBirdHosted()
       ? !!account?.onboarding?.signup_form_pending
       : false;
     const show =
       !!account?.onboarding?.onboarding_flow_pending || isSignupFormPending;
     return isOwner && show;
-  }, [account, isOwner]);
+  }, [account, isOwner, signupSurveyEnabled]);
 
   const updateAccountMeta = async (meta: Partial<Account["onboarding"]>) => {
     if (!account) return;
@@ -145,7 +147,7 @@ export const OnboardingProvider = ({
     });
   };
 
-  const formSubmitted = isNetBirdHosted()
+  const formSubmitted = signupSurveyEnabled && isNetBirdHosted()
     ? !account?.onboarding?.signup_form_pending
     : true;
 
